@@ -2,12 +2,13 @@
 pragma solidity ^0.8.28;
 
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
+import {CharityCampaign} from "./CharityCampaign.sol";
 
 contract PlatformRegistry is Ownable {
     struct CampaignInfo {
         address campaignAddress;
-        uint targetAmount;
-        uint currentAmount;
+        uint goal;
+        uint totalDonated;
         bool isActive;
     }
 
@@ -62,24 +63,29 @@ contract PlatformRegistry is Ownable {
         emit OrganizationIsVerified(_organizationAddress, _isVerified);
     }
 
-    /// @dev in future we will add more params
     /// @return address of created campaign charity
     function createCampaign(
-        uint _targetAmount
+        uint _goal,
+        uint _deadline
     ) external onlyVerified(msg.sender) returns (address) {
-        // TODO: here create CharityCampaign contract instance; replace `msg.sender` with `address(charityCampaign)`
+        CharityCampaign campaign = new CharityCampaign(
+            msg.sender,
+            _goal,
+            _deadline
+        );
+        address campaignAddress = address(campaign);
 
         CampaignInfo memory info = CampaignInfo({
-            campaignAddress: msg.sender,
-            targetAmount: _targetAmount,
-            currentAmount: 0,
+            campaignAddress: campaignAddress,
+            goal: _goal,
+            totalDonated: 0,
             isActive: true
         });
 
         organizationCampaign[msg.sender].push(info);
-        emit CampaignCreated(msg.sender, msg.sender); // replace only first arg with `address(charityCampaign)`
+        emit CampaignCreated(campaignAddress, msg.sender);
 
-        return msg.sender;
+        return campaignAddress;
     }
 
     function addFeeCollector(address _address) external onlyOwner {
