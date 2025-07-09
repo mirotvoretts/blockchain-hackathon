@@ -73,15 +73,15 @@ contract PlatformRegistry is Ownable {
     constructor(
         address initialOwner,
         uint8 initialFeePercentage,
-        address _tokenAddress
+        address tokenAddress
     ) Ownable(initialOwner) {
         if (initialFeePercentage > MAX_FEE_PERCENTAGE)
             revert InvalidFeePercentage();
-        if (_tokenAddress == address(0)) revert AddressZero();
+        if (tokenAddress == address(0)) revert AddressZero();
 
         _feePercentage = initialFeePercentage;
         feeAddress = address(this);
-        platformToken = PlatformToken(_tokenAddress);
+        platformToken = PlatformToken(tokenAddress);
     }
 
     // --- Функции для владельца платформы (Admin) ---
