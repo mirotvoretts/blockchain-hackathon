@@ -7,32 +7,35 @@ import {CharityCampaign} from "./CharityCampaign.sol";
 contract PlatformRegistry is Ownable {
     struct CampaignInfo {
         address campaignAddress;
-        uint goal;
-        uint totalDonated;
+        uint256 goal;
+        uint256 totalDonated;
         bool isActive;
     }
 
     uint8 private _feePercentage;
 
     /// @notice address => isFeeCollector
-    mapping(address => bool) feeCollectors;
+    mapping(address => bool) public feeCollectors;
     /// @notice organizationAddress => isVerified
-    mapping(address => bool) verifiedOrgranizations;
+    mapping(address => bool) public verifiedOrganizations;
     /// @notice organizationAddress => campaigns
-    mapping(address => CampaignInfo[]) organizationCampaign;
+    mapping(address => CampaignInfo[]) public organizationCampaign;
 
     error OrganizationIsNotVerified();
     error InvalidFeePercentage();
 
     event OrganizationIsVerified(
-        address _organizationAddress,
+        address indexed _organizationAddress,
         bool _isVerified
     );
-    event CampaignCreated(address _campaignAddress, address _creator);
+    event CampaignCreated(
+        address indexed _campaignAddress,
+        address indexed _creator
+    );
 
     modifier onlyVerified(address _organizationAddress) {
         require(
-            verifiedOrgranizations[_organizationAddress],
+            verifiedOrganizations[_organizationAddress],
             OrganizationIsNotVerified()
         );
         _;
@@ -53,25 +56,26 @@ contract PlatformRegistry is Ownable {
         );
         _feePercentage = feePercentage;
         feeCollectors[msg.sender] = true;
+        verifiedOrganizations[msg.sender] = true;
     }
 
     function verify(
         address _organizationAddress,
         bool _isVerified
     ) external onlyOwner {
-        verifiedOrgranizations[_organizationAddress] = _isVerified;
+        verifiedOrganizations[_organizationAddress] = _isVerified;
         emit OrganizationIsVerified(_organizationAddress, _isVerified);
     }
 
     /// @return address of created campaign charity
     function createCampaign(
-        uint _goal,
-        uint _deadline
+        uint256 _goal,
+        uint256 _deadline
     ) external onlyVerified(msg.sender) returns (address) {
         CharityCampaign campaign = new CharityCampaign(
             msg.sender,
             _goal,
-            _deadline
+            _deadline + block.timestamp
         );
         address campaignAddress = address(campaign);
 
@@ -82,8 +86,8 @@ contract PlatformRegistry is Ownable {
             isActive: true
         });
 
-        organizationCampaign[msg.sender].push(info);
         emit CampaignCreated(campaignAddress, msg.sender);
+        organizationCampaign[msg.sender].push(info);
 
         return campaignAddress;
     }
@@ -97,12 +101,12 @@ contract PlatformRegistry is Ownable {
         _feePercentage = _value;
     }
 
-    function getAmountAfterFees(uint _amount) internal view returns (uint) {
-        return _amount * (1 - _feePercentage / 100);
+    function getFeePercentage() public view returns (uint8) {
+        return _feePercentage;
     }
 
     function isNewFeePercentageCorrect(
-        uint _newValue
+        uint256 _newValue
     ) private pure returns (bool) {
         return 0 <= _newValue && _newValue <= 30;
     }

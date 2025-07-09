@@ -10,6 +10,8 @@ contract CharityCampaign is ReentrancyGuard {
     uint256 public totalDonated = 0;
     bool public goalReached = false;
 
+    address public platformRegistry;
+
     /// @notice donorAddress => totalDonated
     mapping(address => uint256) public donations;
 
@@ -28,14 +30,26 @@ contract CharityCampaign is ReentrancyGuard {
         owner = _owner;
         goal = _goal;
         deadline = _deadline;
+        platformRegistry = msg.sender;
+    }
+
+    function getPlatformFeePercentage() public view returns (uint8 fee) {
+        (bool success, bytes memory data) = platformRegistry.staticcall(
+            abi.encodeWithSignature("getFeePercentage()")
+        );
+        require(success, "Call to PlatformRegistry failed");
+
+        return abi.decode(data, (uint8));
     }
 
     function donate() public payable nonReentrant {
         if (block.timestamp >= deadline) revert CampaignEnded();
         if (msg.value == 0) revert ZeroDonation();
 
-        donations[msg.sender] += msg.value;
-        totalDonated += msg.value;
+        uint amountAfterFees = (msg.value *
+            (100 - getPlatformFeePercentage())) / 100;
+        donations[msg.sender] += amountAfterFees;
+        totalDonated += amountAfterFees;
 
         if (totalDonated >= goal) {
             goalReached = true;
@@ -46,7 +60,8 @@ contract CharityCampaign is ReentrancyGuard {
 
     function withdrawFunds() external nonReentrant {
         if (msg.sender != owner) revert NotOwner();
-        if (!goalReached) revert GoalNotReached();
+        if (!goalReached && (block.timestamp < deadline))
+            revert GoalNotReached();
         if (totalDonated == 0) revert NoFundsToWithdraw();
 
         uint256 amount = totalDonated;
