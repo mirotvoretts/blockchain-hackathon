@@ -30,6 +30,15 @@ async def get_fund_by_id(fund_id: int):
         raise HTTPException(status_code=404, detail=str(e))
 
 
+@router.get("/categories/{category_id}", response_model=list[SFund])
+async def get_funds_by_category_id(category_id: int):
+    try:
+        funds = await FundRepository.get_funds_by_category_id(category_id)
+        return [SFund.model_validate(fund) for fund in funds]
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+
 @router.post("/", response_model=SFund, status_code=status.HTTP_201_CREATED)
 async def create_fund(fund_data: SFundUpdate):
     try:

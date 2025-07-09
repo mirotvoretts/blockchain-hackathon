@@ -14,6 +14,14 @@ class FundRepository:
             return funds
     
     @classmethod
+    async def get_funds_by_category_id(cls, categori_id: int) -> list:
+        async with new_session() as session:
+            query = select(FundOrm).where(FundOrm.category_id == categori_id)
+            result = await session.execute(query)
+            funds = result.scalars().all()
+            return funds
+    
+    @classmethod
     async def get_fund_by_id(cls, fund_id: int) -> SFund:
         async with new_session() as session:
             query = select(FundOrm).where(FundOrm.id == fund_id)
