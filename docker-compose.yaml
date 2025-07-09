@@ -34,15 +34,14 @@ services:
       retries: 5
   
 
-  # frontend:
-  #   build: ./frontend
-  #   container_name: frontend
-  #   ports:
-  #     - "5500:5500"  # !!! ВНИМАНИЕ: Порт может измениться
-  #   volumes:
-  #     - ./frontend:/app
-  #   depends_on:
-  #     - web  # Зависит от сервера (FastAPI)
+  src:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./src:/usr/share/nginx/html
+    depends_on:
+      - web
 
 volumes:
   postgres_data:
