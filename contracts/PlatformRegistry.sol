@@ -3,111 +3,189 @@ pragma solidity ^0.8.28;
 
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import {CharityCampaign} from "./CharityCampaign.sol";
+import {PlatformToken} from "./PlatformToken.sol";
 
+/**
+ * @title PlatformRegistry
+ * @notice Центральный контракт-реестр для платформы "ChainImpact".
+ * @dev Отвечает за верификацию организаций, создание кампаний и управление настройками платформы.
+ */
 contract PlatformRegistry is Ownable {
+    // --- Структуры данных ---
+
     struct CampaignInfo {
         address campaignAddress;
-        uint256 goal;
-        uint256 totalDonated;
-        bool isActive;
+        address owner;
+        uint96 goal;
+        uint64 deadline;
     }
+
+    // --- Состояние контракта ---
 
     uint8 private _feePercentage;
+    address public feeAddress;
+    PlatformToken public immutable platformToken;
+    uint8 public constant MAX_FEE_PERCENTAGE = 30;
+    uint96 public constant TOKEN_REWARD_RATE = 3000000000000000 wei;
 
-    /// @notice address => isFeeCollector
-    mapping(address => bool) public feeCollectors;
-    /// @notice organizationAddress => isVerified
     mapping(address => bool) public verifiedOrganizations;
-    /// @notice organizationAddress => campaigns
-    mapping(address => CampaignInfo[]) public organizationCampaign;
+    mapping(address => bool) public isCampaign;
+    CampaignInfo[] public allCampaigns;
+    mapping(address => uint[]) public organizationCampaigns;
 
+    // --- Ошибки ---
+
+    error InvalidParameters();
     error OrganizationIsNotVerified();
     error InvalidFeePercentage();
+    error NotACampaignContract();
+    error AddressZero();
+    error TransferFailed();
+    error NothingToWithdraw();
+    error InsufficientFundsInContract();
+    error ZeroAmount();
 
-    event OrganizationIsVerified(
-        address indexed _organizationAddress,
-        bool _isVerified
+    // --- События ---
+
+    event OrganizationVerified(
+        address indexed organizationAddress,
+        bool isVerified
     );
     event CampaignCreated(
-        address indexed _campaignAddress,
-        address indexed _creator
+        uint indexed campaignId,
+        address indexed campaignAddress,
+        address indexed creator
     );
+    event FeePercentageChanged(uint8 newFee);
+    event FeeAddressChanged(address newAddress);
+    event FeesWithdrawn(address indexed to, uint96 amount);
 
-    modifier onlyVerified(address _organizationAddress) {
-        require(
-            verifiedOrganizations[_organizationAddress],
-            OrganizationIsNotVerified()
-        );
+    // --- Модификаторы ---
+
+    modifier onlyVerified() {
+        if (!verifiedOrganizations[msg.sender])
+            revert OrganizationIsNotVerified();
         _;
     }
 
-    modifier onlyFeeCollectors() {
-        require(feeCollectors[msg.sender]);
-        _;
-    }
+    // --- Функции ---
 
     constructor(
         address initialOwner,
-        uint8 feePercentage
+        uint8 initialFeePercentage,
+        address _tokenAddress
     ) Ownable(initialOwner) {
-        require(
-            isNewFeePercentageCorrect(feePercentage),
-            InvalidFeePercentage()
-        );
-        _feePercentage = feePercentage;
-        feeCollectors[msg.sender] = true;
-        verifiedOrganizations[msg.sender] = true;
+        if (initialFeePercentage > MAX_FEE_PERCENTAGE)
+            revert InvalidFeePercentage();
+        if (_tokenAddress == address(0)) revert AddressZero();
+
+        _feePercentage = initialFeePercentage;
+        feeAddress = address(this);
+        platformToken = PlatformToken(_tokenAddress);
     }
 
-    function verify(
+    // --- Функции для владельца платформы (Admin) ---
+
+    function verifyOrganization(
         address _organizationAddress,
         bool _isVerified
     ) external onlyOwner {
+        if (_organizationAddress == address(0)) revert AddressZero();
         verifiedOrganizations[_organizationAddress] = _isVerified;
-        emit OrganizationIsVerified(_organizationAddress, _isVerified);
+        emit OrganizationVerified(_organizationAddress, _isVerified);
     }
 
-    /// @return address of created campaign charity
+    function setFeePercentage(uint8 _newFee) external onlyOwner {
+        if (_newFee > MAX_FEE_PERCENTAGE) revert InvalidFeePercentage();
+        _feePercentage = _newFee;
+        emit FeePercentageChanged(_newFee);
+    }
+
+    function setFeeAddress(address _newAddress) external onlyOwner {
+        if (_newAddress == address(0)) revert AddressZero();
+        feeAddress = _newAddress;
+        emit FeeAddressChanged(_newAddress);
+    }
+
+    function withdrawFees(
+        address payable _to,
+        uint96 _amount
+    ) external onlyOwner {
+        if (_to == address(0)) revert AddressZero();
+
+        uint256 balance = address(this).balance;
+        if (_amount == 0) revert NothingToWithdraw();
+        if (_amount > balance) revert InsufficientFundsInContract();
+
+        (bool success, ) = _to.call{value: _amount}("");
+        if (!success) revert TransferFailed();
+
+        emit FeesWithdrawn(_to, _amount);
+    }
+
+    // --- Функции для верифицированных организаций ---
+
     function createCampaign(
-        uint256 _goal,
-        uint256 _deadline
-    ) external onlyVerified(msg.sender) returns (address) {
+        uint96 _goal,
+        uint64 _durationInSeconds
+    ) external onlyVerified returns (address) {
+        if (_durationInSeconds == 0 || _goal == 0) revert InvalidParameters();
+
         CharityCampaign campaign = new CharityCampaign(
             msg.sender,
             _goal,
-            _deadline + block.timestamp
+            uint64(block.timestamp) + _durationInSeconds,
+            address(this)
         );
         address campaignAddress = address(campaign);
 
-        CampaignInfo memory info = CampaignInfo({
-            campaignAddress: campaignAddress,
-            goal: _goal,
-            totalDonated: 0,
-            isActive: true
-        });
+        isCampaign[campaignAddress] = true;
+        uint campaignId = allCampaigns.length;
+        allCampaigns.push(
+            CampaignInfo({
+                campaignAddress: campaignAddress,
+                owner: msg.sender,
+                goal: _goal,
+                deadline: uint64(block.timestamp) + _durationInSeconds
+            })
+        );
+        organizationCampaigns[msg.sender].push(campaignId);
 
-        emit CampaignCreated(campaignAddress, msg.sender);
-        organizationCampaign[msg.sender].push(info);
-
+        emit CampaignCreated(campaignId, campaignAddress, msg.sender);
         return campaignAddress;
     }
 
-    function addFeeCollector(address _address) external onlyOwner {
-        feeCollectors[_address] = true;
+    // --- Внешние функции для взаимодействия с контрактами кампаний ---
+
+    /**
+     * @notice Вызывается контрактом кампании для вознаграждения донора токенами TCT.
+     * @dev Только контракты, созданные этой фабрикой, могут вызывать эту функцию.
+     */
+    function rewardDonor(address _donor, uint96 _amount) external {
+        if (_amount == 0) revert ZeroAmount();
+        if (!isCampaign[msg.sender]) revert NotACampaignContract();
+        uint256 rewardAmount = (_amount * TOKEN_REWARD_RATE) / 1 ether;
+        platformToken.mint(_donor, rewardAmount);
     }
 
-    function setFeePercentage(uint8 _value) external onlyFeeCollectors {
-        require(isNewFeePercentageCorrect(_value), InvalidFeePercentage());
-        _feePercentage = _value;
+    // --- Публичные View функции ---
+
+    function getCampaignInfo(
+        uint64 _campaignId
+    ) external view returns (CampaignInfo memory) {
+        return allCampaigns[_campaignId];
     }
 
-    function getFeePercentage() public view returns (uint8) {
+    function getFeePercentage() external view returns (uint8) {
         return _feePercentage;
     }
 
-    function isNewFeePercentageCorrect(
-        uint256 _newValue
-    ) private pure returns (bool) {
-        return 0 <= _newValue && _newValue <= 30;
+    function getFeeAddress() external view returns (address) {
+        return feeAddress;
     }
+
+    /**
+     * @notice Позволяет контракту принимать ETH (например, комиссии).
+     */
+    receive() external payable {}
 }
