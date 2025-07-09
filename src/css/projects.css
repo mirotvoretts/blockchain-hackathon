@@ -1,0 +1,446 @@
+:root {
+    --primary: #298781;
+    --primary-light: #3a9e97;
+    --primary-dark: #1e6a65;
+    --secondary: #5E2B6D;
+    --secondary-light: #7d3a92;
+    --secondary-dark: #4a2257;
+    --light: #EFF2F1;
+    --white: #ffffff;
+    --light-alt: #e1e5e4;
+    --dark: #000000;
+    --dark-alt: #1a1a1a;
+    --success: #298781;
+    --warning: #d9a62b;
+    --danger: #d9534f;
+    --gray: #6c757d;
+    --transition: all 0.3s ease;
+    --shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    --card-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    --header-height: 80px;
+}
+
+.dark-theme {
+    --light: #121212;
+    --white: #000000;
+    --light-alt: #1e1e1e;
+    --dark: #EFF2F1;
+    --dark-alt: #d0d3d2;
+    --gray: #c7ced5;
+    --shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    --card-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+.page-title {
+    text-align: center;
+    margin-bottom: 20px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 2.5rem;
+    color: var(--primary);
+}
+
+.dark-theme .page-title {
+    color: var(--primary-light);
+}
+
+.page-subtitle {
+    text-align: center;
+    color: var(--gray);
+    max-width: 700px;
+    margin: 0 auto 30px;
+    font-size: 1.2rem;
+}
+
+
+.page-subtitle a {
+    color: var(--primary);
+    font-weight: 500;
+    text-decoration: none;
+    transition: var(--transition);
+    z-index: 2;
+}
+
+.page-subtitle a:hover {
+    color: var(--secondary);
+}
+
+/* Фильтры и поиск */
+.filters-section {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 25px;
+    margin-bottom: 30px;
+    box-shadow: var(--card-shadow);
+    transition: var(--transition);
+}
+
+.search-container {
+    display: flex;
+    margin-bottom: 25px;
+    position: relative;
+}
+
+.search-input {
+    flex: 1;
+    padding: 15px 20px 15px 50px;
+    border: 2px solid var(--light-alt);
+    border-radius: 50px;
+    font-size: 1rem;
+    transition: var(--transition);
+}
+
+.dark-theme .search-input {
+    background: #2a2a2a;
+    border-color: #444;
+    color: var(--white);
+}
+
+.search-input:focus {
+    border-color: var(--primary);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(41, 135, 129, 0.2);
+}
+
+.search-icon {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--gray);
+    font-size: 1.2rem;
+}
+
+.filters-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    margin-bottom: 15px;
+}
+
+.filter-group {
+    flex: 1;
+    min-width: 200px;
+}
+
+.filter-title {
+    font-family: 'Montserrat', sans-serif;
+    margin-bottom: 10px;
+    color: var(--dark);
+    font-weight: 600;
+}
+
+.category-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.category-btn {
+    padding: 8px 15px;
+    border-radius: 50px;
+    background: #e9ecef;
+    border: none;
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: 0.9rem;
+}
+
+.dark-theme .category-btn {
+    background: #333;
+    color: #ddd;
+}
+
+.category-btn:hover {
+    background: #d1d1d1;
+}
+
+.dark-theme .category-btn:hover {
+    background: #444;
+}
+
+.category-btn.active {
+    background: var(--primary);
+    color: var(--white);
+}
+
+.status-filter {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.status-slider {
+    flex: 1;
+    height: 8px;
+    background: #e9ecef;
+    border-radius: 4px;
+    position: relative;
+    cursor: pointer;
+}
+
+.dark-theme .status-slider {
+    background: #333;
+}
+
+.slider-track {
+    position: absolute;
+    height: 100%;
+    background: var(--primary);
+    border-radius: 4px;
+    width: 100%;
+}
+
+.slider-thumb {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    background: var(--white);
+    border-radius: 50%;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    cursor: pointer;
+    z-index: 2;
+}
+
+.status-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+    font-size: 0.85rem;
+    color: var(--gray);
+}
+
+.results-info {
+    margin-top: 15px;
+    font-size: 0.9rem;
+    color: var(--gray);
+    text-align: center;
+}
+
+/* Сетка проектов */
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 30px;
+    margin-bottom: 60px;
+}
+
+.project-card {
+    background: var(--white);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: var(--card-shadow);
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+}
+
+.dark-theme .project-card {
+    background: #1e1e1e;
+}
+
+.project-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.project-image {
+    height: 200px;
+    width: 100%;
+    object-fit: cover;
+}
+
+.project-content {
+    padding: 25px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.project-category {
+    display: inline-block;
+    background: var(--secondary);
+    color: var(--white);
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    margin-bottom: 15px;
+    font-weight: 500;
+}
+
+.project-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: var(--dark);
+}
+
+.project-description {
+    color: var(--gray);
+    margin-bottom: 20px;
+    flex-grow: 1;
+}
+
+.progress-container {
+    margin-bottom: 20px;
+}
+
+.progress-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    color: var(--gray);
+}
+
+.progress-bar {
+    height: 10px;
+    background-color: #e9ecef;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.dark-theme .progress-bar {
+    background-color: #333;
+}
+
+.progress-value {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    border-radius: 5px;
+    transition: width 1s ease-in-out;
+}
+
+.project-stats {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding: 10px 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.dark-theme .project-stats {
+    border-color: #333;
+}
+
+.stat-item {
+    text-align: center;
+    flex: 1;
+}
+
+.stat-value {
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: var(--primary);
+}
+
+.dark-theme .stat-value {
+    color: var(--primary-light);
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    color: var(--gray);
+}
+
+.project-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.btn-details {
+    background-color: var(--white);
+    color: var(--secondary);
+    border: 2px solid var(--secondary);
+    flex: 1;
+}
+
+.btn-donate {
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    color: var(--white);
+    flex: 1;
+}
+
+.btn-donate:hover {
+    background: linear-gradient(90deg, var(--primary-light), var(--secondary-light));
+}
+
+.btn-details:hover {
+    background-color: var(--secondary);
+    color: var(--white);
+}
+
+.no-results {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 50px;
+    color: var(--gray);
+    font-size: 1.2rem;
+}
+
+/* Блок информации о блокчейне */
+.blockchain-info {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 30px;
+    margin: 60px 0;
+    box-shadow: var(--card-shadow);
+    text-align: center;
+}
+
+.dark-theme .blockchain-info {
+    background: #1e1e1e;
+}
+
+.blockchain-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: var(--secondary);
+}
+
+.features {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.feature {
+    flex: 1;
+    min-width: 250px;
+    padding: 25px;
+    border-radius: 15px;
+    background: rgba(94, 43, 109, 0.1);
+    transition: var(--transition);
+}
+
+.dark-theme .feature {
+    background: rgba(94, 43, 109, 0.15);
+}
+
+.feature:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--card-shadow);
+}
+
+.feature-icon {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    color: var(--secondary);
+}
+
+.feature-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+}
+
+.feature-description {
+    color: var(--gray);
+    font-size: 0.95rem;
+}
