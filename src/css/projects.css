@@ -75,6 +75,10 @@
     transition: var(--transition);
 }
 
+.dark-theme .filters-section {
+    background: var(--light-alt);
+}
+
 .search-container {
     display: flex;
     margin-bottom: 25px;
@@ -348,20 +352,34 @@
 
 .project-buttons {
     display: flex;
-    gap: 15px;
+    gap: 12px; 
+    flex-wrap: wrap;
+}
+
+.btn-details, 
+.btn-donate {
+    flex: 1; 
+    min-width: 120px; 
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    padding: 10px 8px; 
+    font-size: 0.9rem;
+    display: flex; 
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
 .btn-details {
     background-color: var(--white);
     color: var(--secondary);
     border: 2px solid var(--secondary);
-    flex: 1;
 }
 
 .btn-donate {
     background: linear-gradient(90deg, var(--primary), var(--secondary));
     color: var(--white);
-    flex: 1;
 }
 
 .btn-donate:hover {

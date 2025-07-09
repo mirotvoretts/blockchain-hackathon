@@ -4,16 +4,6 @@ const mobileThemeToggle = document.getElementById('mobileThemeToggle');
 function toggleTheme() {
     document.body.classList.toggle('dark-theme');
     
-    themeToggle.innerHTML = document.body.classList.contains('dark-theme') 
-        ? '<i class="fas fa-sun"></i>' 
-        : '<i class="fas fa-moon"></i>';
-    
-    localStorage.setItem('theme', document.body.classList.contains('dark-theme') ? 'dark' : 'light');
-}
-
-function toggleTheme() {
-    document.body.classList.toggle('dark-theme');
-    
     const isDark = document.body.classList.contains('dark-theme');
     const icon = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
     
@@ -27,22 +17,23 @@ function initTheme() {
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'dark') {
         document.body.classList.add('dark-theme');
-        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        const icon = '<i class="fas fa-sun"></i>';
+        if (themeToggle) themeToggle.innerHTML = icon;
+        if (mobileThemeToggle) mobileThemeToggle.innerHTML = icon;
     }
 }
 
 function toggleMobileMenu() {
-    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
     const mobileMenu = document.getElementById('mobileMenu');
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
     
-    if (!mobileMenuBtn || !mobileMenu) return;
+    if (!mobileMenu || !mobileMenuBtn) return;
     
     const isActive = !mobileMenu.classList.contains('active');
     mobileMenu.classList.toggle('active', isActive);
     mobileMenuBtn.classList.toggle('active', isActive);
     document.body.style.overflow = isActive ? 'hidden' : 'auto';
 }
-
 
 function setupMobileMenuLinks() {
     const mobileLinks = document.querySelectorAll('.mobile-menu a');
@@ -58,7 +49,7 @@ const projectModal = document.getElementById('projectModal');
 function openProjectModal() {
     if (projectModal) {
         projectModal.style.display = 'flex';
-        document.body.style.overflow = 'disabled';
+        document.body.style.overflow = 'hidden';
     }
 }
 
@@ -106,7 +97,6 @@ function initSmoothScroll() {
             const targetElement = document.querySelector(targetId);
             
             if (targetElement) {
-                // Закрытие мобильного меню
                 if (mobileMenu && mobileMenu.classList.contains('active')) {
                     toggleMobileMenu();
                 }
@@ -152,7 +142,15 @@ document.addEventListener('DOMContentLoaded', () => {
     
     if (themeToggle) themeToggle.addEventListener('click', toggleTheme);
     if (mobileThemeToggle) mobileThemeToggle.addEventListener('click', toggleTheme);
+
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    if (mobileMenuBtn) {
+        mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+    }
     
+    setupMobileMenuLinks();
+    
+    const projectModal = document.getElementById('projectModal');
     const addProjectBtn = document.getElementById('addProject');
     const closeProjectModalBtn = document.getElementById('closeProjectModal');
     const projectForm = document.getElementById('projectForm');

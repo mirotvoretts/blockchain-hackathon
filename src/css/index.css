@@ -1,5 +1,5 @@
 .container {
-    max-width: 1200px;
+    max-width: 2000px;
     margin: 0 auto;
     padding: 0 20px;
 }
@@ -193,8 +193,9 @@ section {
 
 .steps-container {
     display: flex;
-    flex-wrap: wrap;
-    gap: 30px;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr)); 
+    gap: 20px; 
     justify-content: center;
 }
 
@@ -203,13 +204,14 @@ section {
     border-radius: 20px;
     padding: 40px 30px;
     box-shadow: var(--card-shadow);
-    width: calc(25% - 30px);
-    min-width: 250px;
+    width: 100%;
+    min-width: auto;
     transition: var(--transition);
     position: relative;
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    box-sizing: border-box;
 }
 
 .dark-theme .step {
@@ -239,6 +241,7 @@ section {
     font-family: 'Montserrat', sans-serif;
     font-size: 1.5rem;
     margin-bottom: 20px;
+    margin-right: 60px;
     color: var(--primary);
     z-index: 2;
 }
