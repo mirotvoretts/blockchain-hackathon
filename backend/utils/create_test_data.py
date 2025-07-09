@@ -1,17 +1,26 @@
+from datetime import datetime, timedelta, timezone
 from database import new_session
 from models.funds import FundOrm, CategoryOrm
+
+
+
 
 async def create_test_data():
     async with new_session() as session:
         categories = [
-            CategoryOrm(category="Животные"),
             CategoryOrm(category="Дети"),
-            CategoryOrm(category="Медицина"),
+            CategoryOrm(category="Здоровье"),
+            CategoryOrm(category="Животные"),
+            CategoryOrm(category="Образование"),
+            CategoryOrm(category="Экология"),
+            CategoryOrm(category="Социальная помощь"),
             CategoryOrm(category="Другое")
         ]
         
         session.add_all(categories)
         await session.flush()
+        
+        now = datetime.now(timezone.utc)
         
         funds = [
             FundOrm(
@@ -21,7 +30,8 @@ async def create_test_data():
                 target=100000,
                 collected=25000,
                 donate_count=42,
-                photo_url="/uploads/cats.jpg"
+                photo_url="/uploads/cats.jpg",
+                target_date=now + timedelta(days=30)  # +30 дней от текущей даты
             ),
             FundOrm(
                 category_id=categories[1].id,
@@ -30,7 +40,8 @@ async def create_test_data():
                 target=200000,
                 collected=75000,
                 donate_count=31,
-                photo_url="/uploads/children.jpg"
+                photo_url="/uploads/children.jpg",
+                target_date=now + timedelta(days=60)  # +60 дней
             ),
             FundOrm(
                 category_id=categories[2].id,
@@ -39,7 +50,8 @@ async def create_test_data():
                 target=500000,
                 collected=125000,
                 donate_count=89,
-                photo_url="/uploads/medicine.jpg"
+                photo_url="/uploads/medicine.jpg",
+                target_date=now + timedelta(days=90)  # +90 дней
             )
         ]
         
