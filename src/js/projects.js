@@ -200,14 +200,66 @@ function viewProjectDetails(projectId) {
     // что-то типа window.location.href = `project.html?id=${projectId}`;
 }
 
-
 const donationModal = document.getElementById('donationModal');
 const closeModalBtn = document.getElementById('closeModal');
 
+
 function openDonationModal(projectId) {
+    const project = projects.find(p => p.id === projectId);
+    if (!project) return;
+    
+    document.getElementById('donationProjectTitle').textContent = project.title;
+    document.getElementById('donationProjectCategory').textContent = categories[project.category];
+    document.getElementById('donationCollected').textContent = project.collected.toLocaleString() + ' ₽';
+    document.getElementById('donationGoal').textContent = project.goal.toLocaleString() + ' ₽';
+    document.getElementById('donationProjectId').value = project.id;
+    
+    const progress = Math.min(Math.round((project.collected / project.goal) * 100), 100);
+    document.getElementById('donationProgress').style.width = progress + '%';
+    
     if (donationModal) {
         donationModal.style.display = 'flex';
         document.body.style.overflow = 'hidden';
+    }
+}
+
+function handleDonationSubmit(e) {
+    e.preventDefault();
+    
+    const projectId = parseInt(document.getElementById('donationProjectId').value);
+    const amount = parseInt(document.getElementById('donationAmount').value);
+    const name = document.getElementById('donatorName').value;
+    
+    if (!projectId || isNaN(amount) || !name) {
+        alert('Пожалуйста, заполните все обязательные поля');
+        return;
+    }
+    
+    if (amount < 100) {
+        alert('Минимальная сумма пожертвования - 100 рублей');
+        return;
+    }
+    
+    const projectIndex = projects.findIndex(p => p.id === projectId);
+    if (projectIndex === -1) {
+        alert('Проект не найден');
+        return;
+    }
+    
+    try {
+        projects[projectIndex].collected += amount;
+        projects[projectIndex].donations += 1;
+        
+        closeDonationModal();
+        
+        e.target.reset();
+        
+        applyFilters();
+        
+        alert(`Спасибо, ${name}! Ваше пожертвование в размере ${amount.toLocaleString()} ₽ успешно зарегистрировано.`);
+    } catch (error) {
+        console.error('Ошибка при обработке пожертвования:', error);
+        alert('Произошла ошибка при обработке пожертвования. Пожалуйста, попробуйте позже.');
     }
 }
 
@@ -221,7 +273,6 @@ function closeDonationModal() {
 const projectModal = document.getElementById('projectModal');
 const projectForm = document.getElementById('projectForm');
 const submitProjectBtn = document.getElementById('submitProjectBtn');
-const closeProjectModalBtn = document.getElementById('closeProjectModal');
 
 function openProjectModal() {
     if (projectModal) {
@@ -372,6 +423,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+
+    const closeProjectModalBtn = document.getElementById('closeProjectModal');
+    const closeDonationModalBtn = document.getElementById('closeDonationModal');
+
+    if (closeDonationModalBtn) closeDonationModalBtn.addEventListener('click', closeDonationModal);
+    if (closeProjectModalBtn) closeProjectModalBtn.addEventListener('click', closeProjectModal);
+
     window.addEventListener('click', (e) => {
         if (donationModal && e.target === donationModal) closeDonationModal();
         if (projectModal && e.target === projectModal) closeProjectModal();
@@ -382,11 +440,14 @@ document.addEventListener('DOMContentLoaded', () => {
         projectForm.addEventListener('submit', handleProjectSubmit);
         checkFormValidity();
     }
+
+    const donationForm = document.getElementById('donationForm');
+    if (donationForm) {
+        donationForm.addEventListener('submit', handleDonationSubmit);
+    }
     
     const addProjectBtn = document.getElementById('addProject');
     if (addProjectBtn) addProjectBtn.addEventListener('click', openProjectModal);
-    
-    if (closeProjectModalBtn) closeProjectModalBtn.addEventListener('click', closeProjectModal);
     
     initSmoothScroll();
     animateOnScroll();

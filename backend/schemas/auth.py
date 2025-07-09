@@ -1,9 +1,6 @@
 from pydantic import BaseModel, ConfigDict, EmailStr
 from datetime import datetime
 
-
-
-
 class SUserRegister(BaseModel):
     username: str
     email: EmailStr
