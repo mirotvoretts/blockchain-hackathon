@@ -1,0 +1,330 @@
+:root {
+    --primary: #298781;
+    --primary-light: #3a9e97;
+    --primary-dark: #1e6a65;
+    --secondary: #5E2B6D;
+    --secondary-light: #7d3a92;
+    --secondary-dark: #4a2257;
+    --light: #EFF2F1;
+    --white: #ffffff;
+    --light-alt: #e1e5e4;
+    --dark: #000000;
+    --dark-alt: #1a1a1a;
+    --success: #298781;
+    --warning: #d9a62b;
+    --danger: #d9534f;
+    --gray: #6c757d;
+    --transition: all 0.3s ease;
+    --shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    --card-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    --header-height: 80px;
+}
+
+.dark-theme {
+    --light: #121212;
+    --white: #000000;
+    --light-alt: #1e1e1e;
+    --dark: #EFF2F1;
+    --dark-alt: #d0d3d2;
+    --gray: #c7ced5;
+    --shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    --card-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+.profile-container {
+    display: flex;
+    gap: 30px;
+    margin: 40px 0;
+}
+
+.profile-sidebar {
+    flex: 0 0 300px;
+    background: var(--white);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: var(--card-shadow);
+    position: sticky;
+    top: calc(var(--header-height) + 20px);
+    height: fit-content;
+}
+
+.profile-content {
+    flex: 1;
+    background: var(--white);
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: var(--card-shadow);
+}
+
+.profile-avatar {
+    position: relative;
+    min-width: 150px;
+    min-height: 150px;
+    margin: 0 auto 20px;
+}
+
+.avatar-image {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 5px solid var(--primary);
+}
+
+.avatar-upload {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: var(--primary);
+    color: var(--white);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: var(--transition);
+}
+
+.avatar-upload:hover {
+    background: var(--primary-light);
+    transform: scale(1.1);
+}
+
+.profile-info {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.profile-name {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.8rem;
+    color: var(--primary-dark);
+    margin-bottom: 5px;
+}
+
+.profile-email {
+    font-size: 1.1rem;
+    color: var(--gray);
+    margin-bottom: 10px;
+}
+
+.profile-phone {
+    font-size: 1.1rem;
+    color: var(--secondary);
+    font-weight: 500;
+}
+
+.profile-menu {
+    list-style: none;
+    border-top: 1px solid var(--light-alt);
+    padding-top: 20px;
+}
+
+.profile-menu li {
+    margin-bottom: 10px;
+}
+
+.profile-menu a {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    border-radius: 10px;
+    color: var(--dark);
+    text-decoration: none;
+    transition: var(--transition);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+}
+
+.profile-menu a:hover, 
+.profile-menu a.active {
+    background: var(--primary);
+    color: var(--white);
+}
+
+.profile-menu a i {
+    font-size: 1.2rem;
+    width: 24px;
+    text-align: center;
+}
+
+.section-title {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 2rem;
+    color: var(--primary-dark);
+    margin-bottom: 30px;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.section-title::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    border-radius: 2px;
+}
+
+
+.btn-save {
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    color: var(--white);
+    border: none;
+    padding: 15px 40px;
+    border-radius: 50px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-save:hover {
+    background: linear-gradient(90deg, var(--primary-light), var(--secondary-light));
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.profile-section {
+    display: none;
+}
+
+.profile-section.active {
+    display: block;
+}
+
+/* Стили для транзакций */
+.transactions-list {
+    list-style: none;
+}
+
+.transaction-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid var(--light-alt);
+}
+
+.transaction-info {
+    flex: 1;
+}
+
+.transaction-project {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    color: var(--primary-dark);
+    margin-bottom: 5px;
+}
+
+.transaction-date {
+    color: var(--gray);
+    font-size: 0.9rem;
+}
+
+.transaction-amount {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    color: var(--secondary);
+    font-size: 1.2rem;
+}
+
+.transaction-status {
+    display: inline-block;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-top: 5px;
+}
+
+.status-success {
+    background: rgba(41, 135, 129, 0.1);
+    color: var(--primary);
+}
+
+.status-pending {
+    background: rgba(217, 166, 43, 0.1);
+    color: var(--warning);
+}
+
+/* Стили для достижений */
+.achievements-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 25px;
+}
+
+.achievement-card {
+    background: var(--light);
+    border-radius: 15px;
+    padding: 25px;
+    text-align: center;
+    transition: var(--transition);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.achievement-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.achievement-icon {
+    font-size: 3rem;
+    color: var(--warning);
+    margin-bottom: 15px;
+}
+
+.achievement-title {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    color: var(--primary-dark);
+    margin-bottom: 10px;
+}
+
+.achievement-desc {
+    color: var(--gray);
+    font-size: 0.95rem;
+}
+
+
+/* Мобильная адаптация */
+@media (max-width: 992px) {
+    .profile-container {
+        flex-direction: column;
+    }
+    
+    .profile-sidebar {
+        position: static;
+    }
+    
+    .achievements-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .profile-sidebar {
+        padding: 20px;
+    }
+    
+    .profile-content {
+        padding: 25px;
+    }
+    
+    .achievements-grid {
+        grid-template-columns: 1fr;
+    }
+}

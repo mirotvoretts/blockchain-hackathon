@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="ru">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>CharityChain - Профиль</title>
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+		/>
+		<link
+			href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap"
+			rel="stylesheet"
+		/>
+		<link rel="stylesheet" href="css/common.css" />
+		<link rel="stylesheet" href="css/profile.css" />
+		
+		<style>
+			#connectButton {
+				background: linear-gradient(90deg, var(--primary), var(--secondary));
+				color: var(--white);
+				border: none;
+				padding: 14px 28px;
+				font-size: 1rem;
+				font-weight: 600;
+				font-family: 'Montserrat', sans-serif;
+				border-radius: 50px;
+				cursor: pointer;
+				transition: var(--transition);
+				display: inline-flex;
+				align-items: center;
+				gap: 10px;
+				box-shadow: var(--shadow);
+				margin-top: 30px;
+			}
+		
+			#connectButton:hover {
+				background: linear-gradient(90deg, var(--primary-light), var(--secondary-light));
+				transform: translateY(-2px);
+				box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+			}
+		
+			#connectButton:active {
+				transform: scale(0.98);
+			}
+		</style>
+	</head>
+	<body>
+		<header class="header">
+			<a href="index.html" class="logo">
+				<i class="fas fa-hands-helping logo-icon"></i>
+				<span>CharityChain</span>
+			</a>
+
+			<div class="header-links">
+				<a href="index.html#how-to-donate">Как пожертвовать</a>
+				<a href="index.html#about-platform">О платформе</a>
+				<a href="projects.html">Проекты</a>
+				<a href="index.html#FAQ">FAQ</a>
+			</div>
+
+			<div class="header-buttons">
+				<button class="btn btn-add-project" id="addProject">
+					<i class="fas fa-plus"></i> Добавить проект
+				</button>
+				<button class="btn btn-theme" id="themeToggle">
+					<i class="fas fa-moon"></i>
+				</button>
+				<a href="profile.html" class="btn btn-login active">
+					<i class="fas fa-user"></i> Профиль
+				</a>
+			</div>
+
+			<button class="mobile-menu-btn" id="mobileMenuBtn">
+				<span></span>
+				<span></span>
+				<span></span>
+			</button>
+		</header>
+
+		<div class="mobile-menu" id="mobileMenu">
+			<a href="index.html#how-to-donate">
+				<i class="fas fa-hand-holding-heart"></i> Как пожертвовать
+			</a>
+			<a href="index.html#about-platform">
+				<i class="fas fa-info-circle"></i> О платформе
+			</a>
+			<a href="projects.html">
+				<i class="fas fa-project-diagram"></i> Проекты
+			</a>
+			<a href="index.html#FAQ"> <i class="fas fa-question-circle"></i> FAQ </a>
+			<a href="profile.html" class="btn btn-login">
+				<i class="fas fa-user"></i> Профиль
+			</a>
+			<button class="btn btn-theme" id="mobileThemeToggle">
+				<i class="fas fa-moon"></i>
+			</button>
+		</div>
+
+		<main class="container">
+			<div class="profile-container">
+				<aside class="profile-sidebar">
+					<div class="profile-avatar">
+						<img
+							src="data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23cccccc'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E"
+							alt="Аватар пользователя"
+							class="avatar-image"
+							id="avatarImage"
+						/>
+						<div class="avatar-upload" id="avatarUpload">
+							<i class="fas fa-camera"></i>
+							<input
+								type="file"
+								id="avatarInput"
+								accept="image/*"
+								style="display: none"
+							/>
+						</div>
+					</div>
+
+					<div class="profile-info">
+						<h2 class="profile-name" id="profileName">Иван Иванов</h2>
+						<div class="profile-email" id="profileEmail">ivan@example.com</div>
+						<div class="profile-phone" id="profilePhone">
+							+7 (999) 123-45-67
+						</div>
+					</div>
+
+					<ul class="profile-menu">
+						<li>
+							<a href="#" class="active" data-section="profile"
+								><i class="fas fa-user"></i> Профиль</a
+							>
+						</li>
+						<li>
+							<a href="#" data-section="transactions"
+								><i class="fas fa-exchange-alt"></i> Транзакции</a
+							>
+						</li>
+						<li>
+							<a href="#" data-section="achievements"
+								><i class="fas fa-trophy"></i> Достижения</a
+							>
+						</li>
+					</ul>
+				</aside>
+
+				<section class="profile-content">
+					<div class="profile-section active view-mode" id="profileSection">
+						<div class="profile-header">
+							<h2 class="section-title">Мой профиль</h2>
+							<button class="btn-edit" id="editProfileBtn">
+								<i class="fas fa-edit"></i> Внести изменения
+							</button>
+						</div>
+
+						<div class="form-group">
+							<label class="form-label">Имя</label>
+							<div class="form-control" id="nameView">Иван Иванов</div>
+						</div>
+
+						<div class="form-group">
+							<label class="form-label">Электронная почта</label>
+							<div class="form-control" id="emailView">ivan@example.com</div>
+						</div>
+
+						<div class="form-group">
+							<label class="form-label">Телефон</label>
+							<div class="form-control" id="phoneView">+7 (999) 123-45-67</div>
+						</div>
+
+						<button id="connectButton"><i class="fab fa-ethereum"></i>Подключиться к MetaMask</button>
+						<p id="accountAddress"></p>
+
+    <script src="js/metamask.js"></script>
+					</div>
+
+					<div
+						class="profile-section edit-mode"
+						id="editSection"
+						style="display: none"
+					>
+						<div class="profile-header">
+							<h2 class="section-title">Редактирование профиля</h2>
+						</div>
+
+						<div class="form-group">
+							<label for="nameEdit" class="form-label">Имя</label>
+							<input
+								type="text"
+								id="nameEdit"
+								class="form-control"
+								value="Иван Иванов"
+							/>
+						</div>
+
+						<div class="form-group">
+							<label for="emailEdit" class="form-label"
+								>Электронная почта</label
+							>
+							<input
+								type="email"
+								id="emailEdit"
+								class="form-control"
+								value="ivan@example.com"
+							/>
+						</div>
+
+						<div class="form-group">
+							<label for="phoneEdit" class="form-label"
+								>Телефон (необязательно)</label
+							>
+							<input
+								type="tel"
+								id="phoneEdit"
+								class="form-control"
+								value="+7 (999) 123-45-67"
+							/>
+						</div>
+
+						<div class="profile-actions">
+							<button class="btn-save" id="saveProfile">
+								<i class="fas fa-save"></i> Сохранить
+							</button>
+							<button
+								class="btn-edit"
+								id="cancelEditBtn"
+								style="background: var(--gray)"
+							>
+								<i class="fas fa-times"></i> Отмена
+							</button>
+						</div>
+					</div>
+
+					<div class="profile-section" id="transactionsSection">
+						<h2 class="section-title">История пожертвований</h2>
+					
+						<ul class="transactions-list">
+							<li class="transaction-item">
+								<div class="transaction-info">
+									<div class="transaction-project">
+										Дом для бездомных животных
+									</div>
+									<div class="transaction-date">15 марта 2025, 14:30</div>
+									<span class="transaction-status status-success">Успешно</span>
+								</div>
+								<div class="transaction-amount">0.025 ETH</div>
+							</li>
+					
+							<li class="transaction-item">
+								<div class="transaction-info">
+									<div class="transaction-project">
+										Помощь детям с онкологией
+									</div>
+									<div class="transaction-date">10 марта 2025, 10:15</div>
+									<span class="transaction-status status-success">Успешно</span>
+								</div>
+								<div class="transaction-amount">0.015 ETH</div>
+							</li>
+					
+							<li class="transaction-item">
+								<div class="transaction-info">
+									<div class="transaction-project">
+										Образовательные курсы для сирот
+									</div>
+									<div class="transaction-date">5 марта 2025, 16:45</div>
+									<span class="transaction-status status-success">Успешно</span>
+								</div>
+								<div class="transaction-amount">0.037 ETH</div>
+							</li>
+					
+							<li class="transaction-item">
+								<div class="transaction-info">
+									<div class="transaction-project">
+										Помощь пострадавшим от наводнения
+									</div>
+									<div class="transaction-date">28 февраля 2025, 09:30</div>
+									<span class="transaction-status status-success">Успешно</span>
+								</div>
+								<div class="transaction-amount">0.05 ETH</div>
+							</li>
+					
+							<li class="transaction-item">
+								<div class="transaction-info">
+									<div class="transaction-project">
+										Экологический проект "Чистый город"
+									</div>
+									<div class="transaction-date">20 февраля 2025, 18:20</div>
+									<span class="transaction-status status-success">Успешно</span>
+								</div>
+								<div class="transaction-amount">0.0125 ETH</div>
+							</li>
+						</ul>
+					</div>
+					
+					<div class="profile-section" id="achievementsSection">
+						<h2 class="section-title">Ваши достижения</h2>
+					
+						<div class="achievements-grid">
+							<div class="achievement-card">
+								<div class="achievement-icon">
+									<i class="fas fa-heart"></i>
+								</div>
+								<h3 class="achievement-title">Первый шаг</h3>
+								<p class="achievement-desc">Сделали первое пожертвование</p>
+							</div>
+					
+							<div class="achievement-card">
+								<div class="achievement-icon">
+									<i class="fas fa-star"></i>
+								</div>
+								<h3 class="achievement-title">Регулярный помощник</h3>
+								<p class="achievement-desc">Пожертвовали 3 месяца подряд</p>
+							</div>
+					
+							<div class="achievement-card">
+								<div class="achievement-icon">
+									<i class="fas fa-hand-holding-usd"></i>
+								</div>
+								<h3 class="achievement-title">Щедрая душа</h3>
+								<p class="achievement-desc">Пожертвовали > 0.1 ETH</p>
+							</div>
+					
+							<div class="achievement-card">
+								<div class="achievement-icon">
+									<i class="fas fa-users"></i>
+								</div>
+								<h3 class="achievement-title">Социальный активист</h3>
+								<p class="achievement-desc">Поддержали 5 разных проектов</p>
+							</div>
+					
+							<div class="achievement-card">
+								<div class="achievement-icon">
+									<i class="fas fa-share-alt"></i>
+								</div>
+								<h3 class="achievement-title">Амбассадор добра</h3>
+								<p class="achievement-desc">Поделились проектом в соцсетях</p>
+							</div>
+					
+							<div class="achievement-card">
+								<div class="achievement-icon">
+									<i class="fas fa-medal"></i>
+								</div>
+								<h3 class="achievement-title">Золотой меценат</h3>
+								<p class="achievement-desc">В топ-10 благотворителей месяца</p>
+							</div>
+						</div>
+					</div>
+		</main>
+
+		<footer class="footer">
+			<div class="footer-content">
+				<div class="footer-section">
+					<h3 class="footer-title">
+						<i class="fas fa-hands-helping"></i> CharityChain
+					</h3>
+					<p>
+						Платформа для прозрачной благотворительности на основе
+						блокчейн-технологий. Обеспечиваем доверие доноров и получателей
+						помощи.
+					</p>
+				</div>
+				<div class="footer-section">
+					<h3 class="footer-title">Навигация</h3>
+					<ul class="footer-links">
+						<li>
+							<a href="index.html"
+								><i class="fas fa-chevron-right"></i> Главная</a
+							>
+						</li>
+						<li>
+							<a href="projects.html"
+								><i class="fas fa-chevron-right"></i> Проекты</a
+							>
+						</li>
+					</ul>
+				</div>
+				<div class="footer-section">
+					<h3 class="footer-title">Контакты</h3>
+					<ul class="footer-links">
+						<li>
+							<a href="mailto:info@charitychain.org"
+								><i class="fas fa-envelope"></i> info@charitychain.org</a
+							>
+						</li>
+						<li>
+							<a href="tel:+79991234567"
+								><i class="fas fa-phone"></i> +7 (999) 123-45-67</a
+							>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="copyright">&copy; 2025 CharityChain. Все права защищены.</div>
+		</footer>
+
+		<script src="js/profile.js"></script>
+	</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="ru">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>CharityChain - Профиль</title>
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+		/>
+		<style>
+			/* ... предыдущие стили ... */
+
+			/* Новые стили для режима редактирования */
+			.view-mode .form-control {
+				border: none;
+				background: transparent;
+				padding: 0;
+				pointer-events: none;
+				color: var(--dark);
+			}
+
+			.edit-mode .form-control {
+				border: 2px solid var(--light-alt);
+				background: var(--light);
+				padding: 12px 15px;
+				pointer-events: all;
+			}
+
+			.profile-header {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				margin-bottom: 30px;
+			}
+
+			.btn-edit {
+				background: linear-gradient(90deg, var(--primary), var(--secondary));
+				color: var(--white);
+				border: none;
+				padding: 12px 30px;
+				border-radius: 50px;
+				font-family: 'Montserrat', sans-serif;
+				font-weight: 600;
+				font-size: 1rem;
+				cursor: pointer;
+				transition: var(--transition);
+				display: inline-flex;
+				align-items: center;
+				gap: 10px;
+			}
+
+			.btn-edit:hover {
+				background: linear-gradient(
+					90deg,
+					var(--primary-light),
+					var(--secondary-light)
+				);
+				transform: translateY(-3px);
+				box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+			}
+
+			.profile-actions {
+				display: flex;
+				gap: 15px;
+				margin-top: 30px;
+			}
+		</style>
+	</head>
+	<body></body>
+</html>
