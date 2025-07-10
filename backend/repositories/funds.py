@@ -4,6 +4,8 @@ from schemas.funds import SFund, SFundUpdate
 from sqlalchemy import select
 
 
+
+
 class FundRepository:
     @classmethod
     async def get_all_funds(cls, limit: int, offset: int) -> list:
