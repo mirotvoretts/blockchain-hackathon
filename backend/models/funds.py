@@ -18,6 +18,10 @@ class FundOrm(Model):
     donate_count: Mapped[int] = mapped_column(default=0)
     photo_url: Mapped[str] = mapped_column(nullable=True, default=None)
     target_date: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    location: Mapped[str] #Добавил локацию (просто строка без ограничений)
+    team_info: Mapped[str] #Добавил инфу о команде (просто строка без ограничений)
+    link: Mapped[str] #Добавил ссылку (просто строка без ограничений)
+    contract_address: Mapped[str]
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), 
         default=lambda: datetime.now(timezone.utc)
