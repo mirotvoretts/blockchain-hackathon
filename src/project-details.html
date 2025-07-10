@@ -54,9 +54,9 @@
 	<body>
 		<header class="header">
 			<a href="index.html" class="logo">
-				<img src="icons/logo_light.png" alt="" class="logo-icon light-icon">
-				<img src="icons/logo_dark.png" alt="" class="logo-icon dark-icon">
-				<span>Chain Impact</span>                
+				<img src="icons/logo_light.png" alt="" class="logo-icon light-icon" />
+				<img src="icons/logo_dark.png" alt="" class="logo-icon dark-icon" />
+				<span>Chain Impact</span>
 			</a>
 
 			<div class="header-links">
@@ -110,8 +110,7 @@
 					<div class="hero-text">
 						<div class="project-category">Дети</div>
 						<h1 class="project-title"></h1>
-						<p class="project-subtitle">
-						</p>
+						<p class="project-subtitle"></p>
 
 						<div class="project-stats">
 							<div class="stat-item">
@@ -173,8 +172,7 @@
 
 				<div class="tab-content active" id="aboutTab">
 					<h2>Описание проекта</h2>
-					<p>
-					</p>
+					<p></p>
 
 					<div class="project-details">
 						<div class="detail-item">
@@ -214,8 +212,7 @@
 					</div>
 
 					<h2>Фотогалерея</h2>
-					<div class="project-gallery">
-					</div>
+					<div class="project-gallery"></div>
 				</div>
 
 				<div class="tab-content" id="updatesTab">
@@ -259,8 +256,7 @@
 			<div class="project-sidebar">
 				<div class="sidebar-card">
 					<h3>Адрес контракта</h3>
-					<div class="contract-address" id="contractAddress">
-					</div>
+					<div class="contract-address" id="contractAddress"></div>
 					<button class="btn btn-copy" id="copyAddressBtn">
 						<i class="far fa-copy"></i> Копировать
 					</button>
@@ -273,8 +269,12 @@
 				<div class="sidebar-card">
 					<h3>Поддержать проект</h3>
 					<div class="donation-options">
-						<button class="donation-option" data-amount="0.001">0.001 ETH</button>
-						<button class="donation-option" data-amount="0.005">0.005 ETH</button>
+						<button class="donation-option" data-amount="0.001">
+							0.001 ETH
+						</button>
+						<button class="donation-option" data-amount="0.005">
+							0.005 ETH
+						</button>
 						<button class="donation-option" data-amount="0.01">0.01 ETH</button>
 						<button class="donation-option" data-amount="0.05">0.05 ETH</button>
 					</div>
@@ -323,19 +323,23 @@
 				<div class="donation-summary">
 					<div class="summary-item">
 						<span>Проект:</span>
-						<span>Помощь детям-сиротам</span>
+						<span id="modalProjectName">Помощь детям-сиротам</span>
 					</div>
 					<div class="summary-item">
 						<span>Сумма:</span>
-						<span id="modalDonationAmount"></span>
+						<span id="modalDonationAmount">0 ETH</span>
+					</div>
+					<div class="summary-item">
+						<span>Комиссия платформы:</span>
+						<span id="platformFee">0 ETH</span>
 					</div>
 					<div class="summary-item">
 						<span>Комиссия сети:</span>
-						<span id="networkFee"></span>
+						<span id="networkFee">~0.001 ETH</span>
 					</div>
 					<div class="summary-item total">
-						<span>Итого:</span>
-						<span id="totalAmount"></span>
+						<span>Итого к списанию:</span>
+						<span id="totalAmount">0 ETH</span>
 					</div>
 				</div>
 
@@ -454,6 +458,7 @@
 			<div class="copyright">&copy; 2025 Chain Impact. Все права защищены.</div>
 		</footer>
 
-		<script src="js/project-details.js" type="module"></script>
+		<script src="https://unpkg.com/ethers@6.7.0/dist/ethers.umd.min.js"></script>
+		<script src="js/project-details.js"></script>
 	</body>
 </html>
