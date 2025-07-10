@@ -17,6 +17,10 @@ class SFundBase(BaseModel):
     donate_count: int = Field(default=0, ge=0)
     photo_url: str | None = Field(None, description="URL изображения формата /uploads/{fund_id}.jpg")
     target_date: datetime = Field(description="Дата окончания сбора в формате ISO 8601")
+    location: str | None = Field(None, description="Географическая локация проекта")
+    team_info: str | None = Field(None, description="Информация о команде")
+    link: str | None = Field(None, description="Ссылка на дополнительные ресурсы")
+    contract_address: str | None = Field(None, description="Блокчейн-адрес контракта")
     
     @field_validator('target_date')
     def validate_target_date(cls, v):
@@ -40,6 +44,10 @@ class SFundUpdate(SFundBase):
     donate_count: int | None = Field(None, ge=0)
     photo_url: str | None = None
     target_date: datetime | None = Field(None, description="Дата окончания сбора в формате ISO 8601")
+    location: str | None = None
+    team_info: str | None = None
+    link: str | None = None
+    contract_address: str | None = None
 
 
 class SFund(SFundBase):
@@ -66,7 +74,11 @@ class SFund(SFundBase):
                 "photo_url": "/uploads/fond_pets.jpg",
                 "target_date": "2024-12-31T23:59:59Z",
                 "created_at": "2024-05-20T12:00:00",
-                "days_left": 42
+                "days_left": 42,
+                "location": "Москва, Россия",
+                "team_info": "Команда из 5 волонтеров",
+                "link": "https://наш-фонд.рф",
+                "contract_address": "0x71C7656EC7ab88b098defB751B7401B5f6d8976F"
             }
         }
     )

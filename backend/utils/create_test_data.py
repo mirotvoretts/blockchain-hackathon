@@ -31,7 +31,11 @@ async def create_test_data():
                 collected=0,
                 donate_count=0,
                 photo_url="/uploads/1.jpg",
-                target_date=now + timedelta(days=30)  # +30 дней от текущей даты
+                target_date=now + timedelta(days=30),  # +30 дней от текущей даты
+                location="Москва, Россия",
+                team_info="Комната энтузиастов из 5 человек",
+                link="https://example.com",
+                contract_address="0x71C7656EC7ab88b098defB751B7401B5f6d8976F"
             ),
             FundOrm(
                 category_id=categories[1].id,
@@ -41,7 +45,11 @@ async def create_test_data():
                 collected=0,
                 donate_count=0,
                 photo_url="/uploads/2.jpg",
-                target_date=now + timedelta(days=35)  # +60 дней
+                target_date=now + timedelta(days=35),  # +60 дней
+                location="Москва, Россия",
+                team_info="Комната энтузиастов из 5 человек",
+                link="https://example.com",
+                contract_address="0x71C7656EC7ab88b098defB751B7401B5f6d8976F"
             ),
             FundOrm(
                 category_id=categories[2].id,
@@ -51,7 +59,11 @@ async def create_test_data():
                 collected=0,
                 donate_count=0,
                 photo_url="/uploads/3.jpg",
-                target_date=now + timedelta(days=40)  # +90 дней
+                target_date=now + timedelta(days=40),  # +90 дней
+                location="Москва, Россия",
+                team_info="Комната энтузиастов из 5 человек",
+                link="https://example.com",
+                contract_address="0x71C7656EC7ab88b098defB751B7401B5f6d8976F"
             ),
             FundOrm(
                 category_id=categories[3].id,
@@ -61,7 +73,11 @@ async def create_test_data():
                 collected=0,
                 donate_count=89,
                 photo_url="/uploads/4.jpg",
-                target_date=now + timedelta(days=49)  # +90 дней
+                target_date=now + timedelta(days=49),  # +90 дней
+                location="Москва, Россия",
+                team_info="Комната энтузиастов из 5 человек",
+                link="https://example.com",
+                contract_address="0x71C7656EC7ab88b098defB751B7401B5f6d8976F"
             ),
             FundOrm(
                 category_id=categories[4].id,
@@ -71,7 +87,11 @@ async def create_test_data():
                 collected=0,
                 donate_count=0,
                 photo_url="/uploads/5.jpg",
-                target_date=now + timedelta(days=33)  # +90 дней
+                target_date=now + timedelta(days=33),  # +90 дней
+                location="Москва, Россия",
+                team_info="Комната энтузиастов из 5 человек",
+                link="https://example.com",
+                contract_address="0x71C7656EC7ab88b098defB751B7401B5f6d8976F"
             ),
             FundOrm(
                 category_id=categories[5].id,
@@ -81,7 +101,11 @@ async def create_test_data():
                 collected=0,
                 donate_count=0,
                 photo_url="/uploads/6.jpg",
-                target_date=now + timedelta(days=87)  # +90 дней
+                target_date=now + timedelta(days=87),  # +90 дней
+                location="Москва, Россия",
+                team_info="Комната энтузиастов из 5 человек",
+                link="https://example.com",
+                contract_address="0x71C7656EC7ab88b098defB751B7401B5f6d8976F"
             )
         ]
         
