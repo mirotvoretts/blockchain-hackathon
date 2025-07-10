@@ -36,7 +36,6 @@ pip install -r requirements.txt
 TODO
 
 # 3. Смарт-контракты (Hardhat)
-cd ../contracts
 npm install
 npx hardhat compile
 npx hardhat run scripts/deploy.js --network sepolia
