@@ -16,6 +16,40 @@
 		<link rel="stylesheet" href="css/project-details.css" />
 		<script src="https://cdn.jsdelivr.net/npm/web3@1.8.0/dist/web3.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+		<style>
+			#connectButton {
+				background: linear-gradient(90deg, var(--primary), var(--secondary));
+				color: var(--white);
+				border: none;
+				padding: 14px 28px;
+				font-size: 1rem;
+				font-weight: 600;
+				font-family: 'Montserrat', sans-serif;
+				border-radius: 50px;
+				cursor: pointer;
+				transition: var(--transition);
+				display: inline-flex;
+				align-items: center;
+				gap: 10px;
+				box-shadow: var(--shadow);
+				margin-top: 30px;
+			}
+
+			#connectButton:hover {
+				background: linear-gradient(
+					90deg,
+					var(--primary-light),
+					var(--secondary-light)
+				);
+				transform: translateY(-2px);
+				box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+			}
+
+			#connectButton:active {
+				transform: scale(0.98);
+			}
+		</style>
 	</head>
 	<body>
 		<header class="header">
@@ -303,18 +337,24 @@
 					</div>
 				</div>
 
-				<div class="wallet-info" id="walletInfo">
+				<!-- Кнопка подключения -->
+				<button id="connectButton">
+					<i class="fab fa-ethereum"></i>Подключиться к MetaMask
+				</button>
+
+				<!-- Блок информации о кошельке -->
+				<div class="wallet-info" id="walletInfo" style="display: true">
 					<i class="fas fa-wallet"></i>
 					<div>
-						<div class="wallet-address" id="modalWalletAddress">
-							0x8920...c43e7
-						</div>
-						<div class="wallet-balance">
-							Баланс: <span id="walletBalance">2.5 ETH</span>
+						<div class="wallet-address" id="modalWallet1Address">
+							<span id="accountAddress">Атворизуйтесь через MetaMask</span>
 						</div>
 					</div>
 				</div>
 
+				<!-- Подключение ethers.js -->
+				<script src="https://cdn.jsdelivr.net/npm/ethers @6.7.1/dist/ethers.min.js"></script>
+				<script src="js/metamask.js"></script>
 				<div class="transaction-status" id="transactionStatus">
 					<div class="status-message">
 						<i class="fas fa-info-circle"></i>
