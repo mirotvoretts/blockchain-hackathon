@@ -1,5 +1,6 @@
 const urlParams = new URLSearchParams(window.location.search);
 const projectId = urlParams.get('id');
+const API_BASE_URL = 'http://localhost:3001';
 console.log("Project ID from URL:", projectId);
 
 if (!projectId) {
@@ -17,7 +18,6 @@ const connectWalletBtn = document.getElementById('connectWalletBtn')
 const mobileConnectWalletBtn = document.getElementById('mobileConnectWalletBtn')
 const walletText = document.getElementById('walletText')
 const userAddress = document.getElementById('userAddress')
-const donateBtn = document.getElementById('donateBtn')
 const sidebarDonateBtn = document.getElementById('sidebarDonateBtn')
 const donationModal = document.getElementById('donationModal')
 const closeModal = document.getElementById('closeModal')
@@ -84,8 +84,8 @@ function renderProjectData(project) {
     document.querySelector('.project-category').textContent = categories[project.category_id] || 'Без категории';
     document.querySelector('.project-title').textContent = project.title;
     document.querySelector('.project-subtitle').textContent = project.description.substring(0, 100) + '...';
-    document.querySelector('.hero-image img').src="${API_BASE_URL}/uploads/${project.id}.png" || 'img/default-project.png'; 
-    
+    document.querySelector('.hero-image img').src = `${API_BASE_URL}/uploads/${project.category_id}.png` || 'img.png';
+
     document.getElementById('targetAmount').textContent = `Цель: ${project.target} ETH`;
     document.getElementById('daysLeft').textContent = Math.max(0, project.days_left);
     
@@ -384,7 +384,6 @@ async function confirmDonation() {
 connectWalletBtn.addEventListener('click', initWeb3)
 mobileConnectWalletBtn.addEventListener('click', initWeb3)
 
-donateBtn.addEventListener('click', () => openDonationModal('0.1'))
 sidebarDonateBtn.addEventListener('click', () => {
 	const amount = customAmount.value || '0.1'
 	openDonationModal(amount)
