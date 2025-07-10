@@ -1,28 +1,23 @@
 const urlParams = new URLSearchParams(window.location.search);
 const projectId = urlParams.get('id');
+const API_BASE_URL = 'http://localhost:3001';
 console.log("Project ID from URL:", projectId);
 
 if (!projectId) {
     console.error("No project ID in URL");
-    // Можно перенаправить на страницу проектов или показать ошибку
     window.location.href = 'projects.html';
 }
-
 
 let web3
 let contract
 let accounts = []
-
-const contractAddress = '0x89205A3A3b2A69De6Dbf7f01ED13B2108B2c43e7'
-const contractABI = [
-	// TODO
-]
+let contractAddress = '';
+let contractABI = []; 
 
 const connectWalletBtn = document.getElementById('connectWalletBtn')
 const mobileConnectWalletBtn = document.getElementById('mobileConnectWalletBtn')
 const walletText = document.getElementById('walletText')
 const userAddress = document.getElementById('userAddress')
-const donateBtn = document.getElementById('donateBtn')
 const sidebarDonateBtn = document.getElementById('sidebarDonateBtn')
 const donationModal = document.getElementById('donationModal')
 const closeModal = document.getElementById('closeModal')
@@ -38,7 +33,20 @@ const contractAddressEl = document.getElementById('contractAddress')
 const copyAddressBtn = document.getElementById('copyAddressBtn')
 const copyLinkBtn = document.getElementById('copyLinkBtn')
 
-let fundsChart
+async function fetchProjectData() {
+    try {
+        const response = await fetch(`http://localhost:3001/funds/${projectId}`);
+        if (!response.ok) {
+            throw new Error('Проект не найден');
+        }
+        const projectData = await response.json();
+        return projectData;
+    } catch (error) {
+        console.error('Ошибка загрузки проекта:', error);
+        window.location.href = 'projects.html';
+        return null;
+    }
+}
 
 async function initWeb3() {
 	if (window.ethereum) {
@@ -60,6 +68,74 @@ async function initWeb3() {
 	} else {
 		alert('Please install MetaMask!')
 	}
+}
+
+
+const categories = { 
+    1: "Дети",
+    2: "Здоровье",
+    3: "Животные",
+    4: "Образование",
+    5: "Экология",
+    6: "Социальная помощь" 
+};
+
+function renderProjectData(project) {
+    document.querySelector('.project-category').textContent = categories[project.category_id] || 'Без категории';
+    document.querySelector('.project-title').textContent = project.title;
+    document.querySelector('.project-subtitle').textContent = project.description.substring(0, 100) + '...';
+    document.querySelector('.hero-image img').src = `${API_BASE_URL}/uploads/${project.category_id}.png` || 'img.png';
+
+    document.getElementById('targetAmount').textContent = `Цель: ${project.target} ETH`;
+    document.getElementById('daysLeft').textContent = Math.max(0, project.days_left);
+    
+    document.querySelector('#aboutTab p').textContent = project.description;
+    
+    const details = document.querySelectorAll('.detail-item');
+    details[0].querySelector('p').textContent = project.location || 'Не указано';
+    details[1].querySelector('p').textContent = new Date(project.created_at).toLocaleDateString('ru-RU');
+    details[2].querySelector('p').textContent = project.team_info || 'Не указана';
+    
+    const linksContainer = details[3].querySelector('div');
+    linksContainer.innerHTML = project.links 
+        ? project.links.map(link => `<a href="${link.url}">${link.title}</a>`).join(', ') 
+        : 'Нет ссылок';
+    
+    contractAddress = project.contract_address;
+    contractAddressEl.textContent = formatAddress(contractAddress);
+}
+
+
+async function initializePage() {
+    const projectData = await fetchProjectData();
+    if (!projectData) return;
+    
+    renderProjectData(projectData);
+    
+    if (window.ethereum) {
+        web3 = new Web3(window.ethereum);
+        
+        if (window.ethereum.selectedAddress) {
+            await connectWallet();
+        }
+    }
+}
+
+async function connectWallet() {
+    try {
+        accounts = await window.ethereum.request({
+            method: 'eth_requestAccounts',
+        });
+        updateWalletUI(accounts[0]);
+
+        contract = new web3.eth.Contract(contractABI, contractAddress);
+
+        loadProjectData();
+        loadDonators();
+        loadTransactions();
+    } catch (error) {
+        console.error('Ошибка подключения кошелька:', error);
+    }
 }
 
 function updateWalletUI(address) {
@@ -308,7 +384,6 @@ async function confirmDonation() {
 connectWalletBtn.addEventListener('click', initWeb3)
 mobileConnectWalletBtn.addEventListener('click', initWeb3)
 
-donateBtn.addEventListener('click', () => openDonationModal('0.1'))
 sidebarDonateBtn.addEventListener('click', () => {
 	const amount = customAmount.value || '0.1'
 	openDonationModal(amount)
@@ -352,6 +427,8 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
 		document.getElementById(`${btn.dataset.tab}Tab`).classList.add('active')
 	})
 })
+
+document.addEventListener('DOMContentLoaded', initializePage);
 
 document.addEventListener('DOMContentLoaded', () => {
 	contractAddressEl.textContent = formatAddress(contractAddress)
