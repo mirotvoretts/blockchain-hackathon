@@ -1,5 +1,174 @@
+const API_BASE_URL = 'http://localhost:3001';
 const themeToggle = document.getElementById('themeToggle');
 const mobileThemeToggle = document.getElementById('mobileThemeToggle');
+
+// Функция для работы с API
+async function apiRequest(endpoint, method = 'GET', body = null) {
+    const url = `${API_BASE_URL}${endpoint}`;
+    const options = {
+        method,
+        headers: {},
+        credentials: 'include'
+    };
+
+    if (body) {
+        options.headers['Content-Type'] = 'application/json';
+        options.body = JSON.stringify(body);
+    }
+
+    try {
+        const response = await fetch(url, options);
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.detail || `HTTP error! status: ${response.status}`);
+        }
+        return await response.json();
+    } catch (error) {
+        console.error(`API request to ${endpoint} failed:`, error);
+        throw error;
+    }
+}
+
+async function getCurrentUser() {
+    try {
+        const user = await apiRequest('/auth/me');
+        return user;
+    } catch (error) {
+        console.error('Get user error:', error);
+        return null;
+    }
+}
+
+async function loadUserProjects() {
+    try {
+        const projects = await apiRequest('/funds/my');
+        return projects;
+    } catch (error) {
+        console.error('Error loading user projects:', error);
+        return [];
+    }
+}
+
+async function displayUserProjects() {
+    const container = document.querySelector('#myProjectsSection .my-projects');
+    if (!container) return;
+    
+    container.innerHTML = '<p class="loading">Загрузка ваших проектов...</p>';
+    
+    try {
+        const projects = await loadUserProjects();
+        
+        if (projects.length === 0) {
+            container.innerHTML = `
+                <div class="no-projects">
+                    <i class="fas fa-folder-open"></i>
+                    <h3>У вас пока нет проектов</h3>
+                    <p>Создайте свой первый проект для сбора средств</p>
+                </div>
+            `;
+            return;
+        }
+        
+        container.innerHTML = '';
+        
+        projects.forEach(project => {
+            const progress = Math.min(Math.round((project.collected / project.target) * 100), 100);
+            const status = project.status === 'active' ? 'Активный' : project.status === 'completed' ? 'Завершен' : 'На модерации';
+            
+            const projectCard = document.createElement('div');
+            projectCard.className = 'user-project-card';
+            projectCard.innerHTML = `
+                <div class="project-header">
+                    <h4>${project.title}</h4>
+                    <span class="project-status ${project.status}">${status}</span>
+                </div>
+                <p class="project-description">${project.description}</p>
+                <div class="project-progress">
+                    <div class="progress-bar">
+                        <div class="progress-value" style="width: ${progress}%"></div>
+                    </div>
+                    <div class="progress-info">
+                        <span>Собрано: ${project.collected} ETH</span>
+                        <span>Цель: ${project.target} ETH</span>
+                    </div>
+                </div>
+                <div class="project-stats">
+                    <div class="stat-item">
+                        <i class="fas fa-donate"></i>
+                        <span>${project.donate_count || 0} пожертвований</span>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-calendar"></i>
+                        <span>${project.days_left || 0} дней осталось</span>
+                    </div>
+                </div>
+                <div class="project-actions">
+                    <button class="btn btn-view" onclick="viewProject(${project.id})">
+                        <i class="fas fa-eye"></i> Просмотр
+                    </button>
+                </div>
+            `;
+            container.appendChild(projectCard);
+        });
+    } catch (error) {
+        container.innerHTML = '<p class="error">Ошибка загрузки проектов. Попробуйте позже.</p>';
+    }
+}
+
+window.viewProject = function(projectId) {
+    window.location.href = `project-details.html?id=${projectId}`;
+};
+
+function initProjectsSection() {
+    const addProjectBtn = document.createElement('button');
+    addProjectBtn.id = 'addProjectBtn';
+    addProjectBtn.className = 'btn-add-project';
+    addProjectBtn.innerHTML = '<i class="fas fa-plus"></i> Добавить проект';
+    addProjectBtn.addEventListener('click', openProjectModal);
+    
+    const projectsSection = document.getElementById('myProjectsSection');
+    if (projectsSection) {
+        projectsSection.querySelector('.my-projects').before(addProjectBtn);
+    }
+    
+    const projectsLink = document.querySelector('.profile-menu a[data-section="my_projects"]');
+    if (projectsLink) {
+        projectsLink.addEventListener('click', displayUserProjects);
+    }
+}
+
+async function handleProjectSubmit(e) {
+    e.preventDefault();
+    
+    const projectData = {
+        title: document.getElementById('projectName').value,
+        description: document.getElementById('projectDescription').value,
+        contact_name: document.getElementById('contactName').value,
+        contact_email: document.getElementById('projectEmail').value,
+        contact_phone: document.getElementById('projectPhone').value,
+        website: document.getElementById('projectLink').value || null,
+        category_id: 1, // Категория по умолчанию
+        target: 10 // Цель по умолчанию (10 ETH)
+    };
+    
+    const submitBtn = document.getElementById('submitProjectBtn');
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
+    
+    try {
+        await apiRequest('/funds/', 'POST', projectData);
+        alert('Проект успешно создан и отправлен на модерацию!');
+        projectForm.reset();
+        closeProjectModal();
+        displayUserProjects();
+    } catch (error) {
+        console.error('Create project error:', error);
+        alert(`Ошибка создания проекта: ${error.message}`);
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = 'Отправить заявку';
+    }
+}
 
 function toggleTheme() {
     document.body.classList.toggle('dark-theme');
@@ -72,19 +241,6 @@ function checkFormValidity() {
     );
 }
 
-function handleProjectSubmit(e) {
-    e.preventDefault();
-    
-    try {
-        alert('Заявка успешно отправлена!');
-        e.target.reset();
-        closeProjectModal();
-    } catch (error) {
-        console.error('Ошибка отправки:', error);
-        alert('Произошла ошибка при отправке');
-    }
-}
-
 function initSmoothScroll() {
     const mobileMenu = document.getElementById('mobileMenu');
     
@@ -137,7 +293,6 @@ function setupProfileSections() {
             e.preventDefault();
             
             menuLinks.forEach(item => item.classList.remove('active'));
-            
             link.classList.add('active');
             
             sections.forEach(section => section.classList.remove('active'));
@@ -293,11 +448,9 @@ document.addEventListener('DOMContentLoaded', () => {
     setupMobileMenuLinks();
     
     const projectModal = document.getElementById('projectModal');
-    const addProjectBtn = document.getElementById('addProject');
     const closeProjectModalBtn = document.getElementById('closeProjectModal');
     const projectForm = document.getElementById('projectForm');
     
-    if (addProjectBtn) addProjectBtn.addEventListener('click', openProjectModal);
     if (closeProjectModalBtn) closeProjectModalBtn.addEventListener('click', closeProjectModal);
     
     window.addEventListener('click', (e) => {
@@ -326,7 +479,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 100);
     }
 
-    if (document.getElementById('profileSection')) {
-        initProfilePage();
+    initProjectsSection();
+    
+    if (document.querySelector('.profile-menu a[data-section="my_projects"]').classList.contains('active')) {
+        displayUserProjects();
     }
 });

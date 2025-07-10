@@ -70,7 +70,6 @@ body {
 	display: flex;
 	align-items: center;
 	gap: 12px;
-	color: var(--white);
 	font-family: 'Montserrat', sans-serif;
 	font-weight: 700;
 	font-size: 1.8rem;
@@ -78,11 +77,7 @@ body {
 	text-decoration: none;
 }
 
-.logo-icon {
-	font-size: 2rem;
-	color: var(--warning);
-	animation: pulse 2s infinite;
-}
+
 
 @keyframes pulse {
 	0% {
@@ -672,30 +667,87 @@ body {
 	border-color: var(--dark);
 }
 
-.logo img {
-    height: 40px; 
-    width: auto; 
-    max-width: 10px; 
-    object-fit: contain; 
-    transition: var(--transition);
+/* Стили для логотипа */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-icon {
+  height: 40px;
+  transition: opacity 0.3s ease;
+}
+
+.light-icon {
+  display: block;
+}
+
+.dark-icon {
+  display: none;
+}
+
+.dark-theme .light-icon {
+  display: none;
+}
+
+.dark-theme .dark-icon {
+  display: block;
 }
 
 @media (max-width: 768px) {
-    .logo img {
-        height: 30px; 
-        max-width: 120px;
+    .logo {
+        width: auto;
+        gap: 0;
     }
     
-
     .logo span {
         display: none;
     }
+    
+    .logo-img {
+        height: 35px;
+        max-width: 120px;
+    }
 }
 
-.dark-theme .logo img {
-    filter: brightness(0) invert(1);
+/* Стили для логотипа */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
 }
 
-.logo:hover img {
-    transform: scale(1.05); 
+.logo-img {
+    height: 40px;
+    transition: opacity 0.3s ease;
+}
+
+.logo span {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 24px;
+    background: var(--white);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    transition: all 0.3s ease;
+}
+
+/* Адаптив для мобильных */
+@media (max-width: 768px) {
+    .logo-img {
+        height: 30px;
+    }
+    
+    .logo span {
+        font-size: 20px;
+    }
+}
+
+/* Эффект при наведении */
+.logo:hover span {
+    transform: scale(1.03);
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }

@@ -54,8 +54,9 @@
 	<body>
 		<header class="header">
 			<a href="index.html" class="logo">
-				<i class="fas fa-hands-helping logo-icon"></i>
-				<span>Chain Impact</span>
+				<img src="icons/logo_light.png" alt="" class="logo-icon light-icon">
+				<img src="icons/logo_dark.png" alt="" class="logo-icon dark-icon">
+				<span>Chain Impact</span>                
 			</a>
 
 			<div class="header-links">
@@ -111,30 +112,29 @@
 				<div class="hero-content">
 					<div class="hero-text">
 						<div class="project-category">Дети</div>
-						<h1 class="project-title">Помощь детям-сиротам</h1>
+						<h1 class="project-title"></h1>
 						<p class="project-subtitle">
-							Обеспечение жильем и образованием для детей из детских домов
 						</p>
 
 						<div class="project-stats">
 							<div class="stat-item">
-								<div class="stat-value" id="totalDonations">0 ETH</div>
+								<div class="stat-value" id="totalDonations"></div>
 								<div class="stat-label">Собрано</div>
 							</div>
 							<div class="stat-item">
-								<div class="stat-value" id="donatorsCount">0</div>
+								<div class="stat-value" id="donatorsCount"></div>
 								<div class="stat-label">Доноров</div>
 							</div>
 							<div class="stat-item">
-								<div class="stat-value" id="daysLeft">15</div>
+								<div class="stat-value" id="daysLeft"></div>
 								<div class="stat-label">Дней осталось</div>
 							</div>
 						</div>
 
 						<div class="progress-container">
 							<div class="progress-label">
-								<span>Прогресс: <span id="progressPercent">0</span>%</span>
-								<span id="targetAmount">Цель: 10 ETH</span>
+								<span>Прогресс: <span id="progressPercent"></span>%</span>
+								<span id="targetAmount"></span>
 							</div>
 							<div class="progress-bar">
 								<div
@@ -165,9 +165,6 @@
 				<div class="tab-content active" id="aboutTab">
 					<h2>Описание проекта</h2>
 					<p>
-						Наш проект направлен на помощь детям-сиротам в получении достойного
-						образования и жилья после выпуска из детских домов. Мы сотрудничаем
-						с 15 детскими домами по всей стране и уже помогли 120 детям.
 					</p>
 
 					<div class="project-details">
@@ -175,28 +172,28 @@
 							<i class="fas fa-map-marker-alt"></i>
 							<div>
 								<h3>Локация</h3>
-								<p>Москва, Санкт-Петербург, Казань</p>
+								<p></p>
 							</div>
 						</div>
 						<div class="detail-item">
 							<i class="fas fa-calendar-alt"></i>
 							<div>
 								<h3>Дата начала</h3>
-								<p>15 января 2025</p>
+								<p></p>
 							</div>
 						</div>
 						<div class="detail-item">
 							<i class="fas fa-users"></i>
 							<div>
 								<h3>Команда</h3>
-								<p>10 волонтеров, 3 куратора</p>
+								<p></p>
 							</div>
 						</div>
 						<div class="detail-item">
 							<i class="fas fa-link"></i>
 							<div>
 								<h3>Ссылки</h3>
-								<a href="#">Отчеты за 2024</a>, <a href="#">Видео о проекте</a>
+								<a href="#"></a>
 							</div>
 						</div>
 					</div>
@@ -209,9 +206,6 @@
 
 					<h2>Фотогалерея</h2>
 					<div class="project-gallery">
-						<img src="img/children.png" alt="Галерея проекта 1" />
-						<img src="img/education.png" alt="Галерея проекта 2" />
-						<img src="img/children.png" alt="Галерея проекта 3" />
 					</div>
 				</div>
 
@@ -257,7 +251,6 @@
 				<div class="sidebar-card">
 					<h3>Адрес контракта</h3>
 					<div class="contract-address" id="contractAddress">
-						0x89205A3A3b2A69De6Dbf7f01ED13B2108B2c43e7
 					</div>
 					<button class="btn btn-copy" id="copyAddressBtn">
 						<i class="far fa-copy"></i> Копировать
@@ -271,10 +264,10 @@
 				<div class="sidebar-card">
 					<h3>Поддержать проект</h3>
 					<div class="donation-options">
-						<button class="donation-option" data-amount="0.1">0.1 ETH</button>
-						<button class="donation-option" data-amount="0.5">0.5 ETH</button>
-						<button class="donation-option" data-amount="1">1 ETH</button>
-						<button class="donation-option" data-amount="5">5 ETH</button>
+						<button class="donation-option" data-amount="0.001">0.001 ETH</button>
+						<button class="donation-option" data-amount="0.005">0.005 ETH</button>
+						<button class="donation-option" data-amount="0.01">0.01 ETH</button>
+						<button class="donation-option" data-amount="0.05">0.05 ETH</button>
 					</div>
 
 					<div class="custom-donation">
@@ -282,8 +275,8 @@
 							type="number"
 							id="customAmount"
 							placeholder="Другая сумма"
-							min="0.01"
-							step="0.01"
+							min="0.001"
+							step="0.001"
 						/>
 						<span>ETH</span>
 					</div>
@@ -325,15 +318,15 @@
 					</div>
 					<div class="summary-item">
 						<span>Сумма:</span>
-						<span id="modalDonationAmount">0.1 ETH</span>
+						<span id="modalDonationAmount"></span>
 					</div>
 					<div class="summary-item">
 						<span>Комиссия сети:</span>
-						<span id="networkFee">~0.001 ETH</span>
+						<span id="networkFee"></span>
 					</div>
 					<div class="summary-item total">
 						<span>Итого:</span>
-						<span id="totalAmount">0.101 ETH</span>
+						<span id="totalAmount"></span>
 					</div>
 				</div>
 

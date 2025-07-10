@@ -7,49 +7,20 @@
 		<link
 			rel="stylesheet"
 			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-		/>
+		>
 		<link
 			href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap"
 			rel="stylesheet"
-		/>
-		<link rel="stylesheet" href="css/common.css" />
-		<link rel="stylesheet" href="css/profile.css" />
-		
-		<style>
-			#connectButton {
-				background: linear-gradient(90deg, var(--primary), var(--secondary));
-				color: var(--white);
-				border: none;
-				padding: 14px 28px;
-				font-size: 1rem;
-				font-weight: 600;
-				font-family: 'Montserrat', sans-serif;
-				border-radius: 50px;
-				cursor: pointer;
-				transition: var(--transition);
-				display: inline-flex;
-				align-items: center;
-				gap: 10px;
-				box-shadow: var(--shadow);
-				margin-top: 30px;
-			}
-		
-			#connectButton:hover {
-				background: linear-gradient(90deg, var(--primary-light), var(--secondary-light));
-				transform: translateY(-2px);
-				box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-			}
-		
-			#connectButton:active {
-				transform: scale(0.98);
-			}
-		</style>
+		>
+		<link rel="stylesheet" href="css/common.css">
+		<link rel="stylesheet" href="css/profile.css">
 	</head>
 	<body>
 		<header class="header">
 			<a href="index.html" class="logo">
-				<i class="fas fa-hands-helping logo-icon"></i>
-				<span>CharityChain</span>
+				<img src="icons/logo_light.png" alt="" class="logo-icon light-icon">
+				<img src="icons/logo_dark.png" alt="" class="logo-icon dark-icon">
+				<span>Chain Impact</span>                
 			</a>
 
 			<div class="header-links">
@@ -60,15 +31,9 @@
 			</div>
 
 			<div class="header-buttons">
-				<button class="btn btn-add-project" id="addProject">
-					<i class="fas fa-plus"></i> Добавить проект
-				</button>
 				<button class="btn btn-theme" id="themeToggle">
 					<i class="fas fa-moon"></i>
 				</button>
-				<a href="profile.html" class="btn btn-login active">
-					<i class="fas fa-user"></i> Профиль
-				</a>
 			</div>
 
 			<button class="mobile-menu-btn" id="mobileMenuBtn">
@@ -89,9 +54,6 @@
 				<i class="fas fa-project-diagram"></i> Проекты
 			</a>
 			<a href="index.html#FAQ"> <i class="fas fa-question-circle"></i> FAQ </a>
-			<a href="profile.html" class="btn btn-login">
-				<i class="fas fa-user"></i> Профиль
-			</a>
 			<button class="btn btn-theme" id="mobileThemeToggle">
 				<i class="fas fa-moon"></i>
 			</button>
@@ -107,15 +69,6 @@
 							class="avatar-image"
 							id="avatarImage"
 						/>
-						<div class="avatar-upload" id="avatarUpload">
-							<i class="fas fa-camera"></i>
-							<input
-								type="file"
-								id="avatarInput"
-								accept="image/*"
-								style="display: none"
-							/>
-						</div>
 					</div>
 
 					<div class="profile-info">
@@ -141,6 +94,11 @@
 							<a href="#" data-section="achievements"
 								><i class="fas fa-trophy"></i> Достижения</a
 							>
+						</li>
+						<li>
+							<a href="#" data-section="myProjects"> 
+								<i class="fas fa-trophy"></i> Проекты
+							</a>
 						</li>
 					</ul>
 				</aside>
@@ -346,6 +304,18 @@
 							</div>
 						</div>
 					</div>
+					<div class="profile-section" id="myProjectsSection">
+						<div class="section-header">
+							<div>
+								<h2 class="section-title">Ваши проекты</h2>
+								<h3 class="section-subtitle">Вы представитель фонда, или у вас есть классная инициатива? Оставьте заявку, и мы свяжемся с вами!</h3>
+							</div>
+							<button class="btn btn-add-project" id="addProject">
+								<i class="fas fa-plus"></i> Добавить проект
+							</button>
+						</div>
+						<div class="my-projects"></div>
+					</div>
 		</main>
 
 		<footer class="footer">
@@ -394,78 +364,44 @@
 			<div class="copyright">&copy; 2025 CharityChain. Все права защищены.</div>
 		</footer>
 
+		<div class="modal" id="projectModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Добавить проект</h3>
+                <span class="close-modal" id="closeProjectModal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="projectForm">
+                    <div class="form-group">
+                        <label for="projectName">Название проекта*</label>
+                        <input type="text" id="projectName" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contactName">ФИО или название фонда*</label>
+                        <input type="text" id="contactName" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="projectEmail">Email*</label>
+                        <input type="email" id="projectEmail" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="projectPhone">Телефон*</label>
+                        <input type="tel" id="projectPhone" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="projectLink">Ссылка на проект (если есть)</label>
+                        <input type="url" id="projectLink" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="projectDescription">Краткое описание проекта*</label>
+                        <textarea id="projectDescription" class="form-control" rows="4" required></textarea>
+                    </div>
+                    <button type="submit" class="btn-submit" id="submitProjectBtn" disabled>Отправить заявку</button>
+                </form>
+            </div>
+        </div>
+    </div>  
+
 		<script src="js/profile.js"></script>
 	</body>
-</html>
-
-<!DOCTYPE html>
-<html lang="ru">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>CharityChain - Профиль</title>
-		<link
-			rel="stylesheet"
-			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-		/>
-		<style>
-			/* ... предыдущие стили ... */
-
-			/* Новые стили для режима редактирования */
-			.view-mode .form-control {
-				border: none;
-				background: transparent;
-				padding: 0;
-				pointer-events: none;
-				color: var(--dark);
-			}
-
-			.edit-mode .form-control {
-				border: 2px solid var(--light-alt);
-				background: var(--light);
-				padding: 12px 15px;
-				pointer-events: all;
-			}
-
-			.profile-header {
-				display: flex;
-				justify-content: space-between;
-				align-items: center;
-				margin-bottom: 30px;
-			}
-
-			.btn-edit {
-				background: linear-gradient(90deg, var(--primary), var(--secondary));
-				color: var(--white);
-				border: none;
-				padding: 12px 30px;
-				border-radius: 50px;
-				font-family: 'Montserrat', sans-serif;
-				font-weight: 600;
-				font-size: 1rem;
-				cursor: pointer;
-				transition: var(--transition);
-				display: inline-flex;
-				align-items: center;
-				gap: 10px;
-			}
-
-			.btn-edit:hover {
-				background: linear-gradient(
-					90deg,
-					var(--primary-light),
-					var(--secondary-light)
-				);
-				transform: translateY(-3px);
-				box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-			}
-
-			.profile-actions {
-				display: flex;
-				gap: 15px;
-				margin-top: 30px;
-			}
-		</style>
-	</head>
-	<body></body>
 </html>

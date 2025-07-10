@@ -12,8 +12,9 @@
 <body>
     <header class="header">
         <a href="index.html" class="logo">
-            <i class="fas fa-hands-helping logo-icon"></i>
-            <span>Chain Impact</span>
+            <img src="icons/logo_light.png" alt="" class="logo-icon light-icon">
+            <img src="icons/logo_dark.png" alt="" class="logo-icon dark-icon">
+            <span>Chain Impact</span>                
         </a>
         
         <div class="header-links">
@@ -24,9 +25,6 @@
         </div>
         
         <div class="header-buttons">
-            <button class="btn btn-add-project" id="addProject">
-                <i class="fas fa-plus"></i> Добавить проект
-            </button>
             <button class="btn btn-theme" id="themeToggle">
                 <i class="fas fa-moon"></i>
             </button>
@@ -63,7 +61,8 @@
 
     <div class="container">
         <h1 class="page-title">Благотворительные проекты</h1>
-        <p class="page-subtitle">Впервые на Chain Impact? Узнайте подробнее о платформе <a href="index.html">здесь</a></p>
+        <p class="page-subtitle">Впервые на Chain Impact? Узнайте подробнее о платформе <a href="index.html">здесь</a>. 
+            Представитель фонда? <a href="index.html">Авторизуйтесь</a> и добавьте проект!</p>
         
         <div class="filters-section">
             <div class="search-container">
@@ -121,44 +120,6 @@
             &copy; 2025 Chain Impact. Все права защищены. 
         </div>
     </footer>
-
-    <div class="modal" id="projectModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">Добавить проект</h3>
-                <span class="close-modal" id="closeProjectModal">&times;</span>
-            </div>
-            <div class="modal-body">
-                <form id="projectForm">
-                    <div class="form-group">
-                        <label for="projectName">Название проекта*</label>
-                        <input type="text" id="projectName" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="contactName">ФИО или название фонда*</label>
-                        <input type="text" id="contactName" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="projectEmail">Email*</label>
-                        <input type="email" id="projectEmail" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="projectPhone">Телефон*</label>
-                        <input type="tel" id="projectPhone" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="projectLink">Ссылка на проект (если есть)</label>
-                        <input type="url" id="projectLink" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="projectDescription">Краткое описание проекта*</label>
-                        <textarea id="projectDescription" class="form-control" rows="4" required></textarea>
-                    </div>
-                    <button type="submit" class="btn-submit" id="submitProjectBtn" disabled>Отправить заявку</button>
-                </form>
-            </div>
-        </div>
-    </div>  
 <div class="modal" id="donationModal">
     <div class="modal-content">
         <span class="close" id="closeDonationModal">&times;</span>

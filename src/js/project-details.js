@@ -49,27 +49,31 @@ async function fetchProjectData() {
 }
 
 async function initWeb3() {
-	if (window.ethereum) {
-		web3 = new Web3(window.ethereum)
-		try {
-			accounts = await window.ethereum.request({
-				method: 'eth_requestAccounts',
-			})
-			updateWalletUI(accounts[0])
-
-			contract = new web3.eth.Contract(contractABI, contractAddress)
-
-			loadProjectData()
-			loadDonators()
-			loadTransactions()
-		} catch (error) {
-			console.error('User denied account access')
-		}
-	} else {
-		alert('Please install MetaMask!')
-	}
+    if (window.ethereum) {
+        web3 = new Web3(window.ethereum);
+        try {
+            accounts = await window.ethereum.request({
+                method: 'eth_requestAccounts',
+            });
+            updateWalletUI(accounts[0]);
+            
+            if (contractABI && contractAddress) {
+                contract = new web3.eth.Contract(contractABI, contractAddress);
+                console.log('Contract initialized');
+                
+                loadProjectData();
+                loadDonators();
+                loadTransactions();
+            } else {
+                console.error('ABI or contract address missing');
+            }
+        } catch (error) {
+            console.error('Ошибка подключения кошелька:', error);
+        }
+    } else {
+        alert('Пожалуйста, установите MetaMask!');
+    }
 }
-
 
 const categories = { 
     1: "Дети",
@@ -84,19 +88,18 @@ function renderProjectData(project) {
     document.querySelector('.project-category').textContent = categories[project.category_id] || 'Без категории';
     document.querySelector('.project-title').textContent = project.title;
     document.querySelector('.project-subtitle').textContent = project.description.substring(0, 100) + '...';
-    document.querySelector('.hero-image img').src = `${API_BASE_URL}/uploads/${project.category_id}.png` || 'img.png';
+    document.querySelector('.hero-image img').src = `${API_BASE_URL}/uploads/${project.category_id}.png` || '../img/default_image.png';
 
     document.getElementById('targetAmount').textContent = `Цель: ${project.target} ETH`;
     document.getElementById('daysLeft').textContent = Math.max(0, project.days_left);
     
     document.querySelector('#aboutTab p').textContent = project.description;
     
-    const details = document.querySelectorAll('.detail-item');
-    details[0].querySelector('p').textContent = project.location || 'Не указано';
-    details[1].querySelector('p').textContent = new Date(project.created_at).toLocaleDateString('ru-RU');
-    details[2].querySelector('p').textContent = project.team_info || 'Не указана';
-    
-    const linksContainer = details[3].querySelector('div');
+    document.querySelectorAll('fas fa-map-marker-alt').querySelector('p').textContent = project.location || 'Не указано';
+    document.querySelectorAll('fas fa-calendar-alt').querySelector('p').textContent = new Date(project.created_at).toLocaleDateString('ru-RU');
+    document.querySelectorAll('fas fa-users').querySelector('p').textContent = project.team_info || 'Не указана';
+
+    const linksContainer = document.querySelectorAll('fas fa-link').querySelector('div');
     linksContainer.innerHTML = project.links 
         ? project.links.map(link => `<a href="${link.url}">${link.title}</a>`).join(', ') 
         : 'Нет ссылок';
@@ -105,19 +108,24 @@ function renderProjectData(project) {
     contractAddressEl.textContent = formatAddress(contractAddress);
 }
 
-
 async function initializePage() {
     const projectData = await fetchProjectData();
     if (!projectData) return;
     
     renderProjectData(projectData);
+    contractAddress = projectData.contract_address;
+    contractAddressEl.textContent = formatAddress(contractAddress);
     
-    if (window.ethereum) {
-        web3 = new Web3(window.ethereum);
-        
-        if (window.ethereum.selectedAddress) {
-            await connectWallet();
-        }
+    try {
+        const response = await fetch('/abi/CharityCampaign.json');
+        contractABI = await response.json();
+        console.log('ABI loaded successfully');
+    } catch (error) {
+        console.error('Error loading ABI:', error);
+    }
+    
+    if (window.ethereum && window.ethereum.selectedAddress) {
+        await initWeb3();
     }
 }
 
@@ -187,68 +195,9 @@ async function loadProjectData() {
 			'progressBar'
 		).style.width = `${projectStats.progressPercent}%`
 
-		initFundsChart()
 	} catch (error) {
 		console.error('Error loading project data:', error)
 	}
-}
-
-function initFundsChart() {
-	const ctx = document.getElementById('fundsChart').getContext('2d')
-
-	fundsChart = new Chart(ctx, {
-		type: 'doughnut',
-		data: {
-			labels: [
-				'Жилье',
-				'Образование',
-				'Питание',
-				'Медицина',
-				'Администрирование',
-			],
-			datasets: [
-				{
-					data: [40, 30, 15, 10, 5],
-					backgroundColor: [
-						'#298781',
-						'#5E2B6D',
-						'#3a9e97',
-						'#7d3a92',
-						'#4a2257',
-					],
-					borderWidth: 0,
-				},
-			],
-		},
-		options: {
-			responsive: true,
-			maintainAspectRatio: false,
-			cutout: '70%',
-			plugins: {
-				legend: {
-					display: false,
-				},
-			},
-		},
-	})
-
-	const legendContainer = document.getElementById('fundsLegend')
-	fundsChart.data.labels.forEach((label, i) => {
-		const legendItem = document.createElement('div')
-		legendItem.className = 'legend-item'
-
-		const legendColor = document.createElement('div')
-		legendColor.className = 'legend-color'
-		legendColor.style.backgroundColor =
-			fundsChart.data.datasets[0].backgroundColor[i]
-
-		const legendText = document.createElement('span')
-		legendText.textContent = `${label}: ${fundsChart.data.datasets[0].data[i]}%`
-
-		legendItem.appendChild(legendColor)
-		legendItem.appendChild(legendText)
-		legendContainer.appendChild(legendItem)
-	})
 }
 
 async function loadDonators() {
@@ -265,6 +214,7 @@ async function loadDonators() {
 			donatorItem.className = 'donator-item'
 
 			donatorItem.innerHTML = `
+
                 <div class="donator-avatar">${donator.name
 									.charAt(0)
 									.toUpperCase()}</div>
@@ -343,43 +293,88 @@ function formatDate(timestamp) {
 	return date.toLocaleDateString('ru-RU')
 }
 
-function openDonationModal(amount) {
-	modalDonationAmount.textContent = `${amount} ETH`
-	donationModal.style.display = 'block'
+
+async function initWeb3AndContract() {
+    if (!window.ethereum) {
+        alert('Пожалуйста, установите MetaMask!');
+        return false;
+    }
+    
+    try {
+        web3 = new Web3(window.ethereum);
+        await window.ethereum.enable();
+        accounts = await web3.eth.getAccounts();
+        updateWalletUI(accounts[0]);
+        
+        const response = await fetch('/abi/CharityCampaign.json');
+        contractABI = await response.json();
+        
+        contract = new web3.eth.Contract(contractABI, contractAddress);
+        return true;
+    } catch (error) {
+        console.error('Ошибка инициализации Web3:', error);
+        return false;
+    }
 }
+
+function openDonationModal(amount) {
+    modalDonationAmount.textContent = `${amount} ETH`;
+    donationModal.style.display = 'block';
+    
+    if (accounts.length > 0) {
+        document.getElementById('accountAddress').textContent = formatAddress(accounts[0]);
+    }
+}
+
 
 function closeDonationModal() {
 	donationModal.style.display = 'none'
 	transactionProgress.style.display = 'none'
 }
 
+
 async function confirmDonation() {
-	const amount = modalDonationAmount.textContent.replace(' ETH', '')
-	const amountWei = web3.utils.toWei(amount, 'ether')
+    const amount = modalDonationAmount.textContent.replace(' ETH', '');
+    const amountWei = web3.utils.toWei(amount, 'ether');
 
-	try {
-		transactionProgress.style.display = 'block'
-		progressText.textContent = 'Ожидание подтверждения...'
-
-		const tx = await contract.methods.donate().send({
-			from: accounts[0],
-			value: amountWei,
-		})
-
-		progressText.textContent = 'Транзакция подтверждена!'
-		txLink.href = `https://sepolia.etherscan.io/tx/${tx.transactionHash}`
-		txLink.style.display = 'inline-flex'
-
-		setTimeout(() => {
-			loadProjectData()
-			loadDonators()
-			loadTransactions()
-		}, 2000)
-	} catch (error) {
-		console.error('Donation error:', error)
-		progressText.textContent = 'Ошибка: ' + error.message
-	}
+    try {
+        transactionProgress.style.display = 'block';
+        progressText.textContent = 'Ожидание подтверждения...';
+        
+        const tx = await contract.methods.donate().send({
+            from: accounts[0],
+            value: amountWei
+        });
+        
+        progressText.textContent = 'Транзакция подтверждена!';
+        txLink.href = `https://sepolia.etherscan.io/tx/${tx.transactionHash}`;
+        txLink.style.display = 'inline-flex';
+        
+        setTimeout(() => {
+            loadProjectData();
+            loadDonators();
+            loadTransactions();
+            closeDonationModal();
+        }, 3000);
+    } catch (error) {
+        console.error('Ошибка транзакции:', error);
+        progressText.textContent = `Ошибка: ${error.message}`;
+    }
 }
+
+document.getElementById('connectButton').addEventListener('click', async () => {
+    const success = await initWeb3AndContract();
+    if (success) {
+        document.getElementById('accountAddress').textContent = formatAddress(accounts[0]);
+    }
+});
+
+document.getElementById('connectButton').addEventListener('click', async () => {
+    await initWeb3();
+    if (accounts.length > 0) {
+        document.getElementById('accountAddress').textContent = formatAddress(accounts[0]);
+    }
+});
 
 connectWalletBtn.addEventListener('click', initWeb3)
 mobileConnectWalletBtn.addEventListener('click', initWeb3)

@@ -1,16 +1,25 @@
 const themeToggle = document.getElementById('themeToggle');
 const mobileThemeToggle = document.getElementById('mobileThemeToggle');
 
-function toggleTheme() {
-    document.body.classList.toggle('dark-theme');
-    
-    const isDark = document.body.classList.contains('dark-theme');
-    const icon = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
-    
-    if (themeToggle) themeToggle.innerHTML = icon;
-    if (mobileThemeToggle) mobileThemeToggle.innerHTML = icon;
-    
-    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+function setupThemeToggle() {
+    const toggleTheme = () => {
+        const isDark = !document.body.classList.contains('dark-theme');
+        document.body.classList.toggle('dark-theme');
+        
+        const icon = isDark 
+            ? '<i class="fas fa-sun"></i>' 
+            : '<i class="fas fa-moon"></i>';
+        
+        themeToggle.innerHTML = icon;
+        if(mobileThemeToggle) mobileThemeToggle.innerHTML = icon;
+        
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    };
+
+    themeToggle.addEventListener('click', toggleTheme);
+    if(mobileThemeToggle) {
+        mobileThemeToggle.addEventListener('click', toggleTheme);
+    }
 }
 
 function initTheme() {
@@ -18,10 +27,15 @@ function initTheme() {
     if (savedTheme === 'dark') {
         document.body.classList.add('dark-theme');
         const icon = '<i class="fas fa-sun"></i>';
-        if (themeToggle) themeToggle.innerHTML = icon;
-        if (mobileThemeToggle) mobileThemeToggle.innerHTML = icon;
+        themeToggle.innerHTML = icon;
+        if(mobileThemeToggle) mobileThemeToggle.innerHTML = icon;
+    } else {
+        const icon = '<i class="fas fa-moon"></i>';
+        themeToggle.innerHTML = icon;
+        if(mobileThemeToggle) mobileThemeToggle.innerHTML = icon;
     }
 }
+
 
 function toggleMobileMenu() {
     const mobileMenu = document.getElementById('mobileMenu');

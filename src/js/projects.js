@@ -632,16 +632,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const currentUser = await getCurrentUser();
     console.log("Current user:", currentUser);
     
-    if (!currentUser) {
-        const addProjectBtn = document.getElementById('addProject');
-        if (addProjectBtn) {
-            addProjectBtn.style.display = 'none';
-            console.log("Add project button hidden");
-        } else {
-            console.error("Add project button not found");
-        }
-    }
-    
     if (themeToggle) {
         themeToggle.addEventListener('click', toggleTheme);
         console.log("Theme toggle event added");
