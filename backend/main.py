@@ -28,9 +28,9 @@ def custom_openapi():
     if app.openapi_schema:
         return app.openapi_schema
     openapi_schema = get_openapi(
-        title="Your App",
-        version="1.0.0",
-        description="Base nebel's FastApi template with JWT Auth",
+        title="CharityChain",
+        version="beta",
+        description="Документация к API CharityChain",
         routes=app.routes,
     )
     openapi_schema["components"]["securitySchemes"] = {
