@@ -70,14 +70,24 @@ async function initWeb3() {
 	}
 }
 
+
+const categories = { 
+    1: "Дети",
+    2: "Здоровье",
+    3: "Животные",
+    4: "Образование",
+    5: "Экология",
+    6: "Социальная помощь" 
+};
+
 function renderProjectData(project) {
-    document.querySelector('.project-category').textContent = project.category_name || 'Без категории';
+    document.querySelector('.project-category').textContent = categories[project.category_id] || 'Без категории';
     document.querySelector('.project-title').textContent = project.title;
     document.querySelector('.project-subtitle').textContent = project.description.substring(0, 100) + '...';
-    document.querySelector('.hero-image img').src = project.image_url || 'img/default-project.png';
+    document.querySelector('.hero-image img').src="${API_BASE_URL}/uploads/${project.id}.png" || 'img/default-project.png'; 
     
-    document.getElementById('targetAmount').textContent = `Цель: ${project.target_amount} ETH`;
-    document.getElementById('daysLeft').textContent = Math.max(0, Math.ceil((new Date(project.deadline) - new Date()) / (1000 * 60 * 60 * 24)));
+    document.getElementById('targetAmount').textContent = `Цель: ${project.target} ETH`;
+    document.getElementById('daysLeft').textContent = Math.max(0, project.days_left);
     
     document.querySelector('#aboutTab p').textContent = project.description;
     
