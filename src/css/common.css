@@ -147,7 +147,7 @@ body {
 	gap: 8px;
 }
 
-.btn-login {
+.btn-wallet {
 	background-color: var(--primary-light);
 	backdrop-filter: blur(10px);
 	color: var(--white);
@@ -169,7 +169,7 @@ body {
 	box-shadow: 0 7px 15px var(--dark);
 }
 
-.btn-login:hover {
+.btn-wallet:hover {
 	background-color: rgba(255, 255, 255, 0.3);
 }
 
