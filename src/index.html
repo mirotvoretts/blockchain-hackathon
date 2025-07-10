@@ -331,6 +331,92 @@
 						</h4>
 						<button class="btn-ask" id="askQuestionBtn">Задать вопрос</button>
 					</div>
+
+					<!-- Модальное окно с формой -->
+					<div class="modal" id="questionModal">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h3 class="modal-title">Задать вопрос</h3>
+								<span class="close-modal" id="closeQuestionModal">&times;</span>
+							</div>
+							<div class="modal-body">
+								<form id="questionForm">
+									<div class="form-group">
+										<label for="userEmail">Ваш Email</label>
+										<input
+											type="email"
+											id="userEmail"
+											class="form-control"
+											placeholder="example@email.com"
+											required
+										/>
+									</div>
+									<div class="form-group">
+										<label for="userQuestion">Ваш вопрос</label>
+										<textarea
+											id="userQuestion"
+											class="form-control"
+											rows="5"
+											placeholder="Опишите ваш вопрос подробно..."
+											required
+										></textarea>
+									</div>
+									<button type="submit" class="btn-submit">
+										<i class="fas fa-paper-plane"></i> Отправить вопрос
+									</button>
+								</form>
+							</div>
+						</div>
+					</div>
+
+					<script>
+						document.addEventListener('DOMContentLoaded', function () {
+							const askQuestionBtn = document.getElementById('askQuestionBtn')
+							const questionModal = document.getElementById('questionModal')
+							const closeQuestionModal =
+								document.getElementById('closeQuestionModal')
+							const questionForm = document.getElementById('questionForm')
+
+							if (askQuestionBtn) {
+								askQuestionBtn.addEventListener('click', function () {
+									questionModal.style.display = 'flex'
+									document.body.style.overflow = 'hidden'
+								})
+							}
+
+							if (closeQuestionModal) {
+								closeQuestionModal.addEventListener('click', function () {
+									questionModal.style.display = 'none'
+									document.body.style.overflow = 'auto'
+								})
+							}
+
+							window.addEventListener('click', function (event) {
+								if (event.target === questionModal) {
+									questionModal.style.display = 'none'
+									document.body.style.overflow = 'auto'
+								}
+							})
+
+							if (questionForm) {
+								questionForm.addEventListener('submit', function (e) {
+									e.preventDefault()
+
+									const email = document.getElementById('userEmail').value
+									const question = document.getElementById('userQuestion').value
+
+									console.log('Отправка вопроса:', { email, question })
+									alert(
+										'Спасибо за ваш вопрос! Мы ответим вам в ближайшее время.'
+									)
+
+									questionModal.style.display = 'none'
+									document.body.style.overflow = 'auto'
+									questionForm.reset()
+								})
+							}
+						})
+					</script>
 				</div>
 			</section>
 		</main>
@@ -459,7 +545,7 @@
 							"
 							>i</span
 						>
-						11 ИЮЛЯ 2025 | ОФИЦИАЛЬНЫЙ ЗАПУСК
+						11 ИЮЛЯ 2025 | MVP ДОСТИГНУТО, НАЧИНАЕМ ОТКРЫТОЕ БЕТА
 					</div>
 
 					<h3
@@ -470,8 +556,8 @@
 							line-height: 1.3;
 						"
 					>
-						<span style="color: #5e2b6d">CharityChain</span> - первый в России
-						блокчейн-фонд с открытым кодом
+						<span style="color: #5e2b6d">CharityChain</span> -
+						благотворительность будущего уже здесь!
 					</h3>
 
 					<p
@@ -701,11 +787,6 @@
 						<li>
 							<a href="tel:+79991234567"
 								><i class="fas fa-phone"></i> +7 (999) 123-45-67</a
-							>
-						</li>
-						<li>
-							<a href="#"
-								><i class="fas fa-map-marker-alt"></i> Москва, ул. Добрая, 1</a
 							>
 						</li>
 					</ul>

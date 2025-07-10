@@ -15,7 +15,7 @@ class SFundBase(BaseModel):
     target: int = Field(gt=0)
     collected: int = Field(default=0, ge=0)
     donate_count: int = Field(default=0, ge=0)
-    photo_url: str | None = None
+    photo_url: str | None = Field(None, description="URL изображения формата /uploads/{fund_id}.jpg")
     target_date: datetime = Field(description="Дата окончания сбора в формате ISO 8601")
     
     @field_validator('target_date')
@@ -25,10 +25,16 @@ class SFundBase(BaseModel):
         return v
 
 
+class SFundPhotoUpdate(BaseModel):
+    """Схема только для обновления фото"""
+    photo_url: str | None = Field(None, description="URL изображения формата /uploads/{fund_id}.jpg")
+
+
 class SFundUpdate(SFundBase):
+    """Основная схема для обновления фонда"""
     category_id: int | None = None
-    title: str | None
-    description: str | None
+    title: str | None = None
+    description: str | None = None
     target: int | None = Field(None, gt=0)
     collected: int | None = Field(None, ge=0)
     donate_count: int | None = Field(None, ge=0)
@@ -37,6 +43,7 @@ class SFundUpdate(SFundBase):
 
 
 class SFund(SFundBase):
+    """Схема для отображения фонда"""
     id: int
     created_at: datetime
     
@@ -59,7 +66,7 @@ class SFund(SFundBase):
                 "photo_url": "/uploads/fond_pets.jpg",
                 "target_date": "2024-12-31T23:59:59Z",
                 "created_at": "2024-05-20T12:00:00",
-                "days_left": 42  # Автоматически вычисляется
+                "days_left": 42
             }
         }
     )

@@ -2,6 +2,7 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.openapi.utils import get_openapi
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from utils.create_test_data import create_test_data
 from contextlib import asynccontextmanager
 from database import create_tables, delete_tables
@@ -55,6 +56,7 @@ def custom_openapi():
 
 
 app = FastAPI(lifespan=lifespan)
+app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 app.openapi = custom_openapi
 app.include_router(auth_router)
 app.include_router(funds_router)

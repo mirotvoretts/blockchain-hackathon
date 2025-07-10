@@ -30,7 +30,7 @@ async def create_test_data():
                 target=300000,
                 collected=0,
                 donate_count=0,
-                photo_url="/uploads/cats.jpg",
+                photo_url="/uploads/1.jpg",
                 target_date=now + timedelta(days=30)  # +30 дней от текущей даты
             ),
             FundOrm(
@@ -40,7 +40,7 @@ async def create_test_data():
                 target=1200000,
                 collected=0,
                 donate_count=0,
-                photo_url="/uploads/children.jpg",
+                photo_url="/uploads/2.jpg",
                 target_date=now + timedelta(days=35)  # +60 дней
             ),
             FundOrm(
@@ -50,7 +50,7 @@ async def create_test_data():
                 target=500000,
                 collected=0,
                 donate_count=0,
-                photo_url="/uploads/medicine.jpg",
+                photo_url="/uploads/3.jpg",
                 target_date=now + timedelta(days=40)  # +90 дней
             ),
             FundOrm(
@@ -60,7 +60,7 @@ async def create_test_data():
                 target=800000,
                 collected=0,
                 donate_count=89,
-                photo_url="/uploads/medicine.jpg",
+                photo_url="/uploads/4.jpg",
                 target_date=now + timedelta(days=49)  # +90 дней
             ),
             FundOrm(
@@ -70,7 +70,7 @@ async def create_test_data():
                 target=350000,
                 collected=0,
                 donate_count=0,
-                photo_url="/uploads/medicine.jpg",
+                photo_url="/uploads/5.jpg",
                 target_date=now + timedelta(days=33)  # +90 дней
             ),
             FundOrm(
@@ -80,7 +80,7 @@ async def create_test_data():
                 target=200000,
                 collected=0,
                 donate_count=0,
-                photo_url="/uploads/medicine.jpg",
+                photo_url="/uploads/6.jpg",
                 target_date=now + timedelta(days=87)  # +90 дней
             )
         ]
