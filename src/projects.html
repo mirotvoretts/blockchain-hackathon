@@ -3,24 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CharityChain - Благотворительные проекты</title>
+    <title>Chain Impact - Благотворительные проекты</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/common.css">
     <link rel="stylesheet" href="css/projects.css">
-</head
+</head>
 <body>
     <header class="header">
         <a href="index.html" class="logo">
             <i class="fas fa-hands-helping logo-icon"></i>
-            <span>CharityChain</span>
+            <span>Chain Impact</span>
         </a>
         
         <div class="header-links">
             <a href="index.html#how-to-donate">Как пожертвовать</a>
             <a href="index.html#about-platform">О платформе</a>
             <a href="projects.html">Проекты</a>
-            <a href="indexhttp://localhost:8000/index.html#how-to-donate.html#FAQ">FAQ</a>
+            <a href="index.html#FAQ">FAQ</a>
         </div>
         
         <div class="header-buttons">
@@ -63,7 +63,7 @@
 
     <div class="container">
         <h1 class="page-title">Благотворительные проекты</h1>
-        <p class="page-subtitle">Впервые на CharityChain? Узнайте подробнее о платформе <a href="index.html">здесь</a></p>
+        <p class="page-subtitle">Впервые на Chain Impact? Узнайте подробнее о платформе <a href="index.html">здесь</a></p>
         
         <div class="filters-section">
             <div class="search-container">
@@ -99,7 +99,7 @@
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-section">
-                <h3 class="footer-title"><i class="fas fa-hands-helping"></i> CharityChain</h3>
+                <h3 class="footer-title"><i class="fas fa-hands-helping"></i> Chain Impact</h3>
                 <p>Платформа для прозрачной благотворительности на основе блокчейн-технологий. Обеспечиваем доверие доноров и получателей помощи.</p>
             </div>
             <div class="footer-section">
@@ -112,13 +112,13 @@
             <div class="footer-section">
                 <h3 class="footer-title">Контакты</h3>
                 <ul class="footer-links">
-                    <li><a href="mailto:info@charitychain.org"><i class="fas fa-envelope"></i> info@charitychain.org</a></li>
+                    <li><a href="mailto:info@Chain Impact.org"><i class="fas fa-envelope"></i> info@Chain Impact.org</a></li>
                     <li><a href="tel:+79991234567"><i class="fas fa-phone"></i> +7 (999) 123-45-67</a></li>
                 </ul>
             </div>
         </div>
         <div class="copyright">
-            &copy; 2025 CharityChain. Все права защищены. 
+            &copy; 2025 Chain Impact. Все права защищены. 
         </div>
     </footer>
 
@@ -159,26 +159,38 @@
             </div>
         </div>
     </div>  
-
-    <div class="modal" id="donationModal">
-        <div class="modal-content">
-            <span class="close" id="closeModal">&times;</span>
-            <h2>Поддержать проект</h2>
-            <form id="donationForm">
-                <div class="form-group">
-                    <label for="donationAmount">Сумма пожертвования*</label>
-                    <input type="number" id="donationAmount" name="donationAmount" required min="100">
+<div class="modal" id="donationModal">
+    <div class="modal-content">
+        <span class="close" id="closeDonationModal">&times;</span>
+        
+        <div class="project-donation-info">
+            <h3 id="donationProjectTitle"></h3>
+            <div class="donation-category" id="donationCategory"></div>
+            
+            <div class="progress-container">
+                <div class="progress-label">
+                    <span>Собрано: <span id="donationCollected"></span></span>
+                    <span>Цель: <span id="donationTarget"></span></span>
                 </div>
-                <div class="form-group">
-                    <label for="donatorName">Ваше имя (либо псевдоним)*</label>
-                    <input type="text" id="donatorName" name="donatorName" required>
+                <div class="progress-bar">
+                    <div class="progress-value" id="donationProgress"></div>
                 </div>
-                                
-                <button type="submit" class="btn btn-submit">Пожертвовать</button>
-            </form>
+            </div>
         </div>
+
+        <form id="donationForm">
+            <div class="form-group">
+                <label for="donationAmount">Сумма пожертвования*</label>
+                <input type="number" id="donationAmount" name="donationAmount" required min="0.1" step="0.01">
+            </div>
+            <div class="form-group">
+                <label for="donatorName">Ваше имя (либо псевдоним)*</label>
+                <input type="text" id="donatorName" name="donatorName" required>
+            </div>
+            <button type="submit" class="btn btn-submit">Пожертвовать</button>
+        </form>
     </div>
-    
+</div>
     <script type="module" src="js/projects.js"></script>
 </body>
 </html>

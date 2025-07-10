@@ -1,3 +1,14 @@
+const urlParams = new URLSearchParams(window.location.search);
+const projectId = urlParams.get('id');
+console.log("Project ID from URL:", projectId);
+
+if (!projectId) {
+    console.error("No project ID in URL");
+    // Можно перенаправить на страницу проектов или показать ошибку
+    window.location.href = 'projects.html';
+}
+
+
 let web3
 let contract
 let accounts = []

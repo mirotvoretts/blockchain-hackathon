@@ -658,7 +658,6 @@ body {
 	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
-/* Темная тема */
 .dark-theme #questionModal .modal-content {
 	background: var(--dark-alt);
 }
@@ -671,4 +670,32 @@ body {
 	background-color: var(--dark);
 	color: var(--light);
 	border-color: var(--dark);
+}
+
+.logo img {
+    height: 40px; 
+    width: auto; 
+    max-width: 10px; 
+    object-fit: contain; 
+    transition: var(--transition);
+}
+
+@media (max-width: 768px) {
+    .logo img {
+        height: 30px; 
+        max-width: 120px;
+    }
+    
+
+    .logo span {
+        display: none;
+    }
+}
+
+.dark-theme .logo img {
+    filter: brightness(0) invert(1);
+}
+
+.logo:hover img {
+    transform: scale(1.05); 
 }

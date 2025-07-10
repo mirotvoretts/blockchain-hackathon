@@ -462,3 +462,21 @@
     color: var(--gray);
     font-size: 0.95rem;
 }
+
+.project-donation-info {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.project-donation-info h3 {
+    margin-top: 0;
+    color: #2c3e50;
+}
+
+.donation-category {
+    font-size: 14px;
+    color: #7f8c8d;
+    margin-bottom: 10px;
+}
