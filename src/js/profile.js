@@ -120,7 +120,7 @@ window.viewProject = function(projectId) {
 };
 
 function initProjectsSection() {
-    const addProjectBtn = document.createElement('button');
+    const addProjectBtn = document.getElementById('addProject');
     addProjectBtn.id = 'addProjectBtn';
     addProjectBtn.className = 'btn-add-project';
     addProjectBtn.innerHTML = '<i class="fas fa-plus"></i> Добавить проект';
