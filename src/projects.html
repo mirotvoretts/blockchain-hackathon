@@ -28,8 +28,9 @@
             <button class="btn btn-theme" id="themeToggle">
                 <i class="fas fa-moon"></i>
             </button>
-            <a href="profile.html" class="btn btn-login">
-                <i class="fas fa-user"></i> Войти
+            <a href="#" class="btn btn-wallet" id="universalWalletBtn">
+                <i class="fas fa-wallet"></i>
+                <span id="walletText">Подключить кошелек</span>
             </a>
         </div>
         
@@ -51,9 +52,9 @@
         <a href="index.html#FAQ">
             <i class="fas fa-question-circle"></i> FAQ
         </a>
-        <a href="profile.html" class="btn btn-login">
-            <i class="fas fa-user"></i> Войти
-        </a>
+        <button class="btn btn-wallet" id="mobileUniversalWalletBtn">
+            <i class="fas fa-wallet"></i> Подключить кошелек
+        </button>
         <button class="btn btn-theme" id="mobileThemeToggle">
             <i class="fas fa-moon"></i>
         </button>
@@ -61,8 +62,7 @@
 
     <div class="container">
         <h1 class="page-title">Благотворительные проекты</h1>
-        <p class="page-subtitle">Впервые на Chain Impact? Узнайте подробнее о платформе <a href="index.html">здесь</a>. 
-            Представитель фонда? <a href="index.html">Авторизуйтесь</a> и добавьте проект!</p>
+        <p class="page-subtitle">Впервые на Chain Impact? Узнайте подробнее о платформе <a href="index.html">здесь</a>.</p>
         
         <div class="filters-section">
             <div class="search-container">
@@ -120,38 +120,6 @@
             &copy; 2025 Chain Impact. Все права защищены. 
         </div>
     </footer>
-<div class="modal" id="donationModal">
-    <div class="modal-content">
-        <span class="close" id="closeDonationModal">&times;</span>
-        
-        <div class="project-donation-info">
-            <h3 id="donationProjectTitle"></h3>
-            <div class="donation-category" id="donationCategory"></div>
-            
-            <div class="progress-container">
-                <div class="progress-label">
-                    <span>Собрано: <span id="donationCollected"></span></span>
-                    <span>Цель: <span id="donationTarget"></span></span>
-                </div>
-                <div class="progress-bar">
-                    <div class="progress-value" id="donationProgress"></div>
-                </div>
-            </div>
-        </div>
-
-        <form id="donationForm">
-            <div class="form-group">
-                <label for="donationAmount">Сумма пожертвования*</label>
-                <input type="number" id="donationAmount" name="donationAmount" required min="0.1" step="0.01">
-            </div>
-            <div class="form-group">
-                <label for="donatorName">Ваше имя (либо псевдоним)*</label>
-                <input type="text" id="donatorName" name="donatorName" required>
-            </div>
-            <button type="submit" class="btn btn-submit">Пожертвовать</button>
-        </form>
-    </div>
-</div>
     <script type="module" src="js/projects.js"></script>
 </body>
 </html>
