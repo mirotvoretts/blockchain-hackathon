@@ -1,5 +1,7 @@
-from pydantic import BaseModel, Field, ConfigDict
-from datetime import datetime
+from pydantic import BaseModel, Field, ConfigDict, field_validator, computed_field
+from datetime import datetime, timezone
+
+
 
 
 class SFundDonate(BaseModel):
@@ -7,28 +9,41 @@ class SFundDonate(BaseModel):
 
 
 class SFundBase(BaseModel):
-    category_id: int = Field(default=4)
-    title: str = Field(min_length=3, max_length=50)
-    description: str = Field(min_length=10, max_length=100)
+    category_id: int = Field(default=7)
+    title: str
+    description: str
     target: int = Field(gt=0)
     collected: int = Field(default=0, ge=0)
     donate_count: int = Field(default=0, ge=0)
     photo_url: str | None = None
+    target_date: datetime = Field(description="Дата окончания сбора в формате ISO 8601")
+    
+    @field_validator('target_date')
+    def validate_target_date(cls, v):
+        if v < datetime.now(timezone.utc):
+            raise ValueError("Дата окончания не может быть в прошлом")
+        return v
 
 
 class SFundUpdate(SFundBase):
     category_id: int | None = None
-    title: str | None = Field(None, min_length=3, max_length=50)
-    description: str | None = Field(None, min_length=10, max_length=100)
+    title: str | None
+    description: str | None
     target: int | None = Field(None, gt=0)
     collected: int | None = Field(None, ge=0)
     donate_count: int | None = Field(None, ge=0)
     photo_url: str | None = None
+    target_date: datetime | None = Field(None, description="Дата окончания сбора в формате ISO 8601")
 
 
 class SFund(SFundBase):
     id: int
     created_at: datetime
+    
+    @computed_field
+    @property
+    def days_left(self) -> int:
+        return (self.target_date - datetime.now(timezone.utc)).days
 
     model_config = ConfigDict(
         from_attributes=True,
@@ -42,7 +57,9 @@ class SFund(SFundBase):
                 "collected": 35000,
                 "donate_count": 42,
                 "photo_url": "/uploads/fond_pets.jpg",
-                "created_at": "2024-05-20T12:00:00"
+                "target_date": "2024-12-31T23:59:59Z",
+                "created_at": "2024-05-20T12:00:00",
+                "days_left": 42  # Автоматически вычисляется
             }
         }
     )

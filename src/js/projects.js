@@ -204,8 +204,7 @@ function initFilters() {
 }
 
 function viewProjectDetails(projectId) {
-    // Переход на страницу проекта
-    window.location.href = `project.html?id=${projectId}`;
+    window.location.href = `project-details.html?id=${projectId}`;
 }
 
 const donationModal = document.getElementById('donationModal');
@@ -506,4 +505,12 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
         });
     }
+});
+
+document.querySelectorAll('.btn-details').forEach(btn => {
+	btn.addEventListener('click', e => {
+		e.preventDefault()
+		const projectId = btn.closest('.project-card').dataset.id
+		window.location.href = `project-details.html?id=${projectId}`
+	})
 });
