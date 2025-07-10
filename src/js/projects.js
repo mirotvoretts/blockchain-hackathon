@@ -196,8 +196,7 @@ function initFilters() {
 }
 
 function viewProjectDetails(projectId) {
-    alert(`Переход на страницу проекта #${projectId}\nВ реальном приложении здесь будет загрузка детальной страницы проекта.`);
-    // что-то типа window.location.href = `project.html?id=${projectId}`;
+    window.location.href = `project-details.html?id=${projectId}`;
 }
 
 const donationModal = document.getElementById('donationModal');
@@ -472,4 +471,12 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
+});
+
+document.querySelectorAll('.btn-details').forEach(btn => {
+	btn.addEventListener('click', e => {
+		e.preventDefault()
+		const projectId = btn.closest('.project-card').dataset.id
+		window.location.href = `project-details.html?id=${projectId}`
+	})
 });
