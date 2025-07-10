@@ -1,92 +1,116 @@
-const projects = [
-    {
-        id: 1,
-        title: "Помощь детям-сиротам",
-        category: "children",
-        description: "Обеспечение детей-сирот одеждой, учебными принадлежностями и психологической поддержкой.",
-        image: "../img/children.png",
-        collected: 125000,
-        goal: 300000,
-        donations: 347,
-        daysLeft: 15,
-        urgent: false
-    },
-    {
-        id: 2,
-        title: "Лечение тяжелобольных",
-        category: "health",
-        description: "Сбор средств на дорогостоящее лечение и реабилитацию для пациентов с онкологическими заболеваниями.",
-        image: "../img/doctor.png",
-        collected: 780000,
-        goal: 1200000,
-        donations: 892,
-        daysLeft: 42,
-        urgent: false
-    },
-    {
-        id: 3,
-        title: "Защита животных",
-        category: "animals",
-        description: "Строительство нового приюта для бездомных животных и программа стерилизации для контроля популяции.",
-        image: "../img/animal.png",
-        collected: 210000,
-        goal: 500000,
-        donations: 521,
-        daysLeft: 28,
-        urgent: true
-    },
-    {
-        id: 4,
-        title: "Образование для всех",
-        category: "education",
-        description: "Обеспечение удалённых школ современным оборудованием и доступом к качественным образовательным ресурсам.",
-        image: "../img/education.png",
-        collected: 430000,
-        goal: 800000,
-        donations: 621,
-        daysLeft: 60,
-        urgent: false
-    },
-    {
-        id: 5,
-        title: "Экологическая инициатива",
-        category: "ecology",
-        description: "Посадка 10,000 деревьев в пострадавших от пожаров регионах и создание экологических троп.",
-        image: "../img/ecology.png",
-        collected: 150000,
-        goal: 350000,
-        donations: 278,
-        daysLeft: 22,
-        urgent: true
-    },
-    {
-        id: 6,
-        title: "Поддержка пожилых людей",
-        category: "social",
-        description: "Программа доставки продуктов и лекарств, а также социального сопровождения для одиноких пожилых людей.",
-        image: "../img/senior.png",
-        collected: 89000,
-        goal: 200000,
-        donations: 156,
-        daysLeft: 10,
-        urgent: true
+const { Children } = require("react");
+
+const API_BASE_URL = 'http://localhost:3001';
+
+function getAuthToken() {
+    return localStorage.getItem('authToken');
+}
+
+async function apiRequest(endpoint, method = 'GET', body = null) {
+    const url = `${API_BASE_URL}${endpoint}`;
+    const options = {
+        method,
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    };
+    
+    const token = getAuthToken();
+    if (token) {
+        options.headers['Authorization'] = `Bearer ${token}`;
     }
-];
+    
+    if (body) {
+        options.body = JSON.stringify(body);
+    }
+    
+    try {
+        const response = await fetch(url, options);
+        
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.detail || `HTTP error! status: ${response.status}`);
+        }
+        
+        return await response.json();
+    } catch (error) {
+        console.error(`API request to ${endpoint} failed:`, error);
+        throw error;
+    }
+}
 
-const categories = {
-    children: "Дети",
-    health: "Здоровье",
-    animals: "Животные",
-    education: "Образование",
-    ecology: "Экология",
-    social: "Социальная помощь"
-};
+async function loadProjects() {
+    try {
+        const data = await apiRequest('/funds/');
+        return data;
+    } catch (error) {
+        console.error('Error loading projects:', error);
+        return [];
+    }
+}
 
+async function donateToFund(fundId, amount, name) {
+    try {
+        const response = await apiRequest(`/funds/${fundId}/donate`, 'POST', {
+            amount: amount,
+            name: name
+        });
+        return response;
+    } catch (error) {
+        console.error('Donation error:', error);
+        throw error;
+    }
+}
+
+async function createFund(fundData) {
+    try {
+        const response = await apiRequest('/funds/', 'POST', fundData);
+        return response;
+    } catch (error) {
+        console.error('Create fund error:', error);
+        throw error;
+    }
+}
+
+async function getCurrentUser() {
+    try {
+        const user = await apiRequest('/auth/me');
+        return user;
+    } catch (error) {
+        console.error('Get user error:', error);
+        return null;
+    }
+}
+
+const categories = { 
+    1: "Дети",
+    2: "Здоровье",
+    3: "Животные",
+    4: "Образование",
+    5: "Экология",
+    6: "Социальная помощь" 
+}
+
+let projects = [];
 let currentFilter = {
     search: "",
-    category: "all",
-    urgentOnly: false
+    category_id: 0
 };
+
+
+// {
+//     "category_id": 2,
+//     "collected": 35000,
+//     "created_at": "2024-05-20T12:00:00",
+//     "days_left": 42,
+//     "description": "Сбор на корм и лечение.",
+//     "donate_count": 42,
+//     "id": 1,
+//     "photo_url": "/uploads/fond_pets.jpg",
+//     "target": 100000,
+//     "target_date": "2024-12-31T23:59:59Z",
+//     "title": "Помощь бездомным животным"
+//   }
 
 function generateProjectCards(filteredProjects) {
     const projectsGrid = document.getElementById('projectsGrid');
@@ -104,13 +128,13 @@ function generateProjectCards(filteredProjects) {
     }
     
     filteredProjects.forEach(project => {
-        const progress = Math.min(Math.round((project.collected / project.goal) * 100), 100);
-        const categoryName = categories[project.category];
+        const progress = Math.min(Math.round((project.collected / project.target) * 100), 100);
+        const categoryName = categories[project.category_id];
         
         const projectCard = document.createElement('div');
         projectCard.className = 'project-card';
         projectCard.innerHTML = `
-            <img src="${project.image}" alt="${project.title}" class="project-image">
+            <img src="${project.photo_url || '../img/default-project.png'}" alt="${project.title}" class="project-image">
             <div class="project-content">
                 <span class="project-category">${categoryName}</span>
                 <h3 class="project-title">${project.title}</h3>
@@ -118,8 +142,8 @@ function generateProjectCards(filteredProjects) {
                 
                 <div class="progress-container">
                     <div class="progress-label">
-                        <span>Собрано: ${(project.collected).toLocaleString()} ₽</span>
-                        <span>Цель: ${(project.goal).toLocaleString()} ₽</span>
+                        <span>Собрано: ${(project.collected || 0).toLocaleString()} ₽</span>
+                        <span>Цель: ${(project.target || 0).toLocaleString()} ₽</span>
                     </div>
                     <div class="progress-bar">
                         <div class="progress-value" style="width: ${progress}%"></div>
@@ -132,11 +156,11 @@ function generateProjectCards(filteredProjects) {
                         <div class="stat-label">Прогресс</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-value">${project.donations}</div>
+                        <div class="stat-value">${project.donate_count || 0}</div>
                         <div class="stat-label">Пожертвований</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-value">${project.daysLeft}</div>
+                        <div class="stat-value">${project.days_left || 0}</div>
                         <div class="stat-label">Дней осталось</div>
                     </div>
                 </div>
@@ -160,9 +184,8 @@ function generateProjectCards(filteredProjects) {
 
 function filterProjects() {
     return projects.filter(project => {
-        
         const matchesSearch = project.title.toLowerCase().includes(currentFilter.search.toLowerCase());        
-        const matchesCategory = currentFilter.category === "all" || project.category === currentFilter.category;
+        const matchesCategory = currentFilter.category_id === 0 || project.category_id === currentFilter.category_id;
         
         return matchesSearch && matchesCategory;
     });
@@ -184,10 +207,8 @@ function initFilters() {
     categoryButtons.forEach(button => {
         button.addEventListener('click', () => {
             categoryButtons.forEach(btn => btn.classList.remove('active'));
-            
             button.classList.add('active');
-            
-            currentFilter.category = button.dataset.category;
+            currentFilter.category_id = button.dataset.category;
             applyFilters();
         });
     });
@@ -200,20 +221,18 @@ function viewProjectDetails(projectId) {
 }
 
 const donationModal = document.getElementById('donationModal');
-const closeModalBtn = document.getElementById('closeModal');
-
 
 function openDonationModal(projectId) {
     const project = projects.find(p => p.id === projectId);
     if (!project) return;
     
     document.getElementById('donationProjectTitle').textContent = project.title;
-    document.getElementById('donationProjectCategory').textContent = categories[project.category];
-    document.getElementById('donationCollected').textContent = project.collected.toLocaleString() + ' ₽';
-    document.getElementById('donationGoal').textContent = project.goal.toLocaleString() + ' ₽';
+    document.getElementById('donationProjectCategory').textContent = categories[project.category_id] || project.category_id;
+    document.getElementById('donationCollected').textContent = (project.collected || 0).toLocaleString() + ' ₽';
+    document.getElementById('donationGoal').textContent = (project.target || 0).toLocaleString() + ' ₽';
     document.getElementById('donationProjectId').value = project.id;
     
-    const progress = Math.min(Math.round((project.collected / project.goal) * 100), 100);
+    const progress = Math.min(Math.round(((project.collected || 0) / project.target) * 100), 100);
     document.getElementById('donationProgress').style.width = progress + '%';
     
     if (donationModal) {
@@ -222,11 +241,11 @@ function openDonationModal(projectId) {
     }
 }
 
-function handleDonationSubmit(e) {
+async function handleDonationSubmit(e) {
     e.preventDefault();
     
     const projectId = parseInt(document.getElementById('donationProjectId').value);
-    const amount = parseInt(document.getElementById('donationAmount').value);
+    const amount = parseFloat(document.getElementById('donationAmount').value);
     const name = document.getElementById('donatorName').value;
     
     if (!projectId || isNaN(amount) || !name) {
@@ -239,26 +258,22 @@ function handleDonationSubmit(e) {
         return;
     }
     
-    const projectIndex = projects.findIndex(p => p.id === projectId);
-    if (projectIndex === -1) {
-        alert('Проект не найден');
-        return;
-    }
-    
     try {
-        projects[projectIndex].collected += amount;
-        projects[projectIndex].donations += 1;
+        const response = await donateToFund(projectId, amount, name);
         
-        closeDonationModal();
-        
-        e.target.reset();
-        
-        applyFilters();
+        const projectIndex = projects.findIndex(p => p.id === projectId);
+        if (projectIndex !== -1) {
+            projects[projectIndex].collected += amount;
+            projects[projectIndex].donate_count = (projects[projectIndex].donate_count || 0) + 1;
+            applyFilters();
+        }
         
         alert(`Спасибо, ${name}! Ваше пожертвование в размере ${amount.toLocaleString()} ₽ успешно зарегистрировано.`);
+        
+        closeDonationModal();
+        e.target.reset();
     } catch (error) {
-        console.error('Ошибка при обработке пожертвования:', error);
-        alert('Произошла ошибка при обработке пожертвования. Пожалуйста, попробуйте позже.');
+        alert(`Ошибка: ${error.message}`);
     }
 }
 
@@ -271,7 +286,6 @@ function closeDonationModal() {
 
 const projectModal = document.getElementById('projectModal');
 const projectForm = document.getElementById('projectForm');
-const submitProjectBtn = document.getElementById('submitProjectBtn');
 
 function openProjectModal() {
     if (projectModal) {
@@ -288,6 +302,7 @@ function closeProjectModal() {
 }
 
 function checkFormValidity() {
+    const submitProjectBtn = document.getElementById('submitProjectBtn');
     if (!projectForm || !submitProjectBtn) return;
     
     const requiredFields = projectForm.querySelectorAll('[required]');
@@ -296,18 +311,41 @@ function checkFormValidity() {
     );
 }
 
-function handleProjectSubmit(e) {
+async function handleProjectSubmit(e) {
     e.preventDefault();
     
+    const projectData = {
+        title: document.getElementById('projectName').value,
+        description: document.getElementById('projectDescription').value,
+        category: document.getElementById('projectCategory').value,
+        goal: parseFloat(document.getElementById('projectGoal').value),
+        image_url: document.getElementById('projectImage').value || null,
+        contact_name: document.getElementById('contactName').value,
+        contact_email: document.getElementById('projectEmail').value,
+        contact_phone: document.getElementById('projectPhone').value,
+        website: document.getElementById('projectLink').value || null
+    };
+    
     try {
-        alert('Заявка успешно отправлена! Наши модераторы рассмотрят ее в ближайшее время.');
-        e.target.reset();
+        const response = await createFund(projectData);
+        
+        alert('Проект успешно создан и отправлен на модерацию!');
+        projectForm.reset();
         closeProjectModal();
+        
+        projects = await loadProjects();
+        applyFilters();
     } catch (error) {
-        console.error('Ошибка отправки:', error);
-        alert('Произошла ошибка при отправке');
+        alert(`Ошибка: ${error.message}`);
     }
 }
+
+
+
+
+const closeModalBtn = document.getElementById('closeModal');
+const submitProjectBtn = document.getElementById('submitProjectBtn');
+
 
 const themeToggle = document.getElementById('themeToggle');
 const mobileThemeToggle = document.getElementById('mobileThemeToggle');
@@ -401,10 +439,19 @@ function initFAQ() {
     });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+
+document.addEventListener('DOMContentLoaded', async () => {
+    projects = await loadProjects();
+    
     generateProjectCards(projects);
     initTheme();
     initFilters();
+    
+    const currentUser = await getCurrentUser();
+    if (!currentUser) {
+        const addProjectBtn = document.getElementById('addProject');
+        if (addProjectBtn) addProjectBtn.style.display = 'none';
+    }
     
     if (themeToggle) themeToggle.addEventListener('click', toggleTheme);
     if (mobileThemeToggle) mobileThemeToggle.addEventListener('click', toggleTheme);
@@ -421,7 +468,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
-
 
     const closeProjectModalBtn = document.getElementById('closeProjectModal');
     const closeDonationModalBtn = document.getElementById('closeDonationModal');
@@ -473,10 +519,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-document.querySelectorAll('.btn-details').forEach(btn => {
-	btn.addEventListener('click', e => {
-		e.preventDefault()
-		const projectId = btn.closest('.project-card').dataset.id
-		window.location.href = `project-details.html?id=${projectId}`
-	})
+document.addEventListener('click', function(e) {
+    if (e.target.closest('.btn-details')) {
+        const btn = e.target.closest('.btn-details');
+        const projectId = btn.dataset.id;
+        viewProjectDetails(projectId);
+    }
+    
+    if (e.target.closest('.btn-donate')) {
+        const btn = e.target.closest('.btn-donate');
+        const projectId = btn.dataset.id;
+        openDonationModal(projectId);
+    }
 });
