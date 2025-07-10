@@ -34,6 +34,17 @@ services:
       timeout: 5s
       retries: 5
   
+  hardhat:
+    image: node:18
+    container_name: hardhat
+    working_dir: /app
+    volumes:
+      - ./:/app
+    ports:
+      - "8545:8545"
+    command: sh -c "npm install && npx hardhat node --hostname 0.0.0.0"
+    environment:
+      - NETWORK_NAME=localhost
 
   frontend:
     image: nginx:alpine

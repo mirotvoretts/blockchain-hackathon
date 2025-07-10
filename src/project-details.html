@@ -118,16 +118,28 @@
 
 						<div class="project-stats">
 							<div class="stat-item">
-								<div class="stat-value" id="totalDonations"></div>
-								<div class="stat-label">Собрано</div>
+								<div class="stat-value" id="totalDonations">0 ETH</div>
+								<div class="stat-label" style="padding-left: 8px">Собрано</div>
 							</div>
 							<div class="stat-item">
-								<div class="stat-value" id="donatorsCount"></div>
-								<div class="stat-label">Доноров</div>
+								<div class="stat-value" id="donatorsCount">0</div>
+								<div class="stat-label" style="padding-left: 8px">Доноров</div>
 							</div>
-							<div class="stat-item">
-								<div class="stat-value" id="daysLeft"></div>
-								<div class="stat-label">Дней осталось</div>
+							<div class="stat-item" style="position: relative">
+								<div class="stat-value" id="daysLeft">32</div>
+								<div class="stat-label" style="padding-left: 8px">
+									Дней осталось
+								</div>
+								<div
+									style="
+										position: absolute;
+										bottom: 0px;
+										left: 0;
+										width: 100%;
+										height: 0.6px;
+										background-color: rgba(255, 255, 255, 0.9);
+									"
+								></div>
 							</div>
 						</div>
 
@@ -340,7 +352,7 @@
 					<i class="fas fa-wallet"></i>
 					<div>
 						<div class="wallet-address" id="modalWallet1Address">
-							<span id="accountAddress">Атворизуйтесь через MetaMask</span>
+							<span id="accountAddress">Авторизуйтесь через MetaMask</span>
 						</div>
 					</div>
 				</div>
