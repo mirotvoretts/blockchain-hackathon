@@ -14,6 +14,36 @@
 		/>
 		<link rel="stylesheet" href="css/common.css" />
 		<link rel="stylesheet" href="css/profile.css" />
+		
+		<style>
+			#connectButton {
+				background: linear-gradient(90deg, var(--primary), var(--secondary));
+				color: var(--white);
+				border: none;
+				padding: 14px 28px;
+				font-size: 1rem;
+				font-weight: 600;
+				font-family: 'Montserrat', sans-serif;
+				border-radius: 50px;
+				cursor: pointer;
+				transition: var(--transition);
+				display: inline-flex;
+				align-items: center;
+				gap: 10px;
+				box-shadow: var(--shadow);
+				margin-top: 30px;
+			}
+		
+			#connectButton:hover {
+				background: linear-gradient(90deg, var(--primary-light), var(--secondary-light));
+				transform: translateY(-2px);
+				box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+			}
+		
+			#connectButton:active {
+				transform: scale(0.98);
+			}
+		</style>
 	</head>
 	<body>
 		<header class="header">
@@ -138,6 +168,11 @@
 							<label class="form-label">Телефон</label>
 							<div class="form-control" id="phoneView">+7 (999) 123-45-67</div>
 						</div>
+
+						<button id="connectButton"><i class="fab fa-ethereum"></i>Подключиться к MetaMask</button>
+						<p id="accountAddress"></p>
+
+    <script src="js/metamask.js"></script>
 					</div>
 
 					<div
@@ -199,7 +234,7 @@
 
 					<div class="profile-section" id="transactionsSection">
 						<h2 class="section-title">История пожертвований</h2>
-
+					
 						<ul class="transactions-list">
 							<li class="transaction-item">
 								<div class="transaction-info">
@@ -209,9 +244,9 @@
 									<div class="transaction-date">15 марта 2025, 14:30</div>
 									<span class="transaction-status status-success">Успешно</span>
 								</div>
-								<div class="transaction-amount">5 000 ₽</div>
+								<div class="transaction-amount">0.025 ETH</div>
 							</li>
-
+					
 							<li class="transaction-item">
 								<div class="transaction-info">
 									<div class="transaction-project">
@@ -220,9 +255,9 @@
 									<div class="transaction-date">10 марта 2025, 10:15</div>
 									<span class="transaction-status status-success">Успешно</span>
 								</div>
-								<div class="transaction-amount">3 000 ₽</div>
+								<div class="transaction-amount">0.015 ETH</div>
 							</li>
-
+					
 							<li class="transaction-item">
 								<div class="transaction-info">
 									<div class="transaction-project">
@@ -231,9 +266,9 @@
 									<div class="transaction-date">5 марта 2025, 16:45</div>
 									<span class="transaction-status status-success">Успешно</span>
 								</div>
-								<div class="transaction-amount">7 500 ₽</div>
+								<div class="transaction-amount">0.037 ETH</div>
 							</li>
-
+					
 							<li class="transaction-item">
 								<div class="transaction-info">
 									<div class="transaction-project">
@@ -242,9 +277,9 @@
 									<div class="transaction-date">28 февраля 2025, 09:30</div>
 									<span class="transaction-status status-success">Успешно</span>
 								</div>
-								<div class="transaction-amount">10 000 ₽</div>
+								<div class="transaction-amount">0.05 ETH</div>
 							</li>
-
+					
 							<li class="transaction-item">
 								<div class="transaction-info">
 									<div class="transaction-project">
@@ -253,14 +288,14 @@
 									<div class="transaction-date">20 февраля 2025, 18:20</div>
 									<span class="transaction-status status-success">Успешно</span>
 								</div>
-								<div class="transaction-amount">2 500 ₽</div>
+								<div class="transaction-amount">0.0125 ETH</div>
 							</li>
 						</ul>
 					</div>
-
+					
 					<div class="profile-section" id="achievementsSection">
 						<h2 class="section-title">Ваши достижения</h2>
-
+					
 						<div class="achievements-grid">
 							<div class="achievement-card">
 								<div class="achievement-icon">
@@ -269,7 +304,7 @@
 								<h3 class="achievement-title">Первый шаг</h3>
 								<p class="achievement-desc">Сделали первое пожертвование</p>
 							</div>
-
+					
 							<div class="achievement-card">
 								<div class="achievement-icon">
 									<i class="fas fa-star"></i>
@@ -277,15 +312,15 @@
 								<h3 class="achievement-title">Регулярный помощник</h3>
 								<p class="achievement-desc">Пожертвовали 3 месяца подряд</p>
 							</div>
-
+					
 							<div class="achievement-card">
 								<div class="achievement-icon">
 									<i class="fas fa-hand-holding-usd"></i>
 								</div>
 								<h3 class="achievement-title">Щедрая душа</h3>
-								<p class="achievement-desc">Пожертвовали более 10 000 ₽</p>
+								<p class="achievement-desc">Пожертвовали > 0.1 ETH</p>
 							</div>
-
+					
 							<div class="achievement-card">
 								<div class="achievement-icon">
 									<i class="fas fa-users"></i>
@@ -293,7 +328,7 @@
 								<h3 class="achievement-title">Социальный активист</h3>
 								<p class="achievement-desc">Поддержали 5 разных проектов</p>
 							</div>
-
+					
 							<div class="achievement-card">
 								<div class="achievement-icon">
 									<i class="fas fa-share-alt"></i>
@@ -301,7 +336,7 @@
 								<h3 class="achievement-title">Амбассадор добра</h3>
 								<p class="achievement-desc">Поделились проектом в соцсетях</p>
 							</div>
-
+					
 							<div class="achievement-card">
 								<div class="achievement-icon">
 									<i class="fas fa-medal"></i>
@@ -311,8 +346,6 @@
 							</div>
 						</div>
 					</div>
-				</section>
-			</div>
 		</main>
 
 		<footer class="footer">
