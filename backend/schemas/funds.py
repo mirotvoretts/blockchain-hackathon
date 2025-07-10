@@ -10,8 +10,8 @@ class SFundDonate(BaseModel):
 
 class SFundBase(BaseModel):
     category_id: int = Field(default=7)
-    title: str = Field(min_length=3, max_length=50)
-    description: str = Field(min_length=10, max_length=100)
+    title: str
+    description: str
     target: int = Field(gt=0)
     collected: int = Field(default=0, ge=0)
     donate_count: int = Field(default=0, ge=0)
@@ -27,8 +27,8 @@ class SFundBase(BaseModel):
 
 class SFundUpdate(SFundBase):
     category_id: int | None = None
-    title: str | None = Field(None, min_length=3, max_length=50)
-    description: str | None = Field(None, min_length=10, max_length=100)
+    title: str | None
+    description: str | None
     target: int | None = Field(None, gt=0)
     collected: int | None = Field(None, ge=0)
     donate_count: int | None = Field(None, ge=0)

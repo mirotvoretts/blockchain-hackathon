@@ -25,33 +25,63 @@ async def create_test_data():
         funds = [
             FundOrm(
                 category_id=categories[0].id,
-                title="Помощь бездомным кошкам",
-                description="Сбор на корм и лечение бездомных кошек",
-                target=100000,
-                collected=25000,
-                donate_count=42,
+                title="Помощь детям-сиротам",
+                description="Обеспечение детей-сирот одеждой, учебными принадлежностями и психологической поддержкой.",
+                target=300000,
+                collected=0,
+                donate_count=0,
                 photo_url="/uploads/cats.jpg",
                 target_date=now + timedelta(days=30)  # +30 дней от текущей даты
             ),
             FundOrm(
                 category_id=categories[1].id,
-                title="Образование для детей",
-                description="Покупка учебников для детских домов",
-                target=200000,
-                collected=75000,
-                donate_count=31,
+                title="Лечение тяжелобольных",
+                description="Сбор средств на дорогостоящее лечение и реабилитацию для пациентов с онкологическими заболеваниями.",
+                target=1200000,
+                collected=0,
+                donate_count=0,
                 photo_url="/uploads/children.jpg",
-                target_date=now + timedelta(days=60)  # +60 дней
+                target_date=now + timedelta(days=35)  # +60 дней
             ),
             FundOrm(
                 category_id=categories[2].id,
-                title="Лечение ребенка",
-                description="Сбор на операцию ребенку",
+                title="Защита животных",
+                description="Строительство нового приюта для бездомных животных и программа стерилизации для контроля популяции.",
                 target=500000,
-                collected=125000,
+                collected=0,
+                donate_count=0,
+                photo_url="/uploads/medicine.jpg",
+                target_date=now + timedelta(days=40)  # +90 дней
+            ),
+            FundOrm(
+                category_id=categories[3].id,
+                title="Образование для всех",
+                description="Обеспечение удалённых школ современным оборудованием и доступом к качественным образовательным ресурсам.",
+                target=800000,
+                collected=0,
                 donate_count=89,
                 photo_url="/uploads/medicine.jpg",
-                target_date=now + timedelta(days=90)  # +90 дней
+                target_date=now + timedelta(days=49)  # +90 дней
+            ),
+            FundOrm(
+                category_id=categories[4].id,
+                title="Экологическая инициатива",
+                description="Посадка 10,000 деревьев в пострадавших от пожаров регионах и создание экологических троп.",
+                target=350000,
+                collected=0,
+                donate_count=0,
+                photo_url="/uploads/medicine.jpg",
+                target_date=now + timedelta(days=33)  # +90 дней
+            ),
+            FundOrm(
+                category_id=categories[5].id,
+                title="Поддержка пожилых людей",
+                description="Программа доставки продуктов и лекарств, а также социального сопровождения для одиноких пожилых людей.",
+                target=200000,
+                collected=0,
+                donate_count=0,
+                photo_url="/uploads/medicine.jpg",
+                target_date=now + timedelta(days=87)  # +90 дней
             )
         ]
         

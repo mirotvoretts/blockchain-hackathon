@@ -12,7 +12,7 @@ class FundOrm(Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     category_id: Mapped[int] = mapped_column(ForeignKey('categories.id'))
     title: Mapped[str]
-    description: Mapped[str] = mapped_column(String(100))
+    description: Mapped[str]
     target: Mapped[int] = mapped_column(nullable=False)
     collected: Mapped[int] = mapped_column(default=0)
     donate_count: Mapped[int] = mapped_column(default=0)
