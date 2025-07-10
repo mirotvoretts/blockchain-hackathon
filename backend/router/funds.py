@@ -1,5 +1,7 @@
-from fastapi import APIRouter, HTTPException, status
-from schemas.funds import SFund, SFundUpdate, SFundDonate
+import os
+from pathlib import Path
+from fastapi import APIRouter, HTTPException, status, UploadFile, File
+from schemas.funds import SFund, SFundUpdate, SFundDonate, SFundPhotoUpdate
 from repositories.funds import FundRepository
 
 
@@ -9,6 +11,8 @@ router = APIRouter(
     prefix="/funds",
     tags=['Фонды']
 )
+
+UPLOADS_DIR = "uploads"
 
 
 
@@ -46,6 +50,28 @@ async def create_fund(fund_data: SFundUpdate):
         return SFund.model_validate(fund)
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
+
+
+@router.post("/{fund_id}/upload-photo")
+async def upload_fund_photo(
+    fund_id: int,
+    file: UploadFile = File(...)
+):
+    # Создаем папку uploads если ее нет
+    Path(UPLOADS_DIR).mkdir(exist_ok=True)
+    
+    filename = f"{fund_id}.jpg"
+    file_path = os.path.join(UPLOADS_DIR, filename)
+    
+    # Сохраняем файл
+    with open(file_path, "wb") as buffer:
+        buffer.write(await file.read())
+    
+    # Обновляем путь к фото в БД
+    photo_url = f"/uploads/{filename}"
+    await FundRepository.update_fund(fund_id, SFundPhotoUpdate(photo_url=photo_url))
+    
+    return {"success": True, "photo_url": photo_url}
 
 
 @router.post("/{fund_id}/donate", response_model=SFund)

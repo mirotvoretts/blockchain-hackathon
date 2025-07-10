@@ -16,7 +16,7 @@ class FundOrm(Model):
     target: Mapped[int] = mapped_column(nullable=False)
     collected: Mapped[int] = mapped_column(default=0)
     donate_count: Mapped[int] = mapped_column(default=0)
-    photo_url: Mapped[str] = mapped_column(nullable=True)
+    photo_url: Mapped[str] = mapped_column(nullable=True, default=None)
     target_date: Mapped[datetime] = mapped_column(DateTime(timezone=True))
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), 
