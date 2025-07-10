@@ -1,4 +1,6 @@
-const API_BASE_URL = '/api';
+const { Children } = require("react");
+
+const API_BASE_URL = 'http://localhost:3001';
 
 function getAuthToken() {
     return localStorage.getItem('authToken');
@@ -47,17 +49,6 @@ async function loadProjects() {
     }
 }
 
-async function loadCategories() {
-    return {
-        children: "Дети",
-        health: "Здоровье",
-        animals: "Животные",
-        education: "Образование",
-        ecology: "Экология",
-        social: "Социальная помощь"
-    };
-}
-
 async function donateToFund(fundId, amount, name) {
     try {
         const response = await apiRequest(`/funds/${fundId}/donate`, 'POST', {
@@ -91,13 +82,35 @@ async function getCurrentUser() {
     }
 }
 
-let categories = {};
+const categories = { 
+    1: "Дети",
+    2: "Здоровье",
+    3: "Животные",
+    4: "Образование",
+    5: "Экология",
+    6: "Социальная помощь" 
+}
+
 let projects = [];
 let currentFilter = {
     search: "",
-    category: "all",
-    urgentOnly: false
+    category_id: 0
 };
+
+
+// {
+//     "category_id": 2,
+//     "collected": 35000,
+//     "created_at": "2024-05-20T12:00:00",
+//     "days_left": 42,
+//     "description": "Сбор на корм и лечение.",
+//     "donate_count": 42,
+//     "id": 1,
+//     "photo_url": "/uploads/fond_pets.jpg",
+//     "target": 100000,
+//     "target_date": "2024-12-31T23:59:59Z",
+//     "title": "Помощь бездомным животным"
+//   }
 
 function generateProjectCards(filteredProjects) {
     const projectsGrid = document.getElementById('projectsGrid');
@@ -115,13 +128,13 @@ function generateProjectCards(filteredProjects) {
     }
     
     filteredProjects.forEach(project => {
-        const progress = Math.min(Math.round((project.collected / project.goal) * 100), 100);
-        const categoryName = categories[project.category] || project.category;
+        const progress = Math.min(Math.round((project.collected / project.target) * 100), 100);
+        const categoryName = categories[project.category_id];
         
         const projectCard = document.createElement('div');
         projectCard.className = 'project-card';
         projectCard.innerHTML = `
-            <img src="${project.image_url || '../img/default-project.png'}" alt="${project.title}" class="project-image">
+            <img src="${project.photo_url || '../img/default-project.png'}" alt="${project.title}" class="project-image">
             <div class="project-content">
                 <span class="project-category">${categoryName}</span>
                 <h3 class="project-title">${project.title}</h3>
@@ -130,7 +143,7 @@ function generateProjectCards(filteredProjects) {
                 <div class="progress-container">
                     <div class="progress-label">
                         <span>Собрано: ${(project.collected || 0).toLocaleString()} ₽</span>
-                        <span>Цель: ${(project.goal || 0).toLocaleString()} ₽</span>
+                        <span>Цель: ${(project.target || 0).toLocaleString()} ₽</span>
                     </div>
                     <div class="progress-bar">
                         <div class="progress-value" style="width: ${progress}%"></div>
@@ -143,7 +156,7 @@ function generateProjectCards(filteredProjects) {
                         <div class="stat-label">Прогресс</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-value">${project.donations_count || 0}</div>
+                        <div class="stat-value">${project.donate_count || 0}</div>
                         <div class="stat-label">Пожертвований</div>
                     </div>
                     <div class="stat-item">
@@ -172,7 +185,7 @@ function generateProjectCards(filteredProjects) {
 function filterProjects() {
     return projects.filter(project => {
         const matchesSearch = project.title.toLowerCase().includes(currentFilter.search.toLowerCase());        
-        const matchesCategory = currentFilter.category === "all" || project.category === currentFilter.category;
+        const matchesCategory = currentFilter.category_id === 0 || project.category_id === currentFilter.category_id;
         
         return matchesSearch && matchesCategory;
     });
@@ -195,7 +208,7 @@ function initFilters() {
         button.addEventListener('click', () => {
             categoryButtons.forEach(btn => btn.classList.remove('active'));
             button.classList.add('active');
-            currentFilter.category = button.dataset.category;
+            currentFilter.category_id = button.dataset.category;
             applyFilters();
         });
     });
@@ -214,12 +227,12 @@ function openDonationModal(projectId) {
     if (!project) return;
     
     document.getElementById('donationProjectTitle').textContent = project.title;
-    document.getElementById('donationProjectCategory').textContent = categories[project.category] || project.category;
+    document.getElementById('donationProjectCategory').textContent = categories[project.category_id] || project.category_id;
     document.getElementById('donationCollected').textContent = (project.collected || 0).toLocaleString() + ' ₽';
-    document.getElementById('donationGoal').textContent = (project.goal || 0).toLocaleString() + ' ₽';
+    document.getElementById('donationGoal').textContent = (project.target || 0).toLocaleString() + ' ₽';
     document.getElementById('donationProjectId').value = project.id;
     
-    const progress = Math.min(Math.round(((project.collected || 0) / project.goal) * 100), 100);
+    const progress = Math.min(Math.round(((project.collected || 0) / project.target) * 100), 100);
     document.getElementById('donationProgress').style.width = progress + '%';
     
     if (donationModal) {
@@ -251,7 +264,7 @@ async function handleDonationSubmit(e) {
         const projectIndex = projects.findIndex(p => p.id === projectId);
         if (projectIndex !== -1) {
             projects[projectIndex].collected += amount;
-            projects[projectIndex].donations_count = (projects[projectIndex].donations_count || 0) + 1;
+            projects[projectIndex].donate_count = (projects[projectIndex].donate_count || 0) + 1;
             applyFilters();
         }
         
@@ -428,7 +441,6 @@ function initFAQ() {
 
 
 document.addEventListener('DOMContentLoaded', async () => {
-    categories = await loadCategories();
     projects = await loadProjects();
     
     generateProjectCards(projects);
@@ -507,10 +519,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 });
 
-document.querySelectorAll('.btn-details').forEach(btn => {
-	btn.addEventListener('click', e => {
-		e.preventDefault()
-		const projectId = btn.closest('.project-card').dataset.id
-		window.location.href = `project-details.html?id=${projectId}`
-	})
+document.addEventListener('click', function(e) {
+    if (e.target.closest('.btn-details')) {
+        const btn = e.target.closest('.btn-details');
+        const projectId = btn.dataset.id;
+        viewProjectDetails(projectId);
+    }
+    
+    if (e.target.closest('.btn-donate')) {
+        const btn = e.target.closest('.btn-donate');
+        const projectId = btn.dataset.id;
+        openDonationModal(projectId);
+    }
 });
