@@ -7,7 +7,6 @@ const themeToggle = document.getElementById('themeToggle');
 const mobileThemeToggle = document.getElementById('mobileThemeToggle');
 console.log("[3] Theme toggles initialized:", { themeToggle, mobileThemeToggle });
 
-// Функция для работы с API
 async function apiRequest(endpoint, method = 'GET', body = null) {
     console.log(`[4] Making API request to ${endpoint}`, { method, body });
     
@@ -195,7 +194,6 @@ async function handleProjectSubmit(e) {
     console.log("[39] handleProjectSubmit called");
     e.preventDefault();
     
-    // Рассчитываем дату окончания сбора (текущая дата + 3 месяца)
     const targetDate = new Date();
     targetDate.setMonth(targetDate.getMonth() + 3);
     
@@ -203,13 +201,14 @@ async function handleProjectSubmit(e) {
         title: document.getElementById('projectName').value,
         description: document.getElementById('projectDescription').value,
         category_id: parseInt(document.getElementById('projectCategory').value),
-        target: 10,  // Целевая сумма по умолчанию
-        location: document.getElementById('projectLocation').value,
-        team_info: document.getElementById('contactName').value,
+        target: parseFloat(document.getElementById('projectAmount').value) || 0, 
+        collected : 0,
+        location: "Moscow",
+        team_info: "",
+        donate_count: 0,
         link: document.getElementById('projectLink').value || null,
         target_date: targetDate.toISOString(),
-        photo_url: "",  // URL фото можно добавить позже
-        contract_address: ""  // Адрес контракта будет сгенерирован
+        contract_address: document.getElementById('projectContractAddress').value || null,
     };
     
     console.log("[40] Project data prepared:", projectData);
@@ -331,6 +330,12 @@ function openProjectModal() {
     if (projectModal) {
         projectModal.style.display = 'flex';
         document.body.style.overflow = 'hidden';
+        
+        setTimeout(() => {
+            const modalBody = projectModal.querySelector('.modal-body');
+            if (modalBody) modalBody.scrollTop = 0;
+        }, 50);
+        
         console.log("[62] Project modal opened");
     }
 }

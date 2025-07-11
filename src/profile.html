@@ -367,11 +367,14 @@
 		<div class="modal" id="projectModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title">Добавить проект</h3>
+                <h5 class="modal-title">Добавить проект</h5>
                 <span class="close-modal" id="closeProjectModal">&times;</span>
             </div>
             <div class="modal-body">
                 <form id="projectForm">
+					<div class="form-group">
+                        <h2>Внимательно подойдите к заполнению формы. Если модераторы одобрят вашу заявку, 
+						Вы не сможете менять поля, помеченные звездочкой.</h2></div>
                     <div class="form-group">
                         <label for="projectName">Название проекта*</label>
                         <input type="text" id="projectName" class="form-control" required>
@@ -401,15 +404,23 @@
                     </div>
 					<div class="form-group">
                         <label for="projectLocation">Локация</label>
-                        <input type="text" id="projectLocation" class="form-control" required>
+                        <input type="text" id="projectLocation" class="form-control">
+                    </div>
+					<div class="form-group">
+                        <label for="projectTeam">Информация о команде</label>
+                        <input type="text" id="projectTeam" class="form-control">
                     </div>
                     <div class="form-group">
-                        <label for="projectDescription">Краткое описание проекта*</label>
+                        <label for="projectDescription">Краткое описание проекта (2-3 предложения)*</label>
                         <textarea id="projectDescription" class="form-control" rows="4" required></textarea>
+                    </div>
+					<div class="form-group">
+                        <label for="projectContractAddress">Публичный адрес кошелька Metamask, используемый для сбора средств*</label>
+                        <input type="text" id="projectContractAddress" class="form-control" required>
                     </div>
                     <button type="submit" class="btn-submit" id="submitProjectBtn" disabled>Отправить заявку</button>
                 </form>
-            </div>
+            </div>       
         </div>
     </div>  
 

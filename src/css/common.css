@@ -276,7 +276,8 @@ body {
 	backdrop-filter: blur(5px);
 	z-index: 2000;
 	justify-content: center;
-	align-items: center;
+	align-items: flex-start;
+	overflow-y: auto;
 }
 
 .modal-content {
@@ -286,7 +287,7 @@ body {
 	max-width: 500px;
 	box-shadow: 0 20px 40px var(--light-alt);
 	position: relative;
-	overflow: hidden;
+    margin-bottom: 40px;
 }
 
 .modal-header {
@@ -318,10 +319,11 @@ body {
 
 .modal-body {
 	padding: 30px;
+	overflow-y: auto; 
 }
 
 .form-group {
-	margin-bottom: 20px;
+	margin-bottom: 10px;
 }
 
 .form-group label {
@@ -555,7 +557,6 @@ body {
 	width: 90%;
 	max-width: 500px;
 	box-shadow: var(--shadow);
-	overflow: hidden;
 	transform: translateY(0);
 	transition: transform 0.3s ease-out;
 }
