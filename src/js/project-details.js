@@ -30,8 +30,8 @@ console.log('[1] Project ID from URL:', projectId)
 
 const API_BASE_URL = 'http://localhost:3001'
 
-// ! МЕНЯТЬ НУЖНО ЗДЕСЬ 
-const TEST_CONTRACT_ADDRESS = '0xCafac3dD18aC6c6e92c921884f9E4176737C052c' 
+// ! МЕНЯТЬ НУЖНО ЗДЕСЬ
+const TEST_CONTRACT_ADDRESS = '0x005720E947d9ba049200408d6b4eAbe3812A3640'
 
 if (!projectId) {
 	console.error('[2] No project ID in URL - redirecting to projects page')
@@ -522,7 +522,6 @@ async function getWalletBalance(address) {
 	}
 }
 
-// Проверка достаточности средств
 async function checkFundsSufficiency(amountWei) {
 	try {
 		const balance = await provider.getBalance(signer.address)
@@ -588,6 +587,8 @@ async function confirmDonation() {
 		const amountText =
 			modalDonationAmount?.textContent?.replace(' ETH', '') || '0.1'
 		const amountWei = ethers.parseEther(amountText)
+
+		checkFundsSufficiency(amountWei)
 
 		// Получаем элементы DOM
 		const progressIcon = document.querySelector('.progress-text i')
