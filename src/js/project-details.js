@@ -584,24 +584,48 @@ async function confirmDonation() {
 	try {
 		const amountText =
 			modalDonationAmount?.textContent?.replace(' ETH', '') || '0.1'
-		console.log(amountText)
 		const amountWei = ethers.parseEther(amountText)
-		console.log(amountWei)
 
+		// Получаем элементы DOM
+		const progressIcon = document.querySelector('.progress-text i')
+		const progressText = document.getElementById('progressText')
+		const txLink = document.getElementById('txLink')
+
+		// Показываем прогресс
 		if (transactionProgress) {
 			transactionProgress.style.display = 'block'
+			progressIcon.className = 'fas fa-spinner fa-spin'
 			progressText.textContent = 'Ожидание подтверждения...'
 		}
 
+		// Отправляем транзакцию
 		const tx = await contract.donate({ value: amountWei })
 
-		if (progressText) {
-			progressText.textContent =
-				'Транзакция отправлена, ожидаем подтверждения...'
-		}
+		// Обновляем статус после отправки
+		progressText.textContent = 'Транзакция отправлена, ожидаем подтверждения...'
 
+		// Ждем подтверждения
 		const receipt = await tx.wait()
 
+		// После подтверждения транзакции
+		progressIcon.classList.remove('fa-spinner')
+		progressIcon.classList.remove('fa-spin')
+		progressIcon.classList.add('fa-check-circle')
+		progressIcon.style.opacity = '0'
+		setTimeout(() => {
+			progressIcon.style.opacity = '1'
+			progressIcon.style.transform = 'scale(1.2)'
+		}, 10)
+		setTimeout(() => {
+			progressIcon.style.transform = 'scale(1)'
+		}, 300)
+
+		// Меняем иконку на галочку и обновляем текст
+		progressIcon.className = 'fas fa-check-circle'
+		progressIcon.style.color = '#4CAF50' // Зеленый цвет
+		progressText.textContent = 'Транзакция подтверждена!'
+
+		// Показываем ссылку на Etherscan
 		if (txLink) {
 			txLink.href = `https://sepolia.etherscan.io/tx/${receipt.hash}`
 			txLink.style.display = 'inline-flex'
@@ -612,19 +636,16 @@ async function confirmDonation() {
 			await loadProjectStats()
 			await loadRecentDonators()
 			await loadRecentTransactions()
-			closeDonationModal()
 		}, 3000)
-
-		if (progressText) {
-			
-			setTimeout(() => {
-				progressText.textContent = 'Транзакция подтверждена!';
-			}, 3000);
-		}
-
-		showError('Транзакция прошла успешно!')
 	} catch (error) {
 		console.error('Donation error:', error)
+
+		// Меняем иконку на крестик при ошибке
+		const progressIcon = document.querySelector('.progress-text i')
+		if (progressIcon) {
+			progressIcon.className = 'fas fa-times-circle'
+			progressIcon.style.color = '#f44336' // Красный цвет
+		}
 
 		if (progressText) {
 			progressText.textContent = 'Ошибка при отправке'
