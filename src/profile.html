@@ -107,6 +107,7 @@
 					<div class="profile-section active view-mode" id="profileSection">
 						<div class="profile-header">
 							<h2 class="section-title">Мой профиль</h2>
+							<h3 class="section-subtitle">Заполните информацию о себе. Ее увидят другие пользователи.</h3>
 							<button class="btn-edit" id="editProfileBtn">
 								<i class="fas fa-edit"></i> Внести изменения
 							</button>
@@ -126,11 +127,6 @@
 							<label class="form-label">Телефон</label>
 							<div class="form-control" id="phoneView">+7 (999) 123-45-67</div>
 						</div>
-
-						<button id="connectButton"><i class="fab fa-ethereum"></i>Подключиться к MetaMask</button>
-						<p id="accountAddress"></p>
-
-    <script src="js/metamask.js"></script>
 					</div>
 
 					<div
@@ -376,8 +372,19 @@
                         <label for="projectName">Название проекта*</label>
                         <input type="text" id="projectName" class="form-control" required>
                     </div>
+					<div class="form-group">
+						<label for="projectCategory">Категория</label>
+						<select id="projectCategory" class="form-control">
+							<option value="1">Дети</option>
+							<option value="2">Здоровье</option>
+							<option value="3">Животные</option>
+							<option value="4">Образование</option>
+							<option value="5">Экология</option>
+							<option value="6">Социальная помощь</option>
+						</select>
+					</div>
                     <div class="form-group">
-                        <label for="contactName">ФИО или название фонда*</label>
+                        <label for="contactName">Ваши ФИО или название фонда*</label>
                         <input type="text" id="contactName" class="form-control" required>
                     </div>
                     <div class="form-group">
@@ -389,8 +396,12 @@
                         <input type="tel" id="projectPhone" class="form-control" required>
                     </div>
                     <div class="form-group">
-                        <label for="projectLink">Ссылка на проект (если есть)</label>
+                        <label for="projectLink">Ссылка на сайт проекта (если есть)</label>
                         <input type="url" id="projectLink" class="form-control">
+                    </div>
+					<div class="form-group">
+                        <label for="projectLocation">Локация</label>
+                        <input type="url" id="projectLocation" class="form-control">
                     </div>
                     <div class="form-group">
                         <label for="projectDescription">Краткое описание проекта*</label>

@@ -616,7 +616,10 @@ async function confirmDonation() {
 		}, 3000)
 
 		if (progressText) {
-			progressText.textContent = 'Транзакция подтверждена!'
+			
+			setTimeout(() => {
+				progressText.textContent = 'Транзакция подтверждена!';
+			}, 3000);
 		}
 
 		showError('Транзакция прошла успешно!')
