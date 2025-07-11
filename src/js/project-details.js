@@ -30,6 +30,9 @@ console.log('[1] Project ID from URL:', projectId)
 
 const API_BASE_URL = 'http://localhost:3001'
 
+// ! МЕНЯТЬ НУЖНО ЗДЕСЬ 
+const TEST_CONTRACT_ADDRESS = '0xCafac3dD18aC6c6e92c921884f9E4176737C052c' 
+
 if (!projectId) {
 	console.error('[2] No project ID in URL - redirecting to projects page')
 	window.location.href = 'projects.html'
@@ -38,7 +41,7 @@ if (!projectId) {
 let provider
 let contract
 let signer
-let contractAddress = '0x9f1ac54BEF0DD2f6f3462EA0fa94fC62300d3a8e'
+let contractAddress = ''
 let contractABI = []
 
 // DOM элементы
@@ -251,7 +254,7 @@ async function useLocalAccount(index = 0) {
 }
 
 async function setupLocalEnvironment() {
-	contractAddress = '0xCafac3dD18aC6c6e92c921884f9E4176737C052c'
+	contractAddress = TEST_CONTRACT_ADDRESS
 
 	provider = new ethers.JsonRpcProvider('http://localhost:8545')
 
