@@ -59,6 +59,15 @@ const TEST_CONTRACT_ADDRESS = '0xCafac3dD18aC6c6e92c921884f9E4176737C052c'
 > [!CAUTION]
 > По умолчанию все транзакции отправляются в **Sepolia**, поэтому в браузере в консоль разработчика введём команду `await setupLocalEnvironment()`, чтобы сайт понял, что мы тестируем локально
 
+## Тестирование
+
+Смарт-контракты покрыты тестами. Использовали Foundry. Запуск тестов:
+
+```bash
+git submodule update --init # инициализируем Foundry
+forge test -vvv
+```
+
 ## Полезные ссылки
 
 - **Токен платформы:** [`0xd3d81c23db16f15764b5C30cE9fDC0834e9aA05c`](https://sepolia.etherscan.io/address/0xd3d81c23db16f15764b5C30cE9fDC0834e9aA05c)
