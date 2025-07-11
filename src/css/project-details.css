@@ -1,4 +1,43 @@
-/* Project Details Page Styles */
+.error-message {
+	background: #ffebee;
+	border-left: 4px solid #f44336;
+	color: #c62828;
+	padding: 15px;
+	border-radius: 4px;
+	margin: 10px 0;
+	display: flex;
+	align-items: center;
+}
+
+.error-message i {
+	margin-right: 10px;
+	font-size: 1.5em;
+}
+
+.error-text {
+	flex-grow: 1;
+}
+
+.error-message button {
+	background: none;
+	border: none;
+	color: #c62828;
+	cursor: pointer;
+	margin-left: 10px;
+}
+
+.status-success {
+	color: #2e7d32;
+}
+
+.status-error {
+	color: #c62828;
+}
+
+.status-pending {
+	color: #fb8c00;
+}
+
 .project-hero {
 	background: linear-gradient(135deg, var(--primary), var(--secondary));
 	color: var(--white);
@@ -14,7 +53,6 @@
 	right: 0;
 	width: 40%;
 	height: 100%;
-	background: url('../img/pattern.png') repeat;
 	opacity: 0.1;
 }
 
@@ -627,6 +665,10 @@
 	width: 90%;
 	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 	position: relative;
+	max-height: 90vh;
+	overflow-y: auto;
+	padding: 20px;
+	box-sizing: border-box;
 }
 
 .dark-theme .modal-content {

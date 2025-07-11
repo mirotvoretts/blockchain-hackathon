@@ -9,11 +9,11 @@ import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
  * @dev Позволяет контракту кампании получать информацию о комиссиях и вознаграждать доноров.
  */
 interface IPlatformRegistry {
-    function getFeePercentage() external view returns (uint8);
+    function getFeePercentage() external view returns (uint);
 
     function getFeeAddress() external view returns (address);
 
-    function rewardDonor(address donor, uint96 amount) external;
+    function rewardDonor(address donor, uint amount) external;
 }
 
 /**
@@ -27,10 +27,10 @@ contract CharityCampaign is ReentrancyGuard {
     address public immutable owner; // Адрес организации-создателя
     IPlatformRegistry public immutable platformRegistry; // Адрес главного контракта-реестра
 
-    uint96 public immutable goal; // Целевая сумма сбора (в WEI)
-    uint64 public immutable deadline; // Время окончания кампании (timestamp)
-    uint96 public totalDonated = 0; // Всего собрано (за вычетом комиссии)
-    uint96 public totalSpent = 0; // Всего потрачено через одобренные запросы
+    uint public immutable goal; // Целевая сумма сбора (в WEI)
+    uint public immutable deadline; // Время окончания кампании (timestamp)
+    uint public totalDonated = 0; // Всего собрано (за вычетом комиссии)
+    uint public totalSpent = 0; // Всего потрачено через одобренные запросы
     bool public goalReached = false;
 
     // --- Структуры данных ---
@@ -38,34 +38,34 @@ contract CharityCampaign is ReentrancyGuard {
     /// @notice Запрос на расходование средств, создаваемый организацией.
     struct SpendingRequest {
         bytes32 descriptionHash;
-        uint96 amount;
+        uint amount;
         address payable recipient;
         bool executed;
-        uint96 approvalVotes;
+        uint approvalVotes;
     }
 
-    mapping(uint64 => SpendingRequest) public spendingRequests;
-    mapping(uint64 => mapping(address => bool)) public requestVoters;
+    mapping(uint => SpendingRequest) public spendingRequests;
+    mapping(uint => mapping(address => bool)) public requestVoters;
 
-    uint64 public nextRequestId;
-    mapping(address => uint96) public donations;
+    uint public nextRequestId;
+    mapping(address => uint) public donations;
 
     // --- События ---
 
-    event Donated(address indexed donor, uint96 amount, uint96 fee);
+    event Donated(address indexed donor, uint amount, uint fee);
     event RequestCreated(
-        uint64 indexed requestId,
+        uint indexed requestId,
         string description,
-        uint96 amount,
+        uint amount,
         address indexed recipient
     );
     event RequestVoted(
-        uint64 indexed requestId,
+        uint indexed requestId,
         address indexed voter,
-        uint96 voteWeight
+        uint voteWeight
     );
-    event RequestExecuted(uint64 indexed requestId, uint96 amount);
-    event Refunded(address indexed donor, uint96 amount);
+    event RequestExecuted(uint indexed requestId, uint amount);
+    event Refunded(address indexed donor, uint amount);
 
     // --- Ошибки ---
 
@@ -102,15 +102,15 @@ contract CharityCampaign is ReentrancyGuard {
 
     constructor(
         address _owner,
-        uint96 _goal,
-        uint64 _durationInSeconds,
+        uint _goal,
+        uint _durationInSeconds,
         address _platformRegistry
     ) {
         if (_owner == address(0) || _platformRegistry == address(0))
             revert AddressZero();
         owner = _owner;
         goal = _goal;
-        deadline = uint64(block.timestamp) + _durationInSeconds;
+        deadline = uint(block.timestamp) + _durationInSeconds;
         platformRegistry = IPlatformRegistry(_platformRegistry);
     }
 
@@ -124,10 +124,10 @@ contract CharityCampaign is ReentrancyGuard {
         if (msg.value == 0) revert ZeroDonation();
         if (totalDonated >= goal) revert GoalAlreadyReached();
 
-        uint8 feePercentage = platformRegistry.getFeePercentage();
-        uint96 amount = uint96(msg.value);
-        uint96 feeAmount = uint96((uint256(amount) * feePercentage) / 100);
-        uint96 netAmount = amount - feeAmount;
+        uint feePercentage = platformRegistry.getFeePercentage();
+        uint amount = msg.value;
+        uint feeAmount = amount * feePercentage / 100;
+        uint netAmount = amount - feeAmount;
 
         donations[msg.sender] += netAmount;
         totalDonated += netAmount;
@@ -155,13 +155,13 @@ contract CharityCampaign is ReentrancyGuard {
      */
     function createSpendingRequest(
         string calldata _description,
-        uint96 _amount,
+        uint _amount,
         address payable _recipient
     ) external onlyCampaignOwner {
         if (_recipient == address(0)) revert AddressZero();
         if (totalDonated < goal) revert GoalNotReached();
 
-        uint96 availableToSpend = totalDonated - totalSpent;
+        uint availableToSpend = totalDonated - totalSpent;
         if (_amount > availableToSpend) revert InsufficientFundsInContract();
 
         SpendingRequest storage newRequest = spendingRequests[nextRequestId];
@@ -177,7 +177,7 @@ contract CharityCampaign is ReentrancyGuard {
      * @dev Вес голоса равен сумме пожертвований донора.
      * @param _requestId ID запроса для голосования.
      */
-    function voteForRequest(uint64 _requestId) external onlyDonors {
+    function voteForRequest(uint _requestId) external onlyDonors {
         SpendingRequest storage request = spendingRequests[_requestId];
         if (request.descriptionHash == bytes32(0)) {
             revert RequestDoesNotExist();
@@ -198,14 +198,14 @@ contract CharityCampaign is ReentrancyGuard {
      * @param _requestId ID запроса для исполнения.
      */
     function executeRequest(
-        uint64 _requestId
+        uint _requestId
     ) external nonReentrant onlyCampaignOwner {
         SpendingRequest storage request = spendingRequests[_requestId];
 
         if (request.descriptionHash == bytes32(0)) revert RequestDoesNotExist();
         if (request.executed) revert RequestAlreadyExecuted();
 
-        uint96 requiredApprovals = totalDonated / 2;
+        uint requiredApprovals = totalDonated / 2;
         if (request.approvalVotes <= requiredApprovals) {
             revert InsufficientApprovals(
                 requiredApprovals,
@@ -213,7 +213,7 @@ contract CharityCampaign is ReentrancyGuard {
             );
         }
 
-        uint96 availableToSpend = totalDonated - totalSpent;
+        uint availableToSpend = totalDonated - totalSpent;
         if (request.amount > availableToSpend) {
             revert InsufficientFundsInContract();
         }
@@ -238,7 +238,7 @@ contract CharityCampaign is ReentrancyGuard {
         if (block.timestamp < deadline) revert CampaignIsActive();
         if (totalDonated >= goal) revert CampaignNotSuccessful();
 
-        uint96 amountToRefund = donations[msg.sender];
+        uint amountToRefund = donations[msg.sender];
         if (amountToRefund == 0) revert NothingToRefund();
 
         donations[msg.sender] = 0;

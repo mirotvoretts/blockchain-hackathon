@@ -16,17 +16,17 @@ contract PlatformRegistry is Ownable {
     struct CampaignInfo {
         address campaignAddress;
         address owner;
-        uint96 goal;
-        uint64 deadline;
+        uint goal;
+        uint deadline;
     }
 
     // --- Состояние контракта ---
 
-    uint8 private _feePercentage;
+    uint private _feePercentage;
     address public feeAddress;
     PlatformToken public immutable platformToken;
-    uint8 public constant MAX_FEE_PERCENTAGE = 30;
-    uint96 public constant TOKEN_REWARD_RATE = 3000000000000000 wei;
+    uint public constant MAX_FEE_PERCENTAGE = 30;
+    uint public constant TOKEN_REWARD_RATE = 3000000000000000 wei;
 
     mapping(address => bool) public verifiedOrganizations;
     mapping(address => bool) public isCampaign;
@@ -56,9 +56,9 @@ contract PlatformRegistry is Ownable {
         address indexed campaignAddress,
         address indexed creator
     );
-    event FeePercentageChanged(uint8 newFee);
+    event FeePercentageChanged(uint newFee);
     event FeeAddressChanged(address newAddress);
-    event FeesWithdrawn(address indexed to, uint96 amount);
+    event FeesWithdrawn(address indexed to, uint amount);
 
     // --- Модификаторы ---
 
@@ -72,7 +72,7 @@ contract PlatformRegistry is Ownable {
 
     constructor(
         address initialOwner,
-        uint8 initialFeePercentage,
+        uint initialFeePercentage,
         address tokenAddress
     ) Ownable(initialOwner) {
         if (initialFeePercentage > MAX_FEE_PERCENTAGE)
@@ -95,7 +95,7 @@ contract PlatformRegistry is Ownable {
         emit OrganizationVerified(_organizationAddress, _isVerified);
     }
 
-    function setFeePercentage(uint8 _newFee) external onlyOwner {
+    function setFeePercentage(uint _newFee) external onlyOwner {
         if (_newFee > MAX_FEE_PERCENTAGE) revert InvalidFeePercentage();
         _feePercentage = _newFee;
         emit FeePercentageChanged(_newFee);
@@ -109,7 +109,7 @@ contract PlatformRegistry is Ownable {
 
     function withdrawFees(
         address payable _to,
-        uint96 _amount
+        uint _amount
     ) external onlyOwner {
         if (_to == address(0)) revert AddressZero();
 
@@ -126,15 +126,15 @@ contract PlatformRegistry is Ownable {
     // --- Функции для верифицированных организаций ---
 
     function createCampaign(
-        uint96 _goal,
-        uint64 _durationInSeconds
+        uint _goal,
+        uint _durationInSeconds
     ) external onlyVerified returns (address) {
         if (_durationInSeconds == 0 || _goal == 0) revert InvalidParameters();
 
         CharityCampaign campaign = new CharityCampaign(
             msg.sender,
             _goal,
-            uint64(block.timestamp) + _durationInSeconds,
+            block.timestamp + _durationInSeconds,
             address(this)
         );
         address campaignAddress = address(campaign);
@@ -146,7 +146,7 @@ contract PlatformRegistry is Ownable {
                 campaignAddress: campaignAddress,
                 owner: msg.sender,
                 goal: _goal,
-                deadline: uint64(block.timestamp) + _durationInSeconds
+                deadline: block.timestamp + _durationInSeconds
             })
         );
         organizationCampaigns[msg.sender].push(campaignId);
@@ -161,7 +161,7 @@ contract PlatformRegistry is Ownable {
      * @notice Вызывается контрактом кампании для вознаграждения донора токенами TCT.
      * @dev Только контракты, созданные этой фабрикой, могут вызывать эту функцию.
      */
-    function rewardDonor(address _donor, uint96 _amount) external {
+    function rewardDonor(address _donor, uint _amount) external {
         if (_amount == 0) revert ZeroAmount();
         if (!isCampaign[msg.sender]) revert NotACampaignContract();
         uint256 rewardAmount = (_amount * TOKEN_REWARD_RATE) / 1 ether;
@@ -171,12 +171,12 @@ contract PlatformRegistry is Ownable {
     // --- Публичные View функции ---
 
     function getCampaignInfo(
-        uint64 _campaignId
+        uint _campaignId
     ) external view returns (CampaignInfo memory) {
         return allCampaigns[_campaignId];
     }
 
-    function getFeePercentage() external view returns (uint8) {
+    function getFeePercentage() external view returns (uint) {
         return _feePercentage;
     }
 
