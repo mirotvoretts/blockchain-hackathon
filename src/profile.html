@@ -14,6 +14,10 @@
 		>
 		<link rel="stylesheet" href="css/common.css">
 		<link rel="stylesheet" href="css/profile.css">
+		<link rel="icon" href="icons/favicon.ico" type="image/x-icon">
+		<link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
 	</head>
 	<body>
 		<header class="header">
@@ -387,21 +391,17 @@
                         <label for="contactName">Ваши ФИО или название фонда*</label>
                         <input type="text" id="contactName" class="form-control" required>
                     </div>
-                    <div class="form-group">
-                        <label for="projectEmail">Email*</label>
-                        <input type="email" id="projectEmail" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="projectPhone">Телефон*</label>
-                        <input type="tel" id="projectPhone" class="form-control" required>
-                    </div>
+					<div class="form-group">
+						<label for="projectAmount">Цель(в ETH)*</label>
+						<input type="text" id="projectAmount" class="form-control" required>
+					</div>
                     <div class="form-group">
                         <label for="projectLink">Ссылка на сайт проекта (если есть)</label>
                         <input type="url" id="projectLink" class="form-control">
                     </div>
 					<div class="form-group">
                         <label for="projectLocation">Локация</label>
-                        <input type="url" id="projectLocation" class="form-control">
+                        <input type="text" id="projectLocation" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="projectDescription">Краткое описание проекта*</label>
