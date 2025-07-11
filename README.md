@@ -62,7 +62,7 @@ const TEST_CONTRACT_ADDRESS = '0xCafac3dD18aC6c6e92c921884f9E4176737C052c'
 ## Полезные ссылки
 
 - **Токен платформы:** [`0xd3d81c23db16f15764b5C30cE9fDC0834e9aA05c`](https://sepolia.etherscan.io/address/0xd3d81c23db16f15764b5C30cE9fDC0834e9aA05c)
-- **Управление платформой:** [`0x972898BC5fa20b47427e3a2e50293b15BB2C3d80`](https://sepolia.etherscan.io/address/0x972898BC5fa20b47427e3a2e50293b15BB2C3d80)
+- **Управление платформой:** [`0xe136c02A8C9BBeAC4A14c17AD254b0Fcc570EAb5`](https://sepolia.etherscan.io/address/0xe136c02A8C9BBeAC4A14c17AD254b0Fcc570EAb5)
 
 ## Команда "To The Moon"
 

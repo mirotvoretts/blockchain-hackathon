@@ -78,19 +78,7 @@ async function displayUserProjects() {
     console.log("[18] Added loading message");
     
     try {
-        console.log("[19] Creating test project");
-        let projects = [{
-            id: 4,
-            title: "Тестовый проект",
-            description: "Это тестовый проект для отладки. Он показывает, как будет выглядеть карточка проекта в вашем профиле.",
-            collected: 5.3,
-            target: 15,
-            status: 'active',
-            donate_count: 7,
-            days_left: 28
-        }];
-        
-        console.log("[20] Test project created:", projects);
+        const projects = await loadUserProjects();
         
         if (projects.length === 0) {
             console.log("[21] No projects found");
@@ -165,12 +153,12 @@ async function displayUserProjects() {
 }
 
 window.viewProject = function(projectId) {
-    console.log("[30.1] viewProject called with id:", projectId);
+    console.log("[30] viewProject called with id:", projectId);
     window.location.href = `project-details.html?id=${projectId}`;
 };
 
 window.editProject = function(projectId) {
-    console.log("[30.2] editProject called with id:", projectId);
+    console.log("[30] editProject called with id:", projectId);
     window.location.href = `project-editor.html?id=${projectId}`;
 };
 
@@ -203,20 +191,25 @@ function initProjectsSection() {
         console.log("[38] Added click event to projectsLink");
     }
 }
-
 async function handleProjectSubmit(e) {
     console.log("[39] handleProjectSubmit called");
     e.preventDefault();
     
+    // Рассчитываем дату окончания сбора (текущая дата + 3 месяца)
+    const targetDate = new Date();
+    targetDate.setMonth(targetDate.getMonth() + 3);
+    
     const projectData = {
         title: document.getElementById('projectName').value,
         description: document.getElementById('projectDescription').value,
-        contact_name: document.getElementById('contactName').value,
-        contact_email: document.getElementById('projectEmail').value,
-        contact_phone: document.getElementById('projectPhone').value,
-        website: document.getElementById('projectLink').value || null,
-        category_id: 1,
-        target: 10
+        category_id: parseInt(document.getElementById('projectCategory').value),
+        target: 10,  // Целевая сумма по умолчанию
+        location: document.getElementById('projectLocation').value,
+        team_info: document.getElementById('contactName').value,
+        link: document.getElementById('projectLink').value || null,
+        target_date: targetDate.toISOString(),
+        photo_url: "",  // URL фото можно добавить позже
+        contract_address: ""  // Адрес контракта будет сгенерирован
     };
     
     console.log("[40] Project data prepared:", projectData);
@@ -228,21 +221,45 @@ async function handleProjectSubmit(e) {
     
     try {
         console.log("[42] Sending project data to API");
-        await apiRequest('/funds/', 'POST', projectData);
-        console.log("[43] Project created successfully");
+        const response = await apiRequest('/funds/', 'POST', projectData);
+        console.log("[43] Project created successfully. Response:", response);
         
         alert('Проект успешно создан и отправлен на модерацию!');
-        projectForm.reset();
+        document.getElementById('projectForm').reset();
         closeProjectModal();
         displayUserProjects();
     } catch (error) {
         console.error('[44] Create project error:', error);
-        alert(`Ошибка создания проекта: ${error.message}`);
+        alert(`Ошибка создания проекта: ${error.message || 'Попробуйте позже'}`);
     } finally {
         submitBtn.disabled = false;
         submitBtn.innerHTML = 'Отправить заявку';
         console.log("[45] Submit button re-enabled");
     }
+}
+function initAmountValidation() {
+    const amountInput = document.getElementById('projectAmount');
+    if (!amountInput) return;
+
+    amountInput.addEventListener('input', function() {
+        this.value = this.value
+            .replace(/[^0-9.]/g, '') 
+            .replace(/^\./, '') 
+            .replace(/\.+/g, '.') 
+            .replace(/(\.\d*)\./g, '$1');
+        
+        const parts = this.value.split('.');
+        if (parts.length > 1 && parts[1].length > 18) {
+            this.value = parts[0] + '.' + parts[1].slice(0, 18);
+        }
+    });
+
+    amountInput.addEventListener('blur', function() {
+        if (this.value === '.') this.value = '';
+        if (this.value && !this.value.includes('.') && this.value.length > 18) {
+            this.value = this.value.slice(0, 18);
+        }
+    });
 }
 
 function toggleTheme() {
@@ -608,6 +625,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     setupMobileMenuLinks();
+    initAmountValidation();
     
     const projectModal = document.getElementById('projectModal');
     const closeProjectModalBtn = document.getElementById('closeProjectModal');
