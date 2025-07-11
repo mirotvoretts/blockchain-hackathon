@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chain Impact - Редактор проектов</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/project-editor.css">
+    <link rel="icon" href="icons/favicon.ico" type="image/x-icon">
+		<link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
+</head>
+<body>
+    <header class="header">
+        <a href="index.html" class="logo">
+            <img src="icons/logo_light.png" alt="" class="logo-icon light-icon">
+            <img src="icons/logo_dark.png" alt="" class="logo-icon dark-icon">
+            <span>Chain Impact</span>                
+        </a>
+
+        <div class="header-links">
+            <a href="index.html#how-to-donate">Как пожертвовать</a>
+            <a href="index.html#about-platform">О платформе</a>
+            <a href="projects.html">Проекты</a>
+            <a href="index.html#FAQ">FAQ</a>
+        </div>
+
+        <div class="header-buttons">
+            <button class="btn btn-theme" id="themeToggle">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </header>
+
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="index.html#how-to-donate">
+            <i class="fas fa-hand-holding-heart"></i> Как пожертвовать
+        </a>
+        <a href="index.html#about-platform">
+            <i class="fas fa-info-circle"></i> О платформе
+        </a>
+        <a href="projects.html">
+            <i class="fas fa-project-diagram"></i> Проекты
+        </a>
+        <a href="index.html#FAQ"> <i class="fas fa-question-circle"></i> FAQ </a>
+        <button class="btn btn-theme" id="mobileThemeToggle">
+            <i class="fas fa-moon"></i>
+        </button>
+    </div>
+
+    <!-- Основной контент -->
+    <main class="editor-container">
+        <div class="container">
+            <div class="editor-card">                
+                <div class="form-group">
+                    <label for="projectSubtitle">Проект ""</label>
+                </div>
+            </div>
+            <div class="editor-card">
+                
+                <div class="form-group">
+                    <label for="projectSubtitle">Краткое описание</label>
+                    <textarea id="projectSubtitle" class="form-control" placeholder="Краткое описание проекта (макс. 200 символов)" maxlength="200"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="projectDescription">Полное описание</label>
+                    <textarea id="projectDescription" class="form-control" placeholder="Подробное описание проекта"></textarea>
+                </div>
+            </div>
+            
+            <div class="editor-card">
+                <h2>Детали проекта</h2>
+                
+                <div class="form-group">
+                    <label for="projectStartDate">Дата конца сборов</label>
+                    <input type="date" id="projectStartDate" class="form-control">
+                </div>
+                
+                <div class="form-group">
+                    <label for="projectTeam">Команда проекта</label>
+                    <textarea id="projectTeam" class="form-control" placeholder="Опишите команду проекта"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="projectLinks">Ссылка на сайт</label>
+                    <input type="text" id="projectLinks" class="form-control" placeholder="https://example.com, https://social.com/project">
+                </div>
+            </div>
+            
+            <div class="editor-card">
+                <div class="section-header">
+                    <h3 class="section-title">Галерея проекта</h3>
+                </div>
+                
+                <div class="gallery-container" id="galleryContainer">
+                    <!-- Изображения будут добавляться сюда -->
+                </div>
+                
+                <div class="upload-area" id="imageUploadArea">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p class="upload-text">Перетащите изображения сюда или нажмите для загрузки</p>
+                    <input type="file" id="imageUploadInput" accept="image/*" multiple style="display: none;">
+                </div>
+            </div>
+            
+            <div class="editor-card">
+                <div class="section-header">
+                    <h3 class="section-title">Обновления проекта</h3>
+                    <button class="add-item-btn" id="addUpdateItem">
+                        <i class="fas fa-plus"></i> Добавить
+                    </button>
+                </div>
+                
+                <div id="updatesContainer">
+                    <!-- Обновления будут добавляться сюда -->
+                </div>
+            </div>
+            
+            <div class="editor-actions" style="margin-top: 30px; justify-content: center;">
+                <button class="btn btn-primary" id="finalSaveBtn" style="padding: 15px 40px; font-size: 1.1rem;">
+                    <i class="fas fa-save"></i> Сохранить проект
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+			<div class="footer-content">
+				<div class="footer-section">
+					<h3 class="footer-title">
+						<i class="fas fa-hands-helping"></i> CharityChain
+					</h3>
+					<p>
+						Платформа для прозрачной благотворительности на основе
+						блокчейн-технологий. Обеспечиваем доверие доноров и получателей
+						помощи.
+					</p>
+				</div>
+				<div class="footer-section">
+					<h3 class="footer-title">Навигация</h3>
+					<ul class="footer-links">
+						<li>
+							<a href="index.html"
+								><i class="fas fa-chevron-right"></i> Главная</a
+							>
+						</li>
+						<li>
+							<a href="projects.html"
+								><i class="fas fa-chevron-right"></i> Проекты</a
+							>
+						</li>
+					</ul>
+				</div>
+				<div class="footer-section">
+					<h3 class="footer-title">Контакты</h3>
+					<ul class="footer-links">
+						<li>
+							<a href="mailto:info@charitychain.org"
+								><i class="fas fa-envelope"></i> info@charitychain.org</a
+							>
+						</li>
+						<li>
+							<a href="tel:+79991234567"
+								><i class="fas fa-phone"></i> +7 (999) 123-45-67</a
+							>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="copyright">&copy; 2025 CharityChain. Все права защищены.</div>
+		</footer>
+    
+    <!-- Уведомление -->
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i>
+        <span id="notificationText">Проект успешно сохранен!</span>
+    </div>
+    
+    <script src="js/project-editor.js"></script>
+</body>
+</html>

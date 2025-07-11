@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="ru">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Chain Impact - Детали проекта</title>
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+		/>
+		<link
+			href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap"
+			rel="stylesheet"
+		/>
+		<link rel="stylesheet" href="css/common.css" />
+		<link rel="stylesheet" href="css/project-details.css" />
+		<script src="https://cdn.jsdelivr.net/npm/web3@1.8.0/dist/web3.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+		<link rel="icon" href="icons/favicon.ico" type="image/x-icon">
+		<link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
+
+		<style>
+			#connectButton {
+				background: linear-gradient(90deg, var(--primary), var(--secondary));
+				color: var(--white);
+				border: none;
+				padding: 14px 28px;
+				font-size: 1rem;
+				font-weight: 600;
+				font-family: 'Montserrat', sans-serif;
+				border-radius: 50px;
+				cursor: pointer;
+				transition: var(--transition);
+				display: inline-flex;
+				align-items: center;
+				gap: 10px;
+				box-shadow: var(--shadow);
+				margin-top: 30px;
+			}
+
+			#connectButton:hover {
+				background: linear-gradient(
+					90deg,
+					var(--primary-light),
+					var(--secondary-light)
+				);
+				transform: translateY(-2px);
+				box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+			}
+
+			#connectButton:active {
+				transform: scale(0.98);
+			}
+		</style>
+	</head>
+	<body>
+		<header class="header">
+			<a href="index.html" class="logo">
+				<img src="icons/logo_light.png" alt="" class="logo-icon light-icon" />
+				<img src="icons/logo_dark.png" alt="" class="logo-icon dark-icon" />
+				<span>Chain Impact</span>
+			</a>
+
+			<div class="header-links">
+				<a href="index.html#how-to-donate">Как пожертвовать</a>
+				<a href="index.html#about-platform">О платформе</a>
+				<a href="projects.html">Проекты</a>
+				<a href="index.html#FAQ">FAQ</a>
+			</div>
+
+			<div class="header-buttons">
+				<a href="#" class="btn btn-wallet" id="universalWalletBtn">
+					<i class="fas fa-wallet"></i>
+					<span id="walletText">Подключить кошелек</span>
+				</a>
+				<button class="btn btn-theme" id="themeToggle">
+					<i class="fas fa-moon"></i>
+				</button>
+			</div>
+
+			<button class="mobile-menu-btn" id="mobileMenuBtn">
+				<i class="fas fa-bars"></i>
+			</button>
+		</header>
+
+		<div class="mobile-menu" id="mobileMenu">
+			<a href="index.html#how-to-donate">
+				<i class="fas fa-hand-holding-heart"></i> Как пожертвовать
+			</a>
+			<a href="index.html#about-platform">
+				<i class="fas fa-info-circle"></i> О платформе
+			</a>
+			<a href="projects.html">
+				<i class="fas fa-project-diagram"></i> Проекты
+			</a>
+			<a href="index.html#FAQ"> <i class="fas fa-question-circle"></i> FAQ </a>
+			<button class="btn btn-wallet" id="mobileUniversalWalletBtn">
+				<i class="fas fa-wallet"></i> Подключить кошелек
+			</button>
+			<button class="btn btn-theme" id="mobileThemeToggle">
+				<i class="fas fa-moon"></i>
+			</button>
+		</div>
+
+		<div class="project-hero">
+			<div class="container">
+				<div class="breadcrumbs">
+					<a href="projects.html">Все проекты</a> / <span>Детали проекта</span>
+				</div>
+
+				<div class="hero-content">
+					<div class="hero-text">
+						<div class="project-category">Дети</div>
+						<h1 class="project-title"></h1>
+						<p class="project-subtitle"></p>
+
+						<div class="project-stats">
+							<div class="stat-item">
+								<div class="stat-value" id="totalDonations">0 ETH</div>
+								<div class="stat-label" style="padding-left: 8px">Собрано</div>
+							</div>
+							<div class="stat-item">
+								<div class="stat-value" id="donatorsCount">0</div>
+								<div class="stat-label" style="padding-left: 8px">Доноров</div>
+							</div>
+							<div class="stat-item" style="position: relative">
+								<div class="stat-value" id="daysLeft">32</div>
+								<div class="stat-label" style="padding-left: 8px">
+									Дней осталось
+								</div>
+								<div
+									style="
+										position: absolute;
+										bottom: 0px;
+										left: 0;
+										width: 100%;
+										height: 0.6px;
+										background-color: rgba(255, 255, 255, 0.9);
+									"
+								></div>
+							</div>
+						</div>
+
+						<div class="progress-container">
+							<div class="progress-label">
+								<span>Прогресс: <span id="progressPercent"></span>%</span>
+								<span id="targetAmount"></span>
+							</div>
+							<div class="progress-bar">
+								<div
+									class="progress-value"
+									id="progressBar"
+									style="width: 0%"
+								></div>
+							</div>
+						</div>
+					</div>
+
+					<div class="hero-image">
+						<img src="img/default_image.png" alt="Помощь детям-сиротам" />
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="container project-container">
+			<div class="project-main">
+				<div class="project-tabs">
+					<button class="tab-btn active" data-tab="about">О проекте</button>
+					<button class="tab-btn" data-tab="updates">Обновления</button>
+					<button class="tab-btn" data-tab="donators">Доноры</button>
+					<button class="tab-btn" data-tab="transactions">Транзакции</button>
+				</div>
+
+				<div class="tab-content active" id="aboutTab">
+					<h2>Описание проекта</h2>
+					<p></p>
+
+					<div class="project-details">
+						<div class="detail-item">
+							<i class="fas fa-map-marker-alt"></i>
+							<div>
+								<h3>Локация</h3>
+								<p></p>
+							</div>
+						</div>
+						<div class="detail-item">
+							<i class="fas fa-calendar-alt"></i>
+							<div>
+								<h3>Дата начала</h3>
+								<p></p>
+							</div>
+						</div>
+						<div class="detail-item">
+							<i class="fas fa-users"></i>
+							<div>
+								<h3>Команда</h3>
+								<p></p>
+							</div>
+						</div>
+						<div class="detail-item">
+							<i class="fas fa-link"></i>
+							<div>
+								<h3>Ссылки</h3>
+								<a href="#"></a>
+							</div>
+						</div>
+					</div>
+
+					<h2>На что пойдут средства</h2>
+					<div class="funds-allocation">
+						<canvas id="fundsChart"></canvas>
+						<div class="funds-legend" id="fundsLegend"></div>
+					</div>
+
+					<h2>Фотогалерея</h2>
+					<div class="project-gallery"></div>
+				</div>
+
+				<div class="tab-content" id="updatesTab">
+					<h2>Обновления проекта</h2>
+					<div class="updates-list">
+						<div class="update-item">
+							<div class="update-date">15.06.2025</div>
+							<h3>Новые участники программы</h3>
+							<p>
+								К нашей программе присоединились еще 2 детских дома из Казани.
+								Теперь мы помогаем 15 детям в этом регионе.
+							</p>
+						</div>
+						<div class="update-item">
+							<div class="update-date">01.06.2025</div>
+							<h3>Отчет за май</h3>
+							<p>
+								Опубликован финансовый отчет за май 2025 года. Все средства были
+								направлены на оплату аренды жилья для 5 выпускников детских
+								домов.
+							</p>
+						</div>
+					</div>
+				</div>
+
+				<div class="tab-content" id="donatorsTab">
+					<h2>Последние доноры</h2>
+					<div class="donators-list" id="donatorsList">
+						<!-- Будет заполняться через JS -->
+					</div>
+				</div>
+
+				<div class="tab-content" id="transactionsTab">
+					<h2>История транзакций</h2>
+					<div class="transactions-list" id="transactionsList">
+						<!-- Будет заполняться через JS -->
+					</div>
+				</div>
+			</div>
+
+			<div class="project-sidebar">
+				<div class="sidebar-card">
+					<h3>Адрес контракта</h3>
+					<div class="contract-address" id="contractAddress"></div>
+					<button class="btn btn-copy" id="copyAddressBtn">
+						<i class="far fa-copy"></i> Копировать
+					</button>
+
+					<div class="verification-badge">
+						<i class="fas fa-check-circle"></i> Контракт верифицирован
+					</div>
+				</div>
+
+				<div class="sidebar-card">
+					<h3>Поддержать проект</h3>
+					<div class="donation-options">
+						<button class="donation-option" data-amount="0.001">
+							0.001 ETH
+						</button>
+						<button class="donation-option" data-amount="0.005">
+							0.005 ETH
+						</button>
+						<button class="donation-option" data-amount="0.01">0.01 ETH</button>
+						<button class="donation-option" data-amount="0.05">0.05 ETH</button>
+					</div>
+
+					<div class="custom-donation">
+						<input
+							type="number"
+							id="customAmount"
+							placeholder="Другая сумма"
+							min="0.001"
+							step="0.001"
+						/>
+						<span>ETH</span>
+					</div>
+
+					<button class="btn btn-donate-full" id="sidebarDonateBtn">
+						<i class="fas fa-donate"></i> Пожертвовать
+					</button>
+				</div>
+
+				<div class="sidebar-card">
+					<h3>Поделиться</h3>
+					<div class="social-share">
+						<button class="social-btn twitter">
+							<i class="fab fa-twitter"></i>
+						</button>
+						<button class="social-btn facebook">
+							<i class="fab fa-facebook-f"></i>
+						</button>
+						<button class="social-btn telegram">
+							<i class="fab fa-telegram-plane"></i>
+						</button>
+						<button class="social-btn copy-link" id="copyLinkBtn">
+							<i class="fas fa-link"></i>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal" id="donationModal">
+			<div class="modal-content">
+				<span class="close" id="closeModal">&times;</span>
+				<h2>Подтверждение доната</h2>
+
+				<div class="donation-summary">
+					<div class="summary-item">
+						<span>Проект:</span>
+						<span id="modalProjectName">Помощь детям-сиротам</span>
+					</div>
+					<div class="summary-item">
+						<span>Сумма:</span>
+						<span id="modalDonationAmount">0 ETH</span>
+					</div>
+					<div class="summary-item">
+						<span>Комиссия платформы:</span>
+						<span id="platformFee">0 ETH</span>
+					</div>
+					<div class="summary-item">
+						<span>Комиссия сети:</span>
+						<span id="networkFee">~0.001 ETH</span>
+					</div>
+					<div class="summary-item total">
+						<span>Итого к списанию:</span>
+						<span id="totalAmount">0 ETH</span>
+					</div>
+				</div>
+
+				<!-- Кнопка подключения -->
+				<button id="connectButton">
+					<i class="fab fa-ethereum"></i>Подключиться к MetaMask
+				</button>
+
+				<!-- Блок информации о кошельке -->
+				<div class="wallet-info" id="walletInfo" style="display: true">
+					<i class="fas fa-wallet"></i>
+					<div>
+						<div class="wallet-address" id="modalWallet1Address">
+							<span id="accountAddress">Авторизуйтесь через MetaMask</span>
+						</div>
+					</div>
+				</div>
+
+				<!-- Подключение ethers.js -->
+				<script src="https://cdn.jsdelivr.net/npm/ethers @6.7.1/dist/ethers.min.js"></script>
+				<script src="js/metamask.js"></script>
+				<div class="transaction-status" id="transactionStatus">
+					<div class="status-message">
+						<i class="fas fa-info-circle"></i>
+						<span>Транзакция будет отправлена в сеть Ethereum</span>
+					</div>
+				</div>
+
+				<button class="btn btn-confirm" id="confirmDonationBtn">
+					<i class="fas fa-check-circle"></i> Подтвердить транзакцию
+				</button>
+
+				<div
+					class="transaction-progress"
+					id="transactionProgress"
+					style="display: none"
+				>
+					<div class="progress-text">
+						<i class="fas fa-spinner fa-spin"></i>
+						<span id="progressText">Ожидание подтверждения...</span>
+					</div>
+					<div class="progress-bar">
+						<div class="progress"></div>
+					</div>
+					<a
+						href="#"
+						class="tx-link"
+						id="txLink"
+						target="_blank"
+						style="display: none"
+					>
+						<i class="fas fa-external-link-alt"></i> Посмотреть транзакцию
+					</a>
+				</div>
+			</div>
+		</div>
+
+		<footer class="footer">
+			<div class="footer-content">
+				<div class="footer-section">
+					<h3 class="footer-title">
+						<i class="fas fa-hands-helping"></i> Chain Impact
+					</h3>
+					<p>
+						Платформа для прозрачной благотворительности на основе
+						блокчейн-технологий. Обеспечиваем доверие доноров и получателей
+						помощи.
+					</p>
+				</div>
+				<div class="footer-section">
+					<h3 class="footer-title">Навигация</h3>
+					<ul class="footer-links">
+						<li>
+							<a href="index.html"
+								><i class="fas fa-chevron-right"></i> Главная</a
+							>
+						</li>
+						<li>
+							<a href="projects.html"
+								><i class="fas fa-chevron-right"></i> Проекты</a
+							>
+						</li>
+						<li>
+							<a href="index.html#about-platform"
+								><i class="fas fa-chevron-right"></i> О нас</a
+							>
+						</li>
+						<li>
+							<a href="index.html#FAQ"
+								><i class="fas fa-chevron-right"></i> Контакты</a
+							>
+						</li>
+					</ul>
+				</div>
+				<div class="footer-section">
+					<h3 class="footer-title">Контакты</h3>
+					<ul class="footer-links">
+						<li>
+							<a href="mailto:info@Chain Impact.org"
+								><i class="fas fa-envelope"></i> info@Chain Impact.org</a
+							>
+						</li>
+						<li>
+							<a href="tel:+79991234567"
+								><i class="fas fa-phone"></i> +7 (999) 123-45-67</a
+							>
+						</li>
+						<li>
+							<a href="#"
+								><i class="fas fa-map-marker-alt"></i> Москва, ул. Добрая, 1</a
+							>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="copyright">&copy; 2025 Chain Impact. Все права защищены.</div>
+		</footer>
+
+		<script src="https://unpkg.com/ethers@6.7.0/dist/ethers.umd.min.js"></script>
+		<script src="js/project-details.js"></script>
+	</body>
+</html>

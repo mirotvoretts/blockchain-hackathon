@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="ru">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>CharityChain - Профиль</title>
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+		>
+		<link
+			href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap"
+			rel="stylesheet"
+		>
+		<link rel="stylesheet" href="css/common.css">
+		<link rel="stylesheet" href="css/profile.css">
+		<link rel="icon" href="icons/favicon.ico" type="image/x-icon">
+		<link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
+	</head>
+	<body>
+		<header class="header">
+			<a href="index.html" class="logo">
+				<img src="icons/logo_light.png" alt="" class="logo-icon light-icon">
+				<img src="icons/logo_dark.png" alt="" class="logo-icon dark-icon">
+				<span>Chain Impact</span>                
+			</a>
+
+			<div class="header-links">
+				<a href="index.html#how-to-donate">Как пожертвовать</a>
+				<a href="index.html#about-platform">О платформе</a>
+				<a href="projects.html">Проекты</a>
+				<a href="index.html#FAQ">FAQ</a>
+			</div>
+
+			<div class="header-buttons">
+				<button class="btn btn-theme" id="themeToggle">
+					<i class="fas fa-moon"></i>
+				</button>
+			</div>
+
+			<button class="mobile-menu-btn" id="mobileMenuBtn">
+				<span></span>
+				<span></span>
+				<span></span>
+			</button>
+		</header>
+
+		<div class="mobile-menu" id="mobileMenu">
+			<a href="index.html#how-to-donate">
+				<i class="fas fa-hand-holding-heart"></i> Как пожертвовать
+			</a>
+			<a href="index.html#about-platform">
+				<i class="fas fa-info-circle"></i> О платформе
+			</a>
+			<a href="projects.html">
+				<i class="fas fa-project-diagram"></i> Проекты
+			</a>
+			<a href="index.html#FAQ"> <i class="fas fa-question-circle"></i> FAQ </a>
+			<button class="btn btn-theme" id="mobileThemeToggle">
+				<i class="fas fa-moon"></i>
+			</button>
+		</div>
+
+		<main class="container">
+			<div class="profile-container">
+				<aside class="profile-sidebar">
+					<div class="profile-avatar">
+						<img
+							src="data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23cccccc'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E"
+							alt="Аватар пользователя"
+							class="avatar-image"
+							id="avatarImage"
+						/>
+					</div>
+
+					<div class="profile-info">
+						<h2 class="profile-name" id="profileName">Иван Иванов</h2>
+						<div class="profile-email" id="profileEmail">ivan@example.com</div>
+						<div class="profile-phone" id="profilePhone">
+							+7 (999) 123-45-67
+						</div>
+					</div>
+
+					<ul class="profile-menu">
+						<li>
+							<a href="#" class="active" data-section="profile"
+								><i class="fas fa-user"></i> Профиль</a
+							>
+						</li>
+						<li>
+							<a href="#" data-section="transactions"
+								><i class="fas fa-exchange-alt"></i> Транзакции</a
+							>
+						</li>
+						<li>
+							<a href="#" data-section="achievements"
+								><i class="fas fa-trophy"></i> Достижения</a
+							>
+						</li>
+						<li>
+							<a href="#" data-section="myProjects"> 
+								<i class="fas fa-hand-holding-heart"></i> Проекты
+							</a>
+						</li>
+					</ul>
+				</aside>
+
+				<section class="profile-content">
+					<div class="profile-section active view-mode" id="profileSection">
+						<div class="profile-header">
+							<h2 class="section-title">Мой профиль</h2>
+							<h3 class="section-subtitle">Заполните информацию о себе. Ее увидят другие пользователи.</h3>
+							<button class="btn-edit" id="editProfileBtn">
+								<i class="fas fa-edit"></i> Внести изменения
+							</button>
+						</div>
+
+						<div class="form-group">
+							<label class="form-label">Имя</label>
+							<div class="form-control" id="nameView">Иван Иванов</div>
+						</div>
+
+						<div class="form-group">
+							<label class="form-label">Электронная почта</label>
+							<div class="form-control" id="emailView">ivan@example.com</div>
+						</div>
+
+						<div class="form-group">
+							<label class="form-label">Телефон</label>
+							<div class="form-control" id="phoneView">+7 (999) 123-45-67</div>
+						</div>
+					</div>
+
+					<div
+						class="profile-section edit-mode"
+						id="editSection"
+						style="display: none"
+					>
+						<div class="profile-header">
+							<h2 class="section-title">Редактирование профиля</h2>
+						</div>
+
+						<div class="form-group">
+							<label for="nameEdit" class="form-label">Имя</label>
+							<input
+								type="text"
+								id="nameEdit"
+								class="form-control"
+								value="Иван Иванов"
+							/>
+						</div>
+
+						<div class="form-group">
+							<label for="emailEdit" class="form-label"
+								>Электронная почта</label
+							>
+							<input
+								type="email"
+								id="emailEdit"
+								class="form-control"
+								value="ivan@example.com"
+							/>
+						</div>
+
+						<div class="form-group">
+							<label for="phoneEdit" class="form-label"
+								>Телефон (необязательно)</label
+							>
+							<input
+								type="tel"
+								id="phoneEdit"
+								class="form-control"
+								value="+7 (999) 123-45-67"
+							/>
+						</div>
+
+						<div class="profile-actions">
+							<button class="btn-save" id="saveProfile">
+								<i class="fas fa-save"></i> Сохранить
+							</button>
+							<button
+								class="btn-edit"
+								id="cancelEditBtn"
+								style="background: var(--gray)"
+							>
+								<i class="fas fa-times"></i> Отмена
+							</button>
+						</div>
+					</div>
+
+					<div class="profile-section" id="transactionsSection">
+						<h2 class="section-title">История пожертвований</h2>
+					
+						<ul class="transactions-list">
+							<li class="transaction-item">
+								<div class="transaction-info">
+									<div class="transaction-project">
+										Дом для бездомных животных
+									</div>
+									<div class="transaction-date">15 марта 2025, 14:30</div>
+									<span class="transaction-status status-success">Успешно</span>
+								</div>
+								<div class="transaction-amount">0.025 ETH</div>
+							</li>
+					
+							<li class="transaction-item">
+								<div class="transaction-info">
+									<div class="transaction-project">
+										Помощь детям с онкологией
+									</div>
+									<div class="transaction-date">10 марта 2025, 10:15</div>
+									<span class="transaction-status status-success">Успешно</span>
+								</div>
+								<div class="transaction-amount">0.015 ETH</div>
+							</li>
+					
+							<li class="transaction-item">
+								<div class="transaction-info">
+									<div class="transaction-project">
+										Образовательные курсы для сирот
+									</div>
+									<div class="transaction-date">5 марта 2025, 16:45</div>
+									<span class="transaction-status status-success">Успешно</span>
+								</div>
+								<div class="transaction-amount">0.037 ETH</div>
+							</li>
+					
+							<li class="transaction-item">
+								<div class="transaction-info">
+									<div class="transaction-project">
+										Помощь пострадавшим от наводнения
+									</div>
+									<div class="transaction-date">28 февраля 2025, 09:30</div>
+									<span class="transaction-status status-success">Успешно</span>
+								</div>
+								<div class="transaction-amount">0.05 ETH</div>
+							</li>
+					
+							<li class="transaction-item">
+								<div class="transaction-info">
+									<div class="transaction-project">
+										Экологический проект "Чистый город"
+									</div>
+									<div class="transaction-date">20 февраля 2025, 18:20</div>
+									<span class="transaction-status status-success">Успешно</span>
+								</div>
+								<div class="transaction-amount">0.0125 ETH</div>
+							</li>
+						</ul>
+					</div>
+					
+					<div class="profile-section" id="achievementsSection">
+						<h2 class="section-title">Ваши достижения</h2>
+					
+						<div class="achievements-grid">
+							<div class="achievement-card">
+								<div class="achievement-icon">
+									<i class="fas fa-heart"></i>
+								</div>
+								<h3 class="achievement-title">Первый шаг</h3>
+								<p class="achievement-desc">Сделали первое пожертвование</p>
+							</div>
+					
+							<div class="achievement-card">
+								<div class="achievement-icon">
+									<i class="fas fa-star"></i>
+								</div>
+								<h3 class="achievement-title">Регулярный помощник</h3>
+								<p class="achievement-desc">Пожертвовали 3 месяца подряд</p>
+							</div>
+					
+							<div class="achievement-card">
+								<div class="achievement-icon">
+									<i class="fas fa-hand-holding-usd"></i>
+								</div>
+								<h3 class="achievement-title">Щедрая душа</h3>
+								<p class="achievement-desc">Пожертвовали > 0.1 ETH</p>
+							</div>
+					
+							<div class="achievement-card">
+								<div class="achievement-icon">
+									<i class="fas fa-users"></i>
+								</div>
+								<h3 class="achievement-title">Социальный активист</h3>
+								<p class="achievement-desc">Поддержали 5 разных проектов</p>
+							</div>
+					
+							<div class="achievement-card">
+								<div class="achievement-icon">
+									<i class="fas fa-share-alt"></i>
+								</div>
+								<h3 class="achievement-title">Амбассадор добра</h3>
+								<p class="achievement-desc">Поделились проектом в соцсетях</p>
+							</div>
+					
+							<div class="achievement-card">
+								<div class="achievement-icon">
+									<i class="fas fa-medal"></i>
+								</div>
+								<h3 class="achievement-title">Золотой меценат</h3>
+								<p class="achievement-desc">В топ-10 благотворителей месяца</p>
+							</div>
+						</div>
+					</div>
+					<div class="profile-section" id="myProjectsSection">
+						<div class="section-header">
+							<div>
+								<h2 class="section-title">Ваши проекты</h2>
+								<h3 class="section-subtitle">Вы представитель фонда, или у вас есть классная инициатива? Оставьте заявку, и мы свяжемся с вами!</h3>
+							</div>
+							<button class="btn btn-add-project" id="addProject">
+								<i class="fas fa-plus"></i> Добавить проект
+							</button>
+						</div>
+						<div class="my-projects"></div>
+					</div>
+		</main>
+
+		<footer class="footer">
+			<div class="footer-content">
+				<div class="footer-section">
+					<h3 class="footer-title">
+						<i class="fas fa-hands-helping"></i> CharityChain
+					</h3>
+					<p>
+						Платформа для прозрачной благотворительности на основе
+						блокчейн-технологий. Обеспечиваем доверие доноров и получателей
+						помощи.
+					</p>
+				</div>
+				<div class="footer-section">
+					<h3 class="footer-title">Навигация</h3>
+					<ul class="footer-links">
+						<li>
+							<a href="index.html"
+								><i class="fas fa-chevron-right"></i> Главная</a
+							>
+						</li>
+						<li>
+							<a href="projects.html"
+								><i class="fas fa-chevron-right"></i> Проекты</a
+							>
+						</li>
+					</ul>
+				</div>
+				<div class="footer-section">
+					<h3 class="footer-title">Контакты</h3>
+					<ul class="footer-links">
+						<li>
+							<a href="mailto:info@charitychain.org"
+								><i class="fas fa-envelope"></i> info@charitychain.org</a
+							>
+						</li>
+						<li>
+							<a href="tel:+79991234567"
+								><i class="fas fa-phone"></i> +7 (999) 123-45-67</a
+							>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="copyright">&copy; 2025 CharityChain. Все права защищены.</div>
+		</footer>
+
+		<div class="modal" id="projectModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Добавить проект</h5>
+                <span class="close-modal" id="closeProjectModal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="projectForm">
+					<div class="form-group">
+                        <h2>Внимательно подойдите к заполнению формы. Если модераторы одобрят вашу заявку, 
+						Вы не сможете менять поля, помеченные звездочкой.</h2></div>
+                    <div class="form-group">
+                        <label for="projectName">Название проекта*</label>
+                        <input type="text" id="projectName" class="form-control" required>
+                    </div>
+					<div class="form-group">
+						<label for="projectCategory">Категория</label>
+						<select id="projectCategory" class="form-control">
+							<option value="1">Дети</option>
+							<option value="2">Здоровье</option>
+							<option value="3">Животные</option>
+							<option value="4">Образование</option>
+							<option value="5">Экология</option>
+							<option value="6">Социальная помощь</option>
+						</select>
+					</div>
+                    <div class="form-group">
+                        <label for="contactName">Ваши ФИО или название фонда*</label>
+                        <input type="text" id="contactName" class="form-control" required>
+                    </div>
+					<div class="form-group">
+						<label for="projectAmount">Цель(в ETH)*</label>
+						<input type="text" id="projectAmount" class="form-control" required>
+					</div>
+                    <div class="form-group">
+                        <label for="projectLink">Ссылка на сайт проекта (если есть)</label>
+                        <input type="url" id="projectLink" class="form-control">
+                    </div>
+					<div class="form-group">
+                        <label for="projectLocation">Локация</label>
+                        <input type="text" id="projectLocation" class="form-control">
+                    </div>
+					<div class="form-group">
+                        <label for="projectTeam">Информация о команде</label>
+                        <input type="text" id="projectTeam" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="projectDescription">Краткое описание проекта (2-3 предложения)*</label>
+                        <textarea id="projectDescription" class="form-control" rows="4" required></textarea>
+                    </div>
+					<div class="form-group">
+                        <label for="projectContractAddress">Публичный адрес кошелька Metamask, используемый для сбора средств*</label>
+                        <input type="text" id="projectContractAddress" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn-submit" id="submitProjectBtn" disabled>Отправить заявку</button>
+                </form>
+            </div>       
+        </div>
+    </div>  
+
+		<script src="js/profile.js"></script>
+	</body>
+</html>

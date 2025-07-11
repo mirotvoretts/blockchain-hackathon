@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chain Impact - Благотворительные проекты</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/projects.css">
+    <link rel="icon" href="icons/favicon.ico" type="image/x-icon">
+		<link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
+</head>
+<body>
+    <header class="header">
+        <a href="index.html" class="logo">
+            <img src="icons/logo_light.png" alt="" class="logo-icon light-icon">
+            <img src="icons/logo_dark.png" alt="" class="logo-icon dark-icon">
+            <span>Chain Impact</span>                
+        </a>
+        
+        <div class="header-links">
+            <a href="index.html#how-to-donate">Как пожертвовать</a>
+            <a href="index.html#about-platform">О платформе</a>
+            <a href="projects.html">Проекты</a>
+            <a href="index.html#FAQ">FAQ</a>
+        </div>
+        
+        <div class="header-buttons">
+            <button class="btn btn-theme" id="themeToggle">
+                <i class="fas fa-moon"></i>
+            </button>
+            <a href="#" class="btn btn-wallet" id="universalWalletBtn">
+                <i class="fas fa-wallet"></i>
+                <span id="walletText">Подключить кошелек</span>
+            </a>
+        </div>
+        
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <i class="fas fa-bars"></i>
+        </button>
+    </header>
+
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="index.html#how-to-donate">
+            <i class="fas fa-hand-holding-heart"></i> Как пожертвовать
+        </a>
+        <a href="index.html#about-platform">
+            <i class="fas fa-info-circle"></i> О платформе
+        </a>
+        <a href="projects.html">
+            <i class="fas fa-project-diagram"></i> Проекты
+        </a>
+        <a href="index.html#FAQ">
+            <i class="fas fa-question-circle"></i> FAQ
+        </a>
+        <button class="btn btn-wallet" id="mobileUniversalWalletBtn">
+            <i class="fas fa-wallet"></i> Подключить кошелек
+        </button>
+        <button class="btn btn-theme" id="mobileThemeToggle">
+            <i class="fas fa-moon"></i>
+        </button>
+    </div>
+
+    <div class="container">
+        <h1 class="page-title">Благотворительные проекты</h1>
+        <p class="page-subtitle">Впервые на Chain Impact? Узнайте подробнее о платформе <a href="index.html">здесь</a>.</p>
+        
+        <div class="filters-section">
+            <div class="search-container">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-input" id="searchInput" placeholder="Поиск по названию проекта...">
+            </div>
+            
+            <div class="filters-row">
+                <div class="filter-group">
+                    <div class="filter-title">Фильтр по категориям</div>
+                    <div class="category-filters" id="categoryFilters">
+                        <button class="category-btn" data-category="all">Все</button>
+                        <button class="category-btn" data-category="children">Дети</button>
+                        <button class="category-btn" data-category="health">Здоровье</button>
+                        <button class="category-btn" data-category="animals">Животные</button>
+                        <button class="category-btn" data-category="education">Образование</button>
+                        <button class="category-btn" data-category="ecology">Экология</button>
+                        <button class="category-btn" data-category="social">Социальная помощь</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="results-info" id="resultsInfo">
+                Найдено проектов: <span id="projectsCount">6</span>
+            </div>
+        </div>
+        
+        <div class="projects-grid" id="projectsGrid">
+        </div>
+        
+    </div>
+    
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3 class="footer-title"><i class="fas fa-hands-helping"></i> Chain Impact</h3>
+                <p>Платформа для прозрачной благотворительности на основе блокчейн-технологий. Обеспечиваем доверие доноров и получателей помощи.</p>
+            </div>
+            <div class="footer-section">
+                <h3 class="footer-title">Навигация</h3>
+                <ul class="footer-links">
+                    <li><a href="index.html"><i class="fas fa-chevron-right"></i> Главная</a></li>
+                    <li><a href="projects.html"><i class="fas fa-chevron-right"></i> Проекты</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3 class="footer-title">Контакты</h3>
+                <ul class="footer-links">
+                    <li><a href="mailto:info@Chain Impact.org"><i class="fas fa-envelope"></i> info@Chain Impact.org</a></li>
+                    <li><a href="tel:+79991234567"><i class="fas fa-phone"></i> +7 (999) 123-45-67</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            &copy; 2025 Chain Impact. Все права защищены. 
+        </div>
+    </footer>
+    <script type="module" src="js/projects.js"></script>
+</body>
+</html>
