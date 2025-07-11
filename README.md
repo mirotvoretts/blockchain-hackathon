@@ -49,7 +49,12 @@ npx hardhat run scripts/deploy.js --network localhost
 npx hardhat run scripts/interact.js --network localhost
 ```
 
-В терминале должен был отобразиться "Адрес кампании: 0x...". Этот адрес нужно скопировать и подставить в переменную `TEST_CONTRACT_ADDRESS` в файле `.env`
+В терминале должен был отобразиться `"Адрес кампании: 0x..."`. Этот адрес нужно скопировать и подставить в переменную `TEST_CONTRACT_ADDRESS` в файле `src/js/project-details.js`
+
+```js
+// ! МЕНЯТЬ НУЖНО ЗДЕСЬ 
+const TEST_CONTRACT_ADDRESS = '0xCafac3dD18aC6c6e92c921884f9E4176737C052c' 
+```
 
 > [!CAUTION]
 > По умолчанию все транзакции отправляются в **Sepolia**, поэтому в браузере в консоль разработчика введём команду `await setupLocalEnvironment()`, чтобы сайт понял, что мы тестируем локально
