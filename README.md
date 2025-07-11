@@ -24,28 +24,35 @@
 | Фронтенд        | JavaScript                          |
 | Инструменты     | MetaMask, Ethers.js, Web3.py        |
 
-## Установка  
+## Быстрый старт
+
+Для запуска нашего проекта локально мы используем докер. После того как склонировали репозиторий, запускаем контейнеры:
 
 ```bash
-# 1. Клонирование репозитория
-git clone git@github.com:mirotvoretts/blockchain-hackathon.git
-
-# 2. Бэкенд (FastAPI)
-cd backend
-pip install -r requirements.txt
-TODO
-
-# 3. Смарт-контракты (Hardhat)
-npm install
-npx hardhat compile
-npx hardhat run scripts/deploy.js --network sepolia
-
-# 4. Фронтенд
-cd ../frontend
-TODO
+sudo docker-compose -f docker-compose.yaml up --build
 ```
 
-> Чтобы развернуть смарт-контракты локально, в первом окне терминала введите `npx hardhat node`, затем во втором - `npx hardhat run scripts/deploy.js --network localhost`.
+Фронтенд и бэкенд уже запущены, проверить можно по этому адресу `http://localhost:5500/`. Локальный блокчейн также развернут, можете в терминале увидеть тестовые адреса с балансом
+
+---
+
+Теперь настроим наши смарт-контракты, для этого откроем второй терминал:
+
+```bash
+# войдём в контейнер HardHat
+docker exec -it hardhat bash 
+
+# деплоим проект
+npx hardhat run scripts/deploy.js --network localhost
+
+# первоначальная настройка + демонстрация работы
+npx hardhat run scripts/interact.js --network localhost
+```
+
+В терминале должен был отобразиться "Адрес кампании: 0x...". Этот адрес нужно скопировать и подставить в переменную `TEST_CONTRACT_ADDRESS` в файле `.env`
+
+> [!CAUTION]
+> По умолчанию все транзакции отправляются в **Sepolia**, поэтому в браузере в консоль разработчика введём команду `await setupLocalEnvironment()`, чтобы сайт понял, что мы тестируем локально
 
 ## Полезные ссылки
 
