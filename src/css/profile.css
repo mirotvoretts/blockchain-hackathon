@@ -54,13 +54,20 @@
     border-radius: 20px;
     padding: 40px;
     box-shadow: var(--card-shadow);
+    transition: all 0.3s ease;
+}
+
+.dark-theme .profile-content {
+    background: var(--light-alt);
 }
 
 .profile-avatar {
     position: relative;
-    min-width: 150px;
-    min-height: 150px;
+    width: 150px;
+    height: 150px;
     margin: 0 auto 20px;
+    border-radius: 50%;
+    overflow: hidden;
 }
 
 .avatar-image {
@@ -174,48 +181,15 @@
     border-radius: 2px;
 }
 
-
-.btn-save {
-    background: linear-gradient(90deg, var(--primary), var(--secondary));
-    color: var(--white);
-    border: none;
-    padding: 15px 40px;
-    border-radius: 50px;
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 600;
-    font-size: 1.1rem;
-    cursor: pointer;
-    transition: var(--transition);
-    display: inline-flex;
+.profile-header {
+    display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 10px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 20px;
 }
 
-.btn-save:hover {
-    background: linear-gradient(90deg, var(--primary-light), var(--secondary-light));
-    transform: translateY(-3px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-}
-
-.btn-edit {
-    background: linear-gradient(90deg, var(--primary), var(--secondary));
-    color: var(--white);
-    border: none;
-    padding: 12px 25px;
-    border-radius: 50px;
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background 0.3s ease;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.btn-edit:hover {
-    background: linear-gradient(90deg, var(--primary-light), var(--secondary-light));
-}
-    
 .profile-section {
     display: none;
 }
@@ -318,44 +292,27 @@
     font-size: 0.95rem;
 }
 
-
-/* Мобильная адаптация */
-@media (max-width: 992px) {
-    .profile-container {
-        flex-direction: column;
-    }
-    
-    .profile-sidebar {
-        position: static;
-    }
-    
-    .achievements-grid {
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    }
-}
-
-@media (max-width: 768px) {
-    .profile-sidebar {
-        padding: 20px;
-    }
-    
-    .profile-content {
-        padding: 25px;
-    }
-    
-    .achievements-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-
-
 /* Стили для раздела "Мои проекты" */
+#myProjectsSection .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+#myProjectsSection .section-title {
+    margin-bottom: 10px;
+}
+
 #myProjectsSection .section-subtitle {
     font-size: 1.1rem;
     color: var(--gray);
     margin-bottom: 30px;
     font-weight: 400;
+    max-width: 700px;
+    margin: 0;
 }
 
 #myProjectsSection .my-projects {
@@ -404,24 +361,24 @@
     color: var(--dark-alt);
 }
 
-#myProjectsSection .project-status {
+.project-status {
     padding: 5px 15px;
     border-radius: 20px;
     font-size: 0.85rem;
     font-weight: 600;
 }
 
-#myProjectsSection .project-status.active {
+.project-status.active {
     background-color: rgba(46, 204, 113, 0.2);
     color: #2ecc71;
 }
 
-#myProjectsSection .project-status.completed {
+.project-status.completed {
     background-color: rgba(52, 152, 219, 0.2);
     color: #3498db;
 }
 
-#myProjectsSection .project-status.pending {
+.project-status.pending {
     background-color: rgba(241, 196, 15, 0.2);
     color: #f1c40f;
 }
@@ -504,28 +461,6 @@
     gap: 12px;
 }
 
-#myProjectsSection .btn-view {
-    flex: 1;
-    background-color: var(--white);
-    color: var(--secondary);
-    border: 2px solid var(--secondary);
-    padding: 10px 15px;
-    border-radius: 50px;
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 500;
-    cursor: pointer;
-    transition: var(--transition);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 5px;
-}
-
-#myProjectsSection .btn-view:hover {
-    background-color: var(--secondary);
-    color: var(--white);
-}
-
 #myProjectsSection .btn-add-project {
     background: linear-gradient(90deg, var(--primary), var(--secondary));
     color: var(--white);
@@ -540,8 +475,9 @@
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    margin-bottom: 30px;
     box-shadow: var(--shadow);
+    white-space: nowrap;
+    margin-top: 5px;
 }
 
 #myProjectsSection .btn-add-project:hover {
@@ -569,82 +505,93 @@
     margin-bottom: 10px;
 }
 
-/* Адаптивные стили для раздела проектов */
-@media (max-width: 768px) {
-    #myProjectsSection .project-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 15px;
-    }
-    
-    #myProjectsSection .project-stats {
-        flex-direction: column;
-        gap: 15px;
-    }
-    
-    #myProjectsSection .project-actions {
-        flex-direction: column;
-    }
-}
-
-
-/* Стили для заголовка раздела проектов */
-#myProjectsSection .section-header {
+#myProjectsSection .btn-view {
+    flex: 1;
+    background-color: var(--white);
+    color: var(--secondary);
+    border: 2px solid var(--secondary);
+    padding: 10px 15px;
+    border-radius: 50px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 30px;
-    flex-wrap: wrap;
-    gap: 20px;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
 }
 
-#myProjectsSection .section-title {
-    margin-bottom: 10px;
+#myProjectsSection .btn-view:hover {
+    background-color: var(--secondary);
+    color: var(--white);
 }
 
-#myProjectsSection .section-subtitle {
-    color: var(--gray);
-    font-size: 1.1rem;
-    font-weight: 400;
-    max-width: 700px;
-    margin: 0;
+#myProjectsSection .btn-editor {
+    flex: 1;
+    background-color: var(--white);
+    color: var(--warning);
+    border: 2px solid var(--warning);
+    padding: 10px 15px;
+    border-radius: 50px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
 }
 
-#myProjectsSection .btn-add-project {
+#myProjectsSection .btn-editor:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 7px 15px var(--dark);
+    background-color: var(--warning);
+    color: var(--white);
+}
+
+/* Кнопки */
+.btn-edit {
     background: linear-gradient(90deg, var(--primary), var(--secondary));
     color: var(--white);
     border: none;
-    padding: 12px 24px;
-    font-size: 1rem;
-    font-weight: 600;
-    font-family: 'Montserrat', sans-serif;
+    padding: 12px 25px;
     border-radius: 50px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: var(--shadow);
+}
+
+.btn-edit:hover {
+    background: linear-gradient(90deg, var(--primary-light), var(--secondary-light));
+    transform: translateY(-2px);
+}
+
+.btn-save {
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    color: var(--white);
+    border: none;
+    padding: 15px 40px;
+    border-radius: 50px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 1.1rem;
     cursor: pointer;
     transition: var(--transition);
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    box-shadow: var(--shadow);
-    white-space: nowrap;
-    margin-top: 5px;
 }
 
-#myProjectsSection .btn-add-project:hover {
+.btn-save:hover {
     background: linear-gradient(90deg, var(--primary-light), var(--secondary-light));
-    transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-}
-
-/* Адаптивность для маленьких экранов */
-@media (max-width: 768px) {
-    #myProjectsSection .section-header {
-        flex-direction: column;
-        align-items: stretch;
-    }
-    
-    #myProjectsSection .btn-add-project {
-        align-self: flex-start;
-    }
+    transform: translateY(-3px);
 }
 
 #connectButton {
@@ -675,116 +622,7 @@
     transform: scale(0.98);
 }
 
-/* Основные исправления и улучшения */
-
-/* 1. Добавим стили для кнопки "Внести изменения" */
-.btn-edit {
-    background: linear-gradient(90deg, var(--primary), var(--secondary));
-    color: var(--white);
-    border: none;
-    padding: 12px 25px;
-    border-radius: 50px;
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 500;
-    cursor: pointer;
-    transition: var(--transition);
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    box-shadow: var(--shadow);
-}
-
-.btn-edit:hover {
-    background: linear-gradient(90deg, var(--primary-light), var(--secondary-light));
-    transform: translateY(-2px);
-}
-
-/* 2. Исправим расположение элементов в разделе проектов */
-#myProjectsSection .section-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 30px;
-    flex-wrap: wrap;
-    gap: 20px;
-}
-
-#myProjectsSection .section-title {
-    margin-bottom: 10px;
-}
-
-#myProjectsSection .section-subtitle {
-    color: var(--gray); /* Серый цвет */
-    font-size: 1.1rem;
-    font-weight: 400;
-    max-width: 700px;
-    margin: 0;
-}
-
-#myProjectsSection .btn-add-project {
-    background: linear-gradient(90deg, var(--primary), var(--secondary));
-    color: var(--white);
-    border: none;
-    padding: 12px 24px;
-    font-size: 1rem;
-    font-weight: 600;
-    font-family: 'Montserrat', sans-serif;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: var(--transition);
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    box-shadow: var(--shadow);
-    white-space: nowrap;
-    margin-top: 5px;
-}
-
-#myProjectsSection .btn-add-project:hover {
-    background: linear-gradient(90deg, var(--primary-light), var(--secondary-light));
-    transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-}
-
-/* 3. Улучшим отступы и выравнивание */
-.profile-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
-    flex-wrap: wrap;
-    gap: 20px;
-}
-
-/* 4. Исправим проблему с отображением разделов */
-.profile-section {
-    display: none;
-}
-
-.profile-section.active {
-    display: block;
-}
-
-/* 5. Добавим адаптивность */
-@media (max-width: 768px) {
-    .profile-header,
-    #myProjectsSection .section-header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    
-    .btn-edit,
-    #myProjectsSection .btn-add-project {
-        align-self: flex-start;
-        margin-top: 15px;
-    }
-    
-    .profile-content {
-        padding: 25px;
-    }
-}
-
-/* 6. Улучшим стили формы */
+/* Формы */
 .form-group {
     margin-bottom: 25px;
 }
@@ -808,71 +646,58 @@
     transition: var(--transition);
 }
 
-/* 7. Добавим стили для кнопки сохранения */
-.btn-save {
-    background: linear-gradient(90deg, var(--primary), var(--secondary));
-    color: var(--white);
-    border: none;
-    padding: 15px 40px;
-    border-radius: 50px;
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 600;
-    font-size: 1.1rem;
-    cursor: pointer;
-    transition: var(--transition);
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
+/* Адаптивность */
+@media (max-width: 992px) {
+    .profile-container {
+        flex-direction: column;
+    }
+    
+    .profile-sidebar {
+        position: static;
+    }
+    
+    .achievements-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
 }
 
-.btn-save:hover {
-    background: linear-gradient(90deg, var(--primary-light), var(--secondary-light));
-    transform: translateY(-3px);
-}
+@media (max-width: 768px) {
+    .profile-sidebar {
+        padding: 20px;
+    }
+    
+    .profile-content {
+        padding: 25px;
+    }
+    
+    .achievements-grid {
+        grid-template-columns: 1fr;
+    }
 
-/* 8. Улучшим отображение аватара */
-.profile-avatar {
-    position: relative;
-    width: 150px;
-    height: 150px;
-    margin: 0 auto 20px;
-    border-radius: 50%;
-    overflow: hidden;
-}
+    .profile-header,
+    #myProjectsSection .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .btn-edit,
+    #myProjectsSection .btn-add-project {
+        align-self: flex-start;
+        margin-top: 15px;
+    }
 
-/* 9. Добавим тень для контента */
-.profile-content {
-    flex: 1;
-    background: var(--white);
-    border-radius: 20px;
-    padding: 40px;
-    box-shadow: var(--card-shadow);
-    transition: all 0.3s ease;
-}
-
-.dark-theme .profile-content {
-    background: var(--light-alt);
-}
-
-/* 10. Улучшим стили статусов проектов */
-.project-status {
-    padding: 5px 15px;
-    border-radius: 20px;
-    font-size: 0.85rem;
-    font-weight: 600;
-}
-
-.project-status.active {
-    background-color: rgba(46, 204, 113, 0.2);
-    color: #2ecc71;
-}
-
-.project-status.completed {
-    background-color: rgba(52, 152, 219, 0.2);
-    color: #3498db;
-}
-
-.project-status.pending {
-    background-color: rgba(241, 196, 15, 0.2);
-    color: #f1c40f;
+    #myProjectsSection .project-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    #myProjectsSection .project-stats {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    #myProjectsSection .project-actions {
+        flex-direction: column;
+    }
 }
